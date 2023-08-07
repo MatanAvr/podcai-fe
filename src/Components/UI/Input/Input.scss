@@ -1,0 +1,30 @@
+@import "../../../Styles/Styles.scss";
+
+input {
+  all: unset;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+
+  &.outline {
+    outline: 1px solid white;
+    border-radius: 50px;
+
+    &:focus,
+    &:focus-within {
+      outline: 1px solid $secondry;
+    }
+  }
+
+  &.underline {
+    border-bottom: 1px solid white;
+    &:focus,
+    &:focus-within {
+      border-bottom: 1px solid $secondry;
+    }
+  }
+}

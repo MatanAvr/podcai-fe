@@ -1,0 +1,31 @@
+@import "../../../Styles/Styles.scss";
+
+.chip-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(white, 0.1);
+  border-radius: 20px;
+  border: 1px solid white;
+  width: max-content;
+  padding: 5px;
+  &:hover {
+    cursor: pointer;
+    border-color: $secondry;
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    &:hover {
+      cursor: default;
+      border-color: white;
+    }
+  }
+
+  &.active {
+    background-color: $secondry;
+    color: black;
+  }
+  .chip-container {
+  }
+}

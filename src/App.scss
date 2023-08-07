@@ -1,0 +1,19 @@
+@import "../src/Styles/Styles.scss";
+@import url("https://fonts.cdnfonts.com/css/hero-4");
+.App {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  background-color: linear;
+  // background: linear-gradient(90deg, $primary, $secondry);
+  background: black;
+  color: white;
+  flex: 1;
+  font-family: "Hero", sans-serif;
+}

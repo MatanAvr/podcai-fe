@@ -1,0 +1,50 @@
+@import "../../../src/Styles/Styles.scss";
+
+.coming-soon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  max-width: 100%;
+  padding: 40px 0px;
+
+  .info-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    .title {
+      align-items: center;
+      display: flex;
+      font-size: 16vh;
+      margin-bottom: 40px;
+      .colored {
+        color: #90fbff;
+      }
+    }
+  }
+
+  // .subscribe-wrapper {
+  //   display: flex;
+  //   flex-direction: column;
+  //   padding: 20px;
+  //   border-radius: 20px;
+  //   gap: 20px;
+  // }
+
+  .res-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+
+  .icons-wrapper {
+    display: flex;
+    padding: 10px;
+    gap: 20px;
+  }
+}
