@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Pages } from "./ConstAndTypes/consts";
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState<Pages>("ComingSoon");
+  const [currentPage, setCurrentPage] = useState<Pages>("Login");
 
   const changePageHandler = (newPage: Pages) => {
     setCurrentPage(newPage);
