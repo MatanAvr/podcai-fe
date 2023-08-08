@@ -6,6 +6,7 @@ interface inputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   type?: "outline" | "underline";
+  onBlur?: () => void;
 }
 
 export const Input = ({
@@ -14,6 +15,7 @@ export const Input = ({
   onChange,
   placeholder,
   type,
+  onBlur,
 }: inputProps) => {
   return (
     <input
@@ -22,6 +24,7 @@ export const Input = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      onBlur={onBlur}
     />
   );
 };
