@@ -8,6 +8,13 @@ import { Button } from "../../Components/UI/Button/Button";
 import React, { useState } from "react";
 import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
 import { LoadingSpinner } from "../../Components/UI/LoadingSpinner/LoadingSpinner";
+import {
+  addErrorToId,
+  isValidEmail,
+  removeErrorFromId,
+} from "../../Utils/Utils";
+import { error } from "console";
+import { Modal } from "../../Components/UI/Modal/Modal";
 
 interface subscribeFormFields {
   firstname: string;
@@ -24,6 +31,7 @@ const defaultFormFields: subscribeFormFields = {
 export const ComingSoon = () => {
   const [formData, setFormData] =
     useState<subscribeFormFields>(defaultFormFields);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const [isSending, setIsSending] = useState<boolean>(false);
   const [ok, setOk] = useState<boolean>(false);
@@ -40,7 +48,7 @@ export const ComingSoon = () => {
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { id: key, value } = e.target;
-    console.log(key, value);
+    // console.log(key, value);
     const formDataTemp = { ...formData };
     //@ts-ignore
     formDataTemp[key] = value;
@@ -58,7 +66,19 @@ export const ComingSoon = () => {
     }, 2500);
   };
 
-  const validateFields = () => {};
+  const validateFields = () => {
+    let error = "";
+    const emailValid = isValidEmail(formData.email);
+    if (!emailValid) {
+      addErrorToId("email");
+      error = "Invalid email";
+    } else {
+      removeErrorFromId("email");
+    }
+    if (error !== "") {
+      setShowModal(true);
+    }
+  };
 
   return (
     <div className="coming-soon-wrapper">
@@ -84,6 +104,7 @@ export const ComingSoon = () => {
                 onChange={onChangeHandler}
                 placeholder={field.placeholder}
                 type="underline"
+                onBlur={validateFields}
               />
             );
           })}
@@ -108,6 +129,7 @@ export const ComingSoon = () => {
         <BsFacebook size={25} />
         <BsLinkedin size={25} />
       </div>
+      {showModal && <Modal text="error" />}
     </div>
   );
 };
