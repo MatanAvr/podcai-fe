@@ -8,8 +8,8 @@ import { ApiClient } from "../../Services/axios";
 const apiClientInstance = new ApiClient();
 
 const defaultUser: loginRequest = {
-  email: "",
-  password: "",
+  email: "ronavr55@gmail.com",
+  password: "123",
 };
 
 export const Login = () => {
