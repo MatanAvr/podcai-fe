@@ -7,6 +7,7 @@ export type mainCategories ='general' | 'world' | 'nation' | 'business' | 'techn
  export type episodesResponse = {urls:string[]}
  
 
- export const BASE_URL:string = 'http://ec2-3-95-218-92.compute-1.amazonaws.com:5002/api'
+//  export const BASE_URL:string = 'http://ec2-3-95-218-92.compute-1.amazonaws.com:5002/api'
+ export const BASE_URL:string = 'https://www.podcai.co/api'
  export const LOGIN_URL = '/user/login' 
  export const GET_EPISODE_URL = '/user/get_podcasts/' 
