@@ -4,18 +4,24 @@ import { Input } from "../../Components/UI/Input/Input";
 import { loginRequest } from "../../ConstAndTypes/consts";
 import "./Login.scss";
 import { ApiClient } from "../../Services/axios";
+import { useAppDispatch } from "../../Hooks/Hooks";
+import { setAuth } from "../../Features/User/User";
+import { LoadingSpinner } from "../../Components/UI/LoadingSpinner/LoadingSpinner";
+import { moveToPage } from "../../Features/Navigation/Navigation";
 
-const apiClientInstance = new ApiClient();
+const apiClientInstance = ApiClient.getInstance();
 
 const defaultUser: loginRequest = {
-  email: "ronavr55@gmail.com",
-  password: "123",
+  email: "matan@test.com",
+  password: "1234",
 };
 
 export const Login = () => {
   const [user, setUser] = useState<loginRequest>(defaultUser);
   const [audioTracksSrc, setAudioTracksSrc] = useState<string[]>([]);
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isSending, setIsSending] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id: key, value } = e.target;
@@ -27,54 +33,51 @@ export const Login = () => {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSending(true);
     const res = await apiClientInstance.userLogin(user);
-    console.log(res);
     if (res.access_token) {
       const token = res.access_token;
-      setLoggedIn(true);
+      dispatch(setAuth({ newMode: true, token }));
+      dispatch(moveToPage("Home"));
     }
+    setIsSending(false);
   };
 
-  const getEpisode = async () => {
-    const res = await apiClientInstance.getEpisodes();
-    console.log(res);
-    setAudioTracksSrc([...res.urls]);
-  };
+  // const getPodcasts = async () => {
+  //   const res = await apiClientInstance.getPodcasts();
+  //   setAudioTracksSrc([...res.urls]);
+  // };
+
+  // const getEpisodes = async () => {
+  //   const res = await apiClientInstance.getEpisodes();
+  //   // setAudioTracksSrc([...res.urls]);
+  // };
 
   return (
     <div className="login-wrapper">
       <h1>Login</h1>
-      <form className="form-wrapper" onSubmit={submitHandler}>
-        <Input
-          id="email"
-          value={user.email}
-          placeholder="Email"
-          type="underline"
-          onChange={(e) => onChange(e)}
-        />
-        <Input
-          id="password"
-          value={user.password}
-          placeholder="Password"
-          type="underline"
-          onChange={(e) => onChange(e)}
-        />
-        <Button text="Login" type="outline" />
-      </form>
-      {loggedIn && <div style={{ color: "green" }}>loggedIn</div>}
 
-      <Button text="Get episode" type="outline" onClick={getEpisode} />
-
-      <div className="audio-tracks-wrapper">
-        {audioTracksSrc &&
-          audioTracksSrc.length > 0 &&
-          audioTracksSrc.map((audioTrackSrc, index) => [
-            <div key={"ATC" + index} className="audio-track-container">
-              {audioTrackSrc}
-              <audio src={audioTrackSrc} controls />
-            </div>,
-          ])}
-      </div>
+      {isSending ? (
+        <LoadingSpinner />
+      ) : (
+        <form className="form-wrapper" onSubmit={submitHandler}>
+          <Input
+            id="email"
+            value={user.email}
+            placeholder="Email"
+            style="underline"
+            onChange={onChange}
+          />
+          <Input
+            id="password"
+            value={user.password}
+            placeholder="Password"
+            style="underline"
+            onChange={onChange}
+          />
+          <Button text="Login" type="outline" />
+        </form>
+      )}
     </div>
   );
 };

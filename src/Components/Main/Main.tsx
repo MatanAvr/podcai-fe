@@ -6,6 +6,7 @@ import { Features } from "../../Pages/Features/Features";
 import { Team } from "../../Pages/Team/Team";
 import { Login } from "../../Pages/Login/Login";
 import { SignUp } from "../../Pages/SignUp/SignUp";
+import { Home } from "../../Pages/Home/Home";
 
 interface mainIprops {
   currentPage: Pages;
@@ -20,6 +21,7 @@ export const Main = ({ currentPage }: mainIprops) => {
       {currentPage === "Team" && <Team />}
       {currentPage === "Login" && <Login />}
       {currentPage === "SignUp" && <SignUp />}
+      {currentPage === "Home" && <Home />}
     </div>
   );
 };

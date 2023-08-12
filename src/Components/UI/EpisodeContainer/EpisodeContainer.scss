@@ -1,0 +1,18 @@
+@import "../../../Styles/Styles.scss";
+
+.episode-wrapper {
+  .episode-container {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 20px;
+    gap: 5px;
+
+    .episode-categories {
+      display: flex;
+      gap: 5px;
+    }
+  }
+}

@@ -6,36 +6,48 @@ input {
 
 .input-wrapper {
   display: flex;
+  position: relative;
   align-items: center;
-  justify-content: center;
-  padding: 5px;
 
-  &.error {
-  }
-
-  &.outline {
-    outline: 1px solid white;
-    border-radius: 50px;
-
-    &:focus,
-    &:focus-within {
-      outline: 1px solid $secondry;
-    }
+  .input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
 
     &.error {
-      outline: 1px solid red;
+    }
+
+    &.outline {
+      outline: 1px solid white;
+      border-radius: 50px;
+
+      &:focus,
+      &:focus-within {
+        outline: 1px solid $secondry;
+      }
+
+      &.error {
+        outline: 1px solid red;
+      }
+    }
+
+    &.underline {
+      border-bottom: 1px solid white;
+      &:focus,
+      &:focus-within {
+        border-bottom: 1px solid $secondry;
+      }
+
+      &.error {
+        border-bottom: 1px solid red;
+      }
     }
   }
 
-  &.underline {
-    border-bottom: 1px solid white;
-    &:focus,
-    &:focus-within {
-      border-bottom: 1px solid $secondry;
-    }
-
-    &.error {
-      border-bottom: 1px solid red;
+  .toggle-show-password-button {
+    &:hover {
+      cursor: pointer;
     }
   }
 }

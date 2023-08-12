@@ -1,17 +1,37 @@
 import { Pages } from "../../ConstAndTypes/consts";
 import { Button } from "../UI/Button/Button";
-import { DynamicLogo } from "../UI/DynamicLogo/DynamicLogo";
 import "./Header.scss";
+import { useEffect } from "react";
+import { setAuth } from "../../Features/User/User";
+import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
+import { moveToPage } from "../../Features/Navigation/Navigation";
 
 interface headerIprops {
-  currentPage: Pages;
-  changePageHandler: (newPage: Pages) => void;
+  // currentPage: Pages;
+  // changePageHandler: (newPage: Pages) => void;
 }
 
-const startBtnsArr: Pages[] = ["Login", "SignUp"];
-const endBtnsArr: Pages[] = ["About", "Features", "Team"];
+const startBtnsArr: Pages[] = ["About", "Features", "Team"];
+const endBtnsArr: Pages[] = ["Login", "SignUp"];
 
-export const Header = ({ currentPage, changePageHandler }: headerIprops) => {
+export const Header = ({}: headerIprops) => {
+  const isAuth = useAppSelector((state) => state.user.auth);
+  const currentPage = useAppSelector((state) => state.navigation.currentPage);
+  const dispatch = useAppDispatch();
+
+  const changePageHandler = (newPage: Pages) => {
+    dispatch(moveToPage(newPage));
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(setAuth({ newMode: true, token }));
+    } else {
+      dispatch(setAuth({ newMode: false, token: "" }));
+    }
+  }, []);
+
   return (
     <div className="header-wrapper">
       <div className="header-container">
@@ -28,24 +48,43 @@ export const Header = ({ currentPage, changePageHandler }: headerIprops) => {
               />
             );
           })}
-          {/* <Button text="Login" onClick={() => changePageHandler("Login")} /> */}
-          {/* <Button text="Sign up" onClick={() => changePageHandler("SignUp")} /> */}
         </div>
 
-        {/* {currentPage} */}
+        {isAuth && <div style={{ color: "green" }}>loggedIn</div>}
 
         <div className="buttons-container">
-          {endBtnsArr.map((btn, index) => {
-            const active = btn === currentPage ? true : false;
-            return (
+          {!isAuth &&
+            endBtnsArr.map((btn, index) => {
+              const active = btn === currentPage ? true : false;
+              return (
+                <Button
+                  key={`EBA-${index}`}
+                  text={btn}
+                  onClick={() => changePageHandler(btn)}
+                  active={active}
+                />
+              );
+            })}
+          {isAuth && (
+            <>
               <Button
-                key={`EBA-${index}`}
-                text={btn}
-                onClick={() => changePageHandler(btn)}
-                active={active}
+                key={`LHB-${0}`}
+                text={"Home"}
+                onClick={() => changePageHandler("Home")}
+                // active={active}
               />
-            );
-          })}
+              <Button
+                key={`LHB-${1}`}
+                text={"Logout"}
+                onClick={() => {
+                  dispatch(setAuth({ newMode: false, token: "" }));
+                  changePageHandler("Login");
+                  console.log("Logout");
+                }}
+                // active={active}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
