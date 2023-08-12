@@ -1,4 +1,16 @@
 @import "../../../Styles/Styles.scss";
 
 .modal-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: gainsboro;
+  &.regular {
+  }
+  &.error {
+  }
 }

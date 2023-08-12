@@ -1,20 +1,17 @@
 import "./App.scss";
+// import { useState } from "react";
 import { Main } from "./Components/Main/Main";
 import { Header } from "./Components/Header/Header";
-import { Footer } from "./Components/Footer/Footer";
-import { useState } from "react";
-import { Pages } from "./ConstAndTypes/consts";
+// import { Footer } from "./Components/Footer/Footer";
+// import { Pages } from "./ConstAndTypes/consts";
+import { useAppSelector } from "./Hooks/Hooks";
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState<Pages>("Login");
-
-  const changePageHandler = (newPage: Pages) => {
-    setCurrentPage(newPage);
-  };
+  const currentPage = useAppSelector((state) => state.navigation.currentPage);
 
   return (
     <div className="App">
-      <Header currentPage={currentPage} changePageHandler={changePageHandler} />
+      <Header />
       <Main currentPage={currentPage} />
       {/* <Footer /> */}
     </div>

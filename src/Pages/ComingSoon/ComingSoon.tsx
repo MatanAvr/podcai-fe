@@ -13,7 +13,6 @@ import {
   isValidEmail,
   removeErrorFromId,
 } from "../../Utils/Utils";
-import { error } from "console";
 import { Modal } from "../../Components/UI/Modal/Modal";
 
 interface subscribeFormFields {
@@ -103,7 +102,7 @@ export const ComingSoon = () => {
                 value={formData[key]}
                 onChange={onChangeHandler}
                 placeholder={field.placeholder}
-                type="underline"
+                style="underline"
                 onBlur={validateFields}
               />
             );

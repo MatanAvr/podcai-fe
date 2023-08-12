@@ -17,13 +17,14 @@ button {
   align-items: center;
   justify-content: center;
   padding: 5px;
+  width: max-content;
 
   &.active {
     color: $secondry;
   }
 
   &.regular {
-    &:hover {
+    &:hover:enabled {
       // border-bottom: 1px solid $secondry;
       box-shadow: 0px 2px $secondry;
     }
@@ -39,7 +40,7 @@ button {
     outline: 1px solid white;
     border-radius: 50px;
 
-    &:hover {
+    &:hover:enabled {
       outline: 1px solid $secondry;
     }
   }
