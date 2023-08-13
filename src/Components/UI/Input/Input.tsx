@@ -8,9 +8,10 @@ interface inputProps {
   value: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  style?: "outline" | "underline";
+  inputStyle?: "outline" | "underline";
   onBlur?: () => void;
   type?: "password" | "string";
+  note?: string;
 }
 
 export const Input = ({
@@ -18,9 +19,10 @@ export const Input = ({
   value,
   onChange,
   placeholder,
-  style,
+  inputStyle,
   type,
   onBlur,
+  note,
 }: inputProps) => {
   const [showPassword, setSHowPassword] = useState<boolean>(false);
 
@@ -34,7 +36,7 @@ export const Input = ({
     <div className="input-wrapper">
       <input
         id={id}
-        className={`input-container ${style}`}
+        className={`input-container ${inputStyle}`}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
@@ -49,6 +51,7 @@ export const Input = ({
           {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
         </div>
       )}
+      {note && <div className="input-note">{note}</div>}
     </div>
   );
 };

@@ -14,6 +14,14 @@ import {
   removeErrorFromId,
 } from "../../Utils/Utils";
 import { Modal } from "../../Components/UI/Modal/Modal";
+import { IconButton } from "../../Components/UI/IconButton/IconButton";
+import { moveToPage } from "../../Features/Navigation/Navigation";
+import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
+
+const twitterLink = "https://twitter.com/podcai";
+const facebookLink = "https://www.facebook.com/podcai.co?mibextid=LQQJ4d";
+const instagramLink = "https://instagram.com/podcai?igshid=MzRlODBiNWFlZA==";
+const linkedinLink = "https://www.linkedin.com/company/podcai/";
 
 interface subscribeFormFields {
   firstname: string;
@@ -31,9 +39,9 @@ export const ComingSoon = () => {
   const [formData, setFormData] =
     useState<subscribeFormFields>(defaultFormFields);
   const [showModal, setShowModal] = useState<boolean>(false);
-
   const [isSending, setIsSending] = useState<boolean>(false);
   const [ok, setOk] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const sunbsricbeFieldsArr: {
     id: "firstname" | "lastname" | "email";
@@ -58,6 +66,7 @@ export const ComingSoon = () => {
     e.preventDefault();
     console.log("submiting");
     const valid = validateFields();
+    if (!valid) console.warn("coming soon form not valid");
     setIsSending(true);
     setTimeout(() => {
       setIsSending(false);
@@ -76,7 +85,9 @@ export const ComingSoon = () => {
     }
     if (error !== "") {
       setShowModal(true);
+      return false;
     }
+    return true;
   };
 
   return (
@@ -91,7 +102,7 @@ export const ComingSoon = () => {
         <div>powered by AI</div>
       </div>
 
-      {!isSending && !ok && (
+      {/* {!isSending && !ok && (
         <form className="form-wrapper" onSubmit={onSubmitHandler}>
           {sunbsricbeFieldsArr.map((field, index) => {
             const key = field.id;
@@ -102,14 +113,20 @@ export const ComingSoon = () => {
                 value={formData[key]}
                 onChange={onChangeHandler}
                 placeholder={field.placeholder}
-                style="underline"
+                inputStyle="underline"
                 onBlur={validateFields}
               />
             );
           })}
-          <Button text="Subscribe" type="outline" />
         </form>
-      )}
+      )} */}
+      <Button
+        text="SignUp"
+        type="outline"
+        onClick={() => {
+          dispatch(moveToPage("SignUp"));
+        }}
+      />
 
       {isSending ? (
         <LoadingSpinner />
@@ -123,10 +140,21 @@ export const ComingSoon = () => {
       )}
 
       <div className="icons-wrapper">
-        <BsTwitter size={25} />
-        <BsInstagram size={25} />
-        <BsFacebook size={25} />
-        <BsLinkedin size={25} />
+        <IconButton onClick={() => window.open(twitterLink, "_blank")}>
+          <BsTwitter size={25} />
+        </IconButton>
+
+        <IconButton onClick={() => window.open(instagramLink, "_blank")}>
+          <BsInstagram size={25} />
+        </IconButton>
+
+        <IconButton onClick={() => window.open(facebookLink, "_blank")}>
+          <BsFacebook size={25} />
+        </IconButton>
+
+        <IconButton onClick={() => window.open(linkedinLink, "_blank")}>
+          <BsLinkedin size={25} />
+        </IconButton>
       </div>
       {showModal && <Modal text="error" />}
     </div>

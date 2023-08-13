@@ -5,7 +5,6 @@ const apiClientInstance = ApiClient.getInstance();
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    userId: '',
     auth: false
   },
   reducers: {
