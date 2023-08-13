@@ -1,10 +1,20 @@
+import "./SignUp.scss";
 import { useState, useEffect } from "react";
 import { Button } from "../../Components/UI/Button/Button";
 import { Input } from "../../Components/UI/Input/Input";
-import { INewUser, Categories, VoiceSample } from "../../ConstAndTypes/consts";
-import "./SignUp.scss";
+import {
+  INewUser,
+  Categories,
+  VoiceSample,
+  Voices,
+} from "../../ConstAndTypes/consts";
 import { SelectBox } from "../../Components/UI/SelectBox/SelectBox";
 import { ApiClient } from "../../Services/axios";
+import {
+  addErrorToId,
+  isValidEmail,
+  removeErrorFromId,
+} from "../../Utils/Utils";
 const apiClientInstance = ApiClient.getInstance();
 
 const newUserDefault: INewUser = {
@@ -36,13 +46,29 @@ export const SignUp = () => {
   const [chosenCategories, setChosenCategories] = useState<Categories[]>([]);
   const [stageIndex, setStageIndex] = useState<number>(0);
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
-  const [chosenVoiceSample, setChosenVoiceSample] = useState<string>();
+  const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
+
+  const validateEmail = () => {
+    let error = "";
+    const emailValid = isValidEmail(newUser.email);
+    if (!emailValid) {
+      addErrorToId("email");
+      error = "Invalid email";
+    } else {
+      removeErrorFromId("email");
+    }
+    if (error !== "") {
+      // setShowModal(true);
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     if (!voiceSamples) {
       getVoiceSamepls();
     }
-  }, []);
+  }, [voiceSamples]);
 
   const getVoiceSamepls = async () => {
     const res = await apiClientInstance.getVoiceSamples();
@@ -62,9 +88,10 @@ export const SignUp = () => {
   // const submitHandler = async (e: React.FormEvent) => {
   const submitHandler = async () => {
     // e.preventDefault();
-    // validate field
+    // validate fields
     console.log(newUser);
-    // const signUpRes = await apiClientInstance.signUp(newUser);
+    const signUpRes = await apiClientInstance.signUp(newUser);
+    if (signUpRes) console.log(signUpRes);
   };
 
   const onClickCategoryHandler = (category: Categories) => {
@@ -98,23 +125,25 @@ export const SignUp = () => {
         id="name"
         value={newUser.name}
         placeholder="First name"
-        style="underline"
+        inputStyle="underline"
         onChange={onChange}
       />
       <Input
         id="email"
         value={newUser.email}
         placeholder="Email"
-        style="underline"
+        inputStyle="underline"
         onChange={onChange}
+        onBlur={validateEmail}
       />
       <Input
         id="password"
         value={newUser.password}
         placeholder="Password"
-        style="underline"
+        inputStyle="underline"
         onChange={onChange}
         type="password"
+        note="At least 4 chars"
       />
     </div>
   );
@@ -151,8 +180,15 @@ export const SignUp = () => {
       {voiceSamples &&
         voiceSamples.length > 0 &&
         voiceSamples.map((voiceSample, index) => {
+          const active = chosenVoiceSample === voiceSample.name;
           return (
-            <div key={"VS-" + index} className="choose-voice-container">
+            <div
+              key={"VS-" + index}
+              className={`choose-voice-container ${active ? "active" : ""}`}
+              onClick={() => {
+                setChosenVoiceSample(voiceSample.name);
+              }}
+            >
               {voiceSample.name}
               <audio src={voiceSample.url} controls />
             </div>
@@ -166,6 +202,20 @@ export const SignUp = () => {
     categoriesContainer,
     voiceContainer,
   ];
+
+  const checkIfNextDisabled = () => {
+    if (stageIndex === 0) {
+      return !(
+        newUser.name.length > 2 &&
+        isValidEmail(newUser.email) &&
+        newUser.password.length >= 4
+      );
+    } else if (stageIndex === 1) {
+      return !(chosenCategories.length === 3);
+    } else if (stageIndex === 2) {
+      return !chosenVoiceSample;
+    }
+  };
 
   const stagesLen = signUpStagesArr.length;
 
@@ -186,56 +236,19 @@ export const SignUp = () => {
             <Button
               text={"Next"}
               onClick={() => changeIndexHandler("next")}
-              disabled={stageIndex === stagesLen - 1}
+              // disabled={stageIndex === stagesLen - 1 && checkIfNextDisabled()}
+              disabled={checkIfNextDisabled()}
             />
           ) : (
-            <Button text="Sign-up" type="outline" onClick={submitHandler} />
+            <Button
+              text="Sign-up"
+              type="outline"
+              onClick={submitHandler}
+              disabled={checkIfNextDisabled()}
+            />
           )}
         </div>
       </div>
-      {/* <form className="form-wrapper" onSubmit={submitHandler}>
-        <Input
-          id="name"
-          value={newUser.name}
-          placeholder="First name"
-          type="underline"
-          onChange={onChange}
-        />
-        <Input
-          id="email"
-          value={newUser.email}
-          placeholder="Email"
-          type="underline"
-          onChange={onChange}
-        />
-        <Input
-          id="password"
-          value={newUser.password}
-          placeholder="Password"
-          type="underline"
-          onChange={onChange}
-        />
-        Choose your top {numOfCategoriesToChoose} favorite categories:
-        <div className="categories-wrapper">
-          {categories.map((category, index) => {
-            const active = chosenCategories.includes(category);
-            const disabled =
-              !active && chosenCategories.length === numOfCategoriesToChoose;
-            return (
-              <SelectBox
-                key={`CAT-${index}`}
-                text={category}
-                active={active}
-                disabled={disabled}
-                onClick={() => {
-                  onClickCategoryHandler(category);
-                }}
-              />
-            );
-          })}
-        </div>
-        <Button text="Sign-up" type="outline" />
-      </form> */}
     </div>
   );
 };

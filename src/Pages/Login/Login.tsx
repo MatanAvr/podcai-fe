@@ -65,14 +65,14 @@ export const Login = () => {
             id="email"
             value={user.email}
             placeholder="Email"
-            style="underline"
+            inputStyle="underline"
             onChange={onChange}
           />
           <Input
             id="password"
             value={user.password}
             placeholder="Password"
-            style="underline"
+            inputStyle="underline"
             onChange={onChange}
           />
           <Button text="Login" type="outline" />

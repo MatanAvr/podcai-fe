@@ -9,10 +9,10 @@
   border: 1px solid white;
   width: max-content;
   padding: 5px;
-  &:hover {
-    cursor: pointer;
-    border-color: $secondry;
-  }
+  // &:hover {
+  //   cursor: pointer;
+  //   border-color: $secondry;
+  // }
 
   &.disabled {
     opacity: 0.6;

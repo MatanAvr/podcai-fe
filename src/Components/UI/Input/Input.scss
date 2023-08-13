@@ -45,6 +45,14 @@ input {
     }
   }
 
+  .input-note {
+    position: absolute;
+    bottom: 0px;
+    transform: translateY(100%);
+    font-size: 0.8rem;
+    padding-top: 5px;
+  }
+
   .toggle-show-password-button {
     &:hover {
       cursor: pointer;

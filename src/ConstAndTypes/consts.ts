@@ -14,7 +14,7 @@ export type Categories ='general' | 'world' | 'nation' | 'business' | 'technolog
  'entertainment' | 'sports' | 'science' | 'health'
 type Countries = "au"|"br"|"ca"|"cn"|"eg"|"fr"|"de"|"gr"|"hk"|"in"|"ie"|"il"|"it"|"jp"|"nl"|"no"|"pk"|"pe"|"ph"|"pt"|"ro"|"ru"|"sg"|"es"|"se"|"ch"|"tw"|"ua"|"gb"|"us"
 type Languages = "ar"|"zh"|"nl"|"en"|"fr"|"de"|"el"|"he"|"hi"|"it"|"ja"|"ml"|"mr"|"no"|"pt"|"ro"|"ru"|"es"|"sv"|"ta"|"te"|"uk"
-type Voices = 'Guy' | 'Aria'
+export type Voices = 'Guy' | 'Aria'
 
 // API  related
 export const BASE_URL:string = 'https://www.podcai.co/api'
@@ -35,7 +35,7 @@ export type getEpisodesResponse = {episodes:Episode[]}
 
 export const GET_VOICE_SAMPLES_URL = '/get_voice_samples/' 
 export type getVoiceSamplesResponse = {voice_samples:VoiceSample[]}
-export type VoiceSample = {name:string,url:string}
+export type VoiceSample = {name:Voices,url:string}
 
 export interface Episode {name:string, link: string, categories:Categories[], articles_data:ArticleData[] }
 

@@ -46,5 +46,11 @@
     display: flex;
     padding: 10px;
     gap: 20px;
+
+    .icon-button {
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 }
