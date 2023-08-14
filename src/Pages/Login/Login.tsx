@@ -5,9 +5,9 @@ import { loginRequest } from "../../ConstAndTypes/consts";
 import "./Login.scss";
 import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
-import { setAuth } from "../../Features/User/User";
-import { LoadingSpinner } from "../../Components/UI/LoadingSpinner/LoadingSpinner";
+import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { moveToPage } from "../../Features/Navigation/Navigation";
+import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -18,9 +18,7 @@ const defaultUser: loginRequest = {
 
 export const Login = () => {
   const [user, setUser] = useState<loginRequest>(defaultUser);
-  const [audioTracksSrc, setAudioTracksSrc] = useState<string[]>([]);
-  const [isSending, setIsSending] = useState<boolean>(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,32 +31,24 @@ export const Login = () => {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSending(true);
-    const res = await apiClientInstance.userLogin(user);
-    if (res.access_token) {
-      const token = res.access_token;
+    setIsLoading(true);
+    const loginRes = await apiClientInstance.userLogin(user);
+    if (loginRes.access_token) {
+      const token = loginRes.access_token;
+      const userToLogIn = loginRes;
+      dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
       dispatch(setAuth({ newMode: true, token }));
       dispatch(moveToPage("Home"));
     }
-    setIsSending(false);
+    setIsLoading(false);
   };
-
-  // const getPodcasts = async () => {
-  //   const res = await apiClientInstance.getPodcasts();
-  //   setAudioTracksSrc([...res.urls]);
-  // };
-
-  // const getEpisodes = async () => {
-  //   const res = await apiClientInstance.getEpisodes();
-  //   // setAudioTracksSrc([...res.urls]);
-  // };
 
   return (
     <div className="login-wrapper">
       <h1>Login</h1>
 
-      {isSending ? (
-        <LoadingSpinner />
+      {isLoading ? (
+        <DynamicLogo />
       ) : (
         <form className="form-wrapper" onSubmit={submitHandler}>
           <Input

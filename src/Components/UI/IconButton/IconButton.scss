@@ -1,6 +1,10 @@
 @import "../../../Styles/Styles.scss";
 
 .icon-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   &:hover {
     cursor: pointer;
   }
