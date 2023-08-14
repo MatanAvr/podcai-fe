@@ -3,7 +3,7 @@ import { BsTwitter } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFacebook } from "react-icons/bs";
 import { BsLinkedin } from "react-icons/bs";
-import { Input } from "../../Components/UI/Input/Input";
+// import { Input } from "../../Components/UI/Input/Input";
 import { Button } from "../../Components/UI/Button/Button";
 import React, { useState } from "react";
 import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
@@ -16,7 +16,7 @@ import {
 import { Modal } from "../../Components/UI/Modal/Modal";
 import { IconButton } from "../../Components/UI/IconButton/IconButton";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
+import { useAppDispatch } from "../../Hooks/Hooks";
 
 const twitterLink = "https://twitter.com/podcai";
 const facebookLink = "https://www.facebook.com/podcai.co?mibextid=LQQJ4d";
@@ -43,7 +43,7 @@ export const ComingSoon = () => {
   const [ok, setOk] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  const sunbsricbeFieldsArr: {
+  const subsricbeFieldsArr: {
     id: "firstname" | "lastname" | "email";
     placeholder: string;
   }[] = [
@@ -102,24 +102,6 @@ export const ComingSoon = () => {
         <div>powered by AI</div>
       </div>
 
-      {/* {!isSending && !ok && (
-        <form className="form-wrapper" onSubmit={onSubmitHandler}>
-          {sunbsricbeFieldsArr.map((field, index) => {
-            const key = field.id;
-            return (
-              <Input
-                key={"SB" + index}
-                id={field.id}
-                value={formData[key]}
-                onChange={onChangeHandler}
-                placeholder={field.placeholder}
-                inputStyle="underline"
-                onBlur={validateFields}
-              />
-            );
-          })}
-        </form>
-      )} */}
       <Button
         text="SignUp"
         type="outline"

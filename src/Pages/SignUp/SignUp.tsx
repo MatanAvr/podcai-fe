@@ -15,6 +15,11 @@ import {
   isValidEmail,
   removeErrorFromId,
 } from "../../Utils/Utils";
+import { useAppDispatch } from "../../Hooks/Hooks";
+import { moveToPage } from "../../Features/Navigation/Navigation";
+import { setAuth } from "../../Features/User/User";
+import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
+
 const apiClientInstance = ApiClient.getInstance();
 
 const newUserDefault: INewUser = {
@@ -47,6 +52,9 @@ export const SignUp = () => {
   const [stageIndex, setStageIndex] = useState<number>(0);
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const validateEmail = () => {
     let error = "";
@@ -85,13 +93,21 @@ export const SignUp = () => {
     });
   };
 
-  // const submitHandler = async (e: React.FormEvent) => {
-  const submitHandler = async () => {
-    // e.preventDefault();
+  const signupHandler = async () => {
+    setError("");
+    setIsLoading(true);
     // validate fields
-    console.log(newUser);
-    const signUpRes = await apiClientInstance.signUp(newUser);
-    if (signUpRes) console.log(signUpRes);
+    try {
+      const signUpRes = await apiClientInstance.signUp(newUser);
+      if (signUpRes.access_token) {
+        const token = signUpRes.access_token;
+        dispatch(setAuth({ newMode: true, token }));
+        dispatch(moveToPage("Home"));
+      }
+    } catch (err) {
+      setError("Sign up error, please try again!");
+    }
+    setIsLoading(false);
   };
 
   const onClickCategoryHandler = (category: Categories) => {
@@ -111,6 +127,7 @@ export const SignUp = () => {
   };
 
   const changeIndexHandler = (action: "prev" | "next") => {
+    setError("");
     if (action === "next" && stageIndex + 1 < signUpStagesArr.length) {
       setStageIndex((prev) => prev + 1);
     } else if (action === "prev" && stageIndex - 1 >= 0) {
@@ -222,33 +239,38 @@ export const SignUp = () => {
   return (
     <div className="sign-up-wrapper">
       <h1>Sign-Up</h1>
-      <div className="sign-up-container">
-        <div className="sign-up-pagination">{stageIndex}</div>
-        <div className="sign-up-content">{signUpStagesArr[stageIndex]}</div>
+      {isLoading ? (
+        <DynamicLogo />
+      ) : (
+        <div className="sign-up-container">
+          <div className="sign-up-pagination">{stageIndex}</div>
+          <div className="sign-up-content">{signUpStagesArr[stageIndex]}</div>
 
-        <div className="sign-up-buttons">
-          <Button
-            text={"Prev"}
-            onClick={() => changeIndexHandler("prev")}
-            disabled={stageIndex === 0}
-          />
-          {stageIndex !== stagesLen - 1 ? (
+          <div className="sign-up-buttons">
             <Button
-              text={"Next"}
-              onClick={() => changeIndexHandler("next")}
-              // disabled={stageIndex === stagesLen - 1 && checkIfNextDisabled()}
-              disabled={checkIfNextDisabled()}
+              text={"Prev"}
+              onClick={() => changeIndexHandler("prev")}
+              disabled={stageIndex === 0}
             />
-          ) : (
-            <Button
-              text="Sign-up"
-              type="outline"
-              onClick={submitHandler}
-              disabled={checkIfNextDisabled()}
-            />
-          )}
+            {error && <div className="error">{error}</div>}
+            {stageIndex !== stagesLen - 1 ? (
+              <Button
+                text={"Next"}
+                onClick={() => changeIndexHandler("next")}
+                // disabled={stageIndex === stagesLen - 1 && checkIfNextDisabled()}
+                disabled={checkIfNextDisabled()}
+              />
+            ) : (
+              <Button
+                text="Sign-up"
+                type="outline"
+                onClick={signupHandler}
+                disabled={checkIfNextDisabled()}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

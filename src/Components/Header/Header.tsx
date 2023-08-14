@@ -1,20 +1,21 @@
 import { Pages } from "../../ConstAndTypes/consts";
 import { Button } from "../UI/Button/Button";
 import "./Header.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setAuth } from "../../Features/User/User";
 import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
+import { IconButton } from "../UI/IconButton/IconButton";
+import { AiOutlineMenu } from "react-icons/ai";
+import { Manu } from "../UI/Manu/Manu";
 
-interface headerIprops {
-  // currentPage: Pages;
-  // changePageHandler: (newPage: Pages) => void;
-}
+// interface headerIprops {}
 
 const startBtnsArr: Pages[] = ["About", "Features", "Team"];
 const endBtnsArr: Pages[] = ["Login", "SignUp"];
 
-export const Header = ({}: headerIprops) => {
+export const Header = () => {
+  const [manuOpen, setManuOpen] = useState<boolean>(false);
   const isAuth = useAppSelector((state) => state.user.auth);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const dispatch = useAppDispatch();
@@ -30,24 +31,34 @@ export const Header = ({}: headerIprops) => {
     } else {
       dispatch(setAuth({ newMode: false, token: "" }));
     }
-  }, []);
+  }, [dispatch]);
+
+  const toggleManu = () => {
+    setManuOpen((prev) => !prev);
+  };
 
   return (
     <div className="header-wrapper">
       <div className="header-container">
         <div className="buttons-container">
+          {isAuth && (
+            <IconButton onClick={toggleManu}>
+              <AiOutlineMenu size={25} />
+            </IconButton>
+          )}
           <Button type="logo" onClick={() => changePageHandler("ComingSoon")} />
-          {startBtnsArr.map((btn, index) => {
-            const active = btn === currentPage ? true : false;
-            return (
-              <Button
-                key={`SBA-${index}`}
-                text={btn}
-                onClick={() => changePageHandler(btn)}
-                active={active}
-              />
-            );
-          })}
+          {!isAuth &&
+            startBtnsArr.map((btn, index) => {
+              const active = btn === currentPage ? true : false;
+              return (
+                <Button
+                  key={`SBA-${index}`}
+                  text={btn}
+                  onClick={() => changePageHandler(btn)}
+                  active={active}
+                />
+              );
+            })}
         </div>
 
         {isAuth && <div style={{ color: "green" }}>loggedIn</div>}
@@ -87,6 +98,8 @@ export const Header = ({}: headerIprops) => {
           )}
         </div>
       </div>
+      {/* {manuOpen && <Manu isOpen={manuOpen} />} */}
+      <Manu isOpen={manuOpen} />
     </div>
   );
 };

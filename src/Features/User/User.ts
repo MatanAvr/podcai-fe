@@ -1,28 +1,49 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { ApiClient } from '../../Services/axios';
+import { createSlice } from "@reduxjs/toolkit";
+import { ApiClient } from "../../Services/axios";
+import { loggedInUser } from "../../ConstAndTypes/consts";
+
 const apiClientInstance = ApiClient.getInstance();
 
+const emptyUser: loggedInUser = {
+  name: "",
+  email: "",
+  voice: "Aria",
+  categories: [],
+  country: "us",
+  language: "en",
+};
+
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
-    auth: false
+    loggedUser: emptyUser,
+    auth: false,
   },
   reducers: {
-    setAuth: (state,action:{payload:{newMode:boolean,token:string}}) => {
-      const {newMode,token} = action.payload
-      state.auth = newMode
-      if(newMode){
-        apiClientInstance.setToken(token)
-        localStorage.setItem('token',token)
-      }else{
-        apiClientInstance.removeToken()
-        localStorage.removeItem('token')
+    setLoggedUser: (
+      state,
+      action: { payload: { newLoggeduser: loggedInUser } }
+    ) => {
+      state.loggedUser = action.payload.newLoggeduser;
+    },
+    setAuth: (
+      state,
+      action: { payload: { newMode: boolean; token: string } }
+    ) => {
+      const { newMode, token } = action.payload;
+      state.auth = newMode;
+      if (newMode) {
+        apiClientInstance.setToken(token);
+        localStorage.setItem("token", token);
+      } else {
+        apiClientInstance.removeToken();
+        localStorage.removeItem("token");
       }
     },
-  }
-})
+  },
+});
 
 // Action creators are generated for each case reducer function
-export const { setAuth } = userSlice.actions
+export const { setAuth, setLoggedUser } = userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer;

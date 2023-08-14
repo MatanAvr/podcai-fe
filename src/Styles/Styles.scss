@@ -1,5 +1,10 @@
 $primary: #8c52ff;
 $secondry: #5ce1e6;
+$error-color: red;
+
+.error {
+  color: $error-color;
+}
 
 .form-wrapper {
   display: flex;

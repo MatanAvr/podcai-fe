@@ -1,0 +1,27 @@
+@import "../../../Styles/Styles.scss";
+
+.manu-wrapper {
+  position: absolute;
+  bottom: 0px;
+  transform: translateY(100%);
+  left: 0px;
+  display: flex;
+  height: 90vh;
+  width: 0px;
+  overflow: hidden;
+  transition: width 1s ease-in-out;
+  z-index: 2;
+  &.open {
+    width: 200px;
+  }
+  .manu-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    color: $primary;
+    background-color: white;
+    width: 100%;
+  }
+}
