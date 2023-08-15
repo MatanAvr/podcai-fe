@@ -103,7 +103,15 @@ export type loginResponse = {
 
 export const SIGNUP_URL = "/sign_up/";
 export interface signUpRequest extends INewUser {}
-export type signUpResponse = { access_token: string };
+export type signUpResponse = {
+  access_token: string;
+  name: string;
+  email: string;
+  categories: Categories[];
+  voice: Voices;
+  country: Countries;
+  language: Languages;
+};
 
 export const GET_PODCASTS_URL = "/user/get_podcasts/";
 export type getPodcastsResponse = { urls: string[] };
@@ -122,7 +130,7 @@ export interface Episode {
   articles_data: ArticleData[];
 }
 
-interface ArticleData {
+export interface ArticleData {
   title: string;
   description: string;
   url: string;

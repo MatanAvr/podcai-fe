@@ -12,6 +12,7 @@ interface inputProps {
   onBlur?: () => void;
   type?: "password" | "string";
   note?: string;
+  onClick?: () => void;
 }
 
 export const Input = ({
@@ -23,6 +24,7 @@ export const Input = ({
   type,
   onBlur,
   note,
+  onClick,
 }: inputProps) => {
   const [showPassword, setSHowPassword] = useState<boolean>(false);
 
@@ -42,6 +44,7 @@ export const Input = ({
         placeholder={placeholder}
         onBlur={onBlur}
         type={type === "password" && showPassword ? "string" : type}
+        onClick={onClick}
       />
       {type === "password" && (
         <div

@@ -1,19 +1,19 @@
-import { createSlice ,PayloadAction} from '@reduxjs/toolkit'
-import { Pages } from '../../ConstAndTypes/consts';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Pages } from "../../ConstAndTypes/consts";
 
 export const navigationSlice = createSlice({
-  name: 'navigation',
+  name: "navigation",
   initialState: {
-    currentPage:<Pages> 'Login',
+    currentPage: <Pages>"ComingSoon",
   },
   reducers: {
     moveToPage: (state, action: PayloadAction<Pages>) => {
-      state.currentPage = action.payload
-    }
-  }
-})
+      state.currentPage = action.payload;
+    },
+  },
+});
 
 // Action creators are generated for each case reducer function
-export const { moveToPage } = navigationSlice.actions
+export const { moveToPage } = navigationSlice.actions;
 
-export default navigationSlice.reducer
+export default navigationSlice.reducer;
