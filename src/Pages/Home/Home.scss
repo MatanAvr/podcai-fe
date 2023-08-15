@@ -1,20 +1,60 @@
 @import "../../../src/Styles/Styles.scss";
 
 .home-wrapper {
-  // border: 1px solid black;
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 80%;
+  height: 95%;
   max-height: 100%;
-  .episodes-wrapper {
+  gap: 20px;
+  h1 {
+    margin: unset;
+  }
+  .home-container {
     display: flex;
-    flex-direction: column;
-    margin-top: 5px;
-    padding: 5px;
-    // border: 1px solid red;
-    max-height: 80%;
-    overflow-y: overlay;
-    width: 98%;
-    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 80%;
+    gap: 20px;
+
+    .home-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+      flex: 1;
+      height: 100%;
+      border-radius: 20px;
+      background-color: rgba(white, 0.6);
+      color: black;
+      padding: 10px;
+      .col-title {
+        font-size: 1.4rem;
+      }
+      .episodes-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-top: 5px;
+        padding: 5px;
+        max-height: 100%;
+        overflow: hidden;
+        width: 100%;
+        flex: 1;
+        gap: 5px;
+      }
+      .articles-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-top: 5px;
+        padding: 5px;
+        height: 100%;
+        width: 98%;
+        flex: 1;
+        gap: 5px;
+        overflow-y: overlay;
+      }
+    }
   }
 }

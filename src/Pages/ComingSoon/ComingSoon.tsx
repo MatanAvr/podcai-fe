@@ -11,6 +11,7 @@ import { LoadingSpinner } from "../../Components/UI/LoadingSpinner/LoadingSpinne
 import {
   addErrorToId,
   isValidEmail,
+  openInNewWindow,
   removeErrorFromId,
 } from "../../Utils/Utils";
 import { Modal } from "../../Components/UI/Modal/Modal";
@@ -122,19 +123,19 @@ export const ComingSoon = () => {
       )}
 
       <div className="icons-wrapper">
-        <IconButton onClick={() => window.open(twitterLink, "_blank")}>
+        <IconButton onClick={() => openInNewWindow(twitterLink)}>
           <BsTwitter size={25} />
         </IconButton>
 
-        <IconButton onClick={() => window.open(instagramLink, "_blank")}>
+        <IconButton onClick={() => openInNewWindow(instagramLink)}>
           <BsInstagram size={25} />
         </IconButton>
 
-        <IconButton onClick={() => window.open(facebookLink, "_blank")}>
+        <IconButton onClick={() => openInNewWindow(facebookLink)}>
           <BsFacebook size={25} />
         </IconButton>
 
-        <IconButton onClick={() => window.open(linkedinLink, "_blank")}>
+        <IconButton onClick={() => openInNewWindow(linkedinLink)}>
           <BsLinkedin size={25} />
         </IconButton>
       </div>

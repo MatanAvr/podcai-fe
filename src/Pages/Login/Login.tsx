@@ -12,9 +12,13 @@ import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
 const apiClientInstance = ApiClient.getInstance();
 
 const defaultUser: loginRequest = {
-  email: "matan@test.com",
-  password: "1234",
+  email: "",
+  password: "",
 };
+// const defaultUser: loginRequest = {
+//   email: "matan@test.com",
+//   password: "1234",
+// };
 
 export const Login = () => {
   const [user, setUser] = useState<loginRequest>(defaultUser);

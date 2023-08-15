@@ -17,7 +17,7 @@ import {
 } from "../../Utils/Utils";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import { setAuth } from "../../Features/User/User";
+import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
 
 const apiClientInstance = ApiClient.getInstance();
@@ -101,6 +101,8 @@ export const SignUp = () => {
       const signUpRes = await apiClientInstance.signUp(newUser);
       if (signUpRes.access_token) {
         const token = signUpRes.access_token;
+        const userToLogIn = signUpRes;
+        dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
         dispatch(setAuth({ newMode: true, token }));
         dispatch(moveToPage("Home"));
       }
@@ -152,6 +154,9 @@ export const SignUp = () => {
         inputStyle="underline"
         onChange={onChange}
         onBlur={validateEmail}
+        onClick={() => {
+          removeErrorFromId("email");
+        }}
       />
       <Input
         id="password"
@@ -243,7 +248,7 @@ export const SignUp = () => {
         <DynamicLogo />
       ) : (
         <div className="sign-up-container">
-          <div className="sign-up-pagination">{stageIndex}</div>
+          {/* <div className="sign-up-pagination">{stageIndex}</div> */}
           <div className="sign-up-content">{signUpStagesArr[stageIndex]}</div>
 
           <div className="sign-up-buttons">
@@ -257,7 +262,6 @@ export const SignUp = () => {
               <Button
                 text={"Next"}
                 onClick={() => changeIndexHandler("next")}
-                // disabled={stageIndex === stagesLen - 1 && checkIfNextDisabled()}
                 disabled={checkIfNextDisabled()}
               />
             ) : (

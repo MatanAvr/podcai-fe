@@ -28,6 +28,7 @@ export const Header = () => {
     const token = localStorage.getItem("token");
     if (token) {
       dispatch(setAuth({ newMode: true, token }));
+      dispatch(moveToPage("Home"));
     } else {
       dispatch(setAuth({ newMode: false, token: "" }));
     }
@@ -61,7 +62,7 @@ export const Header = () => {
             })}
         </div>
 
-        {isAuth && <div style={{ color: "green" }}>loggedIn</div>}
+        {/* {isAuth && <div style={{ color: "green" }}>loggedIn</div>} */}
 
         <div className="buttons-container">
           {!isAuth &&
