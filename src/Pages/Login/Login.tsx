@@ -68,6 +68,7 @@ export const Login = () => {
             placeholder="Password"
             inputStyle="underline"
             onChange={onChange}
+            type="password"
           />
           <Button text="Login" type="outline" />
         </form>

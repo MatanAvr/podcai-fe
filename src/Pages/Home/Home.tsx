@@ -7,6 +7,11 @@ import { EpisodeContainer } from "../../Components/UI/EpisodeContainer/EpisodeCo
 import { LoadingSpinner } from "../../Components/UI/LoadingSpinner/LoadingSpinner";
 import { useAppSelector } from "../../Hooks/Hooks";
 import { ArticleContainer } from "../../Components/UI/ArticleContainer/ArticleContainer";
+import { isMobile } from "../../Utils/Utils";
+import { MdExpandLess, MdExpandMore } from "react-icons/md";
+import { IconButton } from "../../Components/UI/IconButton/IconButton";
+
+const mobile = isMobile();
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -16,6 +21,11 @@ export const Home = () => {
   const [todayEpisode, setTodayEpisode] = useState<Episode>();
   const [previousEpisodes, setPreviousEpisodes] = useState<Episode[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showAllArticles, showArticles] = useState<boolean>(false);
+
+  const toggleShowArticles = () => {
+    showArticles((prev) => !prev);
+  };
 
   const getEpisodes = async () => {
     setIsLoading(true);
@@ -28,7 +38,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="home-wrapper">
+    <div className={`home-wrapper ${mobile ? "mobile" : ""}`}>
       <h1>Hello {loggedUser.name}!</h1>
       <Button
         key={"get-episodes"}
@@ -36,9 +46,11 @@ export const Home = () => {
         type="outline"
         onClick={getEpisodes}
       />
-      <div className="home-container">
+      <div className={`home-container ${mobile ? "mobile" : ""}`}>
         <div className="home-col">
-          <div className="col-title">Today's podcast:</div>
+          <div className="col-title">
+            <b>Today's podcast:</b>
+          </div>
 
           <div className="episodes-wrapper">
             {isLoading ? (
@@ -48,8 +60,22 @@ export const Home = () => {
                 {todayEpisode ? (
                   <>
                     <EpisodeContainer key={"TP"} episode={todayEpisode} />
-                    <u>Source articles</u>
-                    <div className="articles-wrapper">
+                    <div className="source-articles-wrapper">
+                      <u>Source articles</u>
+                      <IconButton onClick={toggleShowArticles}>
+                        {showAllArticles ? (
+                          <MdExpandLess size={25} />
+                        ) : (
+                          <MdExpandMore size={25} />
+                        )}
+                      </IconButton>
+                    </div>
+
+                    <div
+                      className={`articles-wrapper ${
+                        showAllArticles ? "show" : ""
+                      }`}
+                    >
                       {todayEpisode.articles_data.map((article, index) => {
                         return (
                           <ArticleContainer
@@ -68,7 +94,9 @@ export const Home = () => {
           </div>
         </div>
         <div className="home-col">
-          <div className="col-title">Previous podcasts:</div>
+          <div className="col-title">
+            <b>Previous podcasts:</b>
+          </div>
           <div className="episodes-wrapper">
             {isLoading ? (
               <LoadingSpinner />
@@ -85,7 +113,7 @@ export const Home = () => {
           </div>
         </div>
 
-        <div className="home-col"></div>
+        {/* <div className="home-col"></div> */}
       </div>
     </div>
   );

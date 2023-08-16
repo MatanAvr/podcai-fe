@@ -7,6 +7,22 @@
   height: 95%;
   max-height: 100%;
   gap: 20px;
+
+  &.mobile {
+    width: 90%;
+    height: 100%;
+    overflow: auto;
+
+    .home-container {
+      flex-direction: column;
+      justify-content: flex-start;
+      height: 90%;
+
+      .home-col {
+        width: 95%;
+      }
+    }
+  }
   h1 {
     margin: unset;
   }
@@ -44,6 +60,11 @@
         flex: 1;
         gap: 5px;
       }
+      .source-articles-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
       .articles-wrapper {
         display: flex;
         flex-direction: column;
@@ -53,7 +74,14 @@
         width: 98%;
         flex: 1;
         gap: 5px;
-        overflow-y: overlay;
+        height: 0px;
+        overflow: hidden;
+        display: none;
+        &.show {
+          height: auto;
+          overflow-y: overlay;
+          display: flex;
+        }
       }
     }
   }
