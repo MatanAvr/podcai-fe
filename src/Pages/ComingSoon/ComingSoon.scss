@@ -18,21 +18,14 @@
     .title {
       align-items: center;
       display: flex;
-      font-size: 16vh;
-      margin-bottom: 40px;
+      font-size: clamp(1rem, 10vw, 8rem);
+      margin: 20px 0;
       .colored {
         color: #90fbff;
+        margin-inline-end: 10px;
       }
     }
   }
-
-  // .subscribe-wrapper {
-  //   display: flex;
-  //   flex-direction: column;
-  //   padding: 20px;
-  //   border-radius: 20px;
-  //   gap: 20px;
-  // }
 
   .res-container {
     display: flex;

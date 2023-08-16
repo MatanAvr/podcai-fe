@@ -16,6 +16,9 @@
     justify-content: space-between;
     width: 100%;
     padding: 0 20px;
+    &.mobile {
+      flex-wrap: wrap;
+    }
 
     .buttons-container {
       display: flex;

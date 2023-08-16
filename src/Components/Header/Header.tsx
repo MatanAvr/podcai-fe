@@ -8,11 +8,13 @@ import { moveToPage } from "../../Features/Navigation/Navigation";
 import { IconButton } from "../UI/IconButton/IconButton";
 import { AiOutlineMenu } from "react-icons/ai";
 import { Manu } from "../UI/Manu/Manu";
+import { isMobile } from "../../Utils/Utils";
 
 // interface headerIprops {}
 
 const startBtnsArr: Pages[] = ["About", "Features", "Team"];
 const endBtnsArr: Pages[] = ["Login", "SignUp"];
+const mobile = isMobile();
 
 export const Header = () => {
   const [manuOpen, setManuOpen] = useState<boolean>(false);
@@ -39,8 +41,8 @@ export const Header = () => {
   };
 
   return (
-    <div className="header-wrapper">
-      <div className="header-container">
+    <div className={`header-wrapper`}>
+      <div className={`header-container ${mobile ? "mobile" : ""}`}>
         <div className="buttons-container">
           {isAuth && (
             <IconButton onClick={toggleManu}>
@@ -62,7 +64,11 @@ export const Header = () => {
             })}
         </div>
 
-        {/* {isAuth && <div style={{ color: "green" }}>loggedIn</div>} */}
+        {/* {
+          <div style={{ color: "green" }}>
+            {mobile ? "mobile" : "not-mobile"}
+          </div>
+        } */}
 
         <div className="buttons-container">
           {!isAuth &&
@@ -83,7 +89,6 @@ export const Header = () => {
                 key={`LHB-${0}`}
                 text={"Home"}
                 onClick={() => changePageHandler("Home")}
-                // active={active}
               />
               <Button
                 key={`LHB-${1}`}
@@ -93,13 +98,11 @@ export const Header = () => {
                   changePageHandler("Login");
                   console.log("Logout");
                 }}
-                // active={active}
               />
             </>
           )}
         </div>
       </div>
-      {/* {manuOpen && <Manu isOpen={manuOpen} />} */}
       <Manu isOpen={manuOpen} />
     </div>
   );
