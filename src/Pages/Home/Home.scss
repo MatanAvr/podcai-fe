@@ -12,6 +12,7 @@
     width: 90%;
     height: 100%;
     overflow: auto;
+    padding: 5px;
 
     .home-container {
       flex-direction: column;
@@ -38,12 +39,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       border: 1px solid white;
       flex: 1;
       height: 100%;
       border-radius: 20px;
-      background-color: rgba(white, 0.6);
+      background-color: rgba(white, 0.8);
       color: black;
       padding: 10px;
       .col-title {
@@ -55,7 +56,7 @@
         margin-top: 5px;
         padding: 5px;
         max-height: 100%;
-        overflow: hidden;
+        overflow: auto;
         width: 100%;
         flex: 1;
         gap: 5px;
@@ -71,7 +72,7 @@
         margin-top: 5px;
         padding: 5px;
         height: 100%;
-        width: 98%;
+        width: 95%;
         flex: 1;
         gap: 5px;
         height: 0px;
@@ -82,6 +83,15 @@
           overflow-y: overlay;
           display: flex;
         }
+      }
+      .categories-wrapper {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 95%;
+        height: max-content;
+        gap: 15px;
       }
     }
   }

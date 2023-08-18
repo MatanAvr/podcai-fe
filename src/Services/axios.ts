@@ -1,16 +1,20 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import {
+  USER_AUTH_URL,
   BASE_URL,
   GET_EPISODES_URL,
   GET_PODCASTS_URL,
   GET_VOICE_SAMPLES_URL,
-  LOGIN_URL,
+  USER_LOGIN_URL,
   SIGNUP_URL,
   getEpisodesResponse,
   getPodcastsResponse,
   getVoiceSamplesResponse,
   signUpRequest,
   signUpResponse,
+  updateUserResponse,
+  updateUserRequest,
+  USER_UPDATE_URL,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -60,10 +64,35 @@ export class ApiClient {
   async userLogin(loginReq: loginRequest): Promise<loginResponse> {
     try {
       const response: AxiosResponse<loginResponse> =
-        await this.axiosInstance.post(LOGIN_URL, loginReq);
+        await this.axiosInstance.post(USER_LOGIN_URL, loginReq);
       return response.data;
     } catch (error) {
       console.log("userLogin, error:", error);
+      throw error;
+    }
+  }
+
+  //  CHECK
+  async userAuth(): Promise<loginResponse> {
+    try {
+      const response: AxiosResponse<loginResponse> =
+        await this.axiosInstance.get(USER_AUTH_URL);
+      return response.data;
+    } catch (error) {
+      console.log("auth, error:", error);
+      throw error;
+    }
+  }
+
+  async userUpdate(
+    userToUpdate: updateUserRequest
+  ): Promise<updateUserResponse> {
+    try {
+      const response: AxiosResponse<updateUserResponse> =
+        await this.axiosInstance.post(USER_UPDATE_URL, userToUpdate);
+      return response.data;
+    } catch (error) {
+      console.log("userUpdate, error:", error);
       throw error;
     }
   }

@@ -15,7 +15,7 @@ export const Manu = ({ isOpen }: manuProps) => {
         <IconButton onClick={() => {}}>
           <>
             <BiCategory size={25} />
-            categories
+            Categories
           </>
         </IconButton>
 

@@ -12,10 +12,12 @@ export const EpisodeContainer = ({ episode }: episodeProps) => {
       <div className="episode-container">
         <div className="episode-name"> {episode.name}</div>
 
-        <audio src={episode.link} controls />
+        <audio src={episode.link} controls controlsList="nodownload" />
         <div className="episode-categories">
           {episode.categories.map((category, index) => {
-            return <Chip key={"CatChip" + index} text={category} />;
+            return (
+              <Chip key={"CatChip" + index} text={category} size="small" />
+            );
           })}
         </div>
       </div>

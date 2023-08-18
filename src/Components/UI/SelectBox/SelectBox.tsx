@@ -1,3 +1,4 @@
+import _ from "lodash";
 import "./SelectBox.scss";
 
 interface selectBoxProps {
@@ -20,7 +21,7 @@ export const SelectBox = ({
       }`}
       onClick={onClick}
     >
-      <div className="select-box-container">{text}</div>
+      <div className="select-box-container">{_.capitalize(text)}</div>
     </div>
   );
 };
