@@ -4,7 +4,7 @@ import { Pages } from "../../ConstAndTypes/consts";
 export const navigationSlice = createSlice({
   name: "navigation",
   initialState: {
-    currentPage: <Pages>"ComingSoon",
+    currentPage: "ComingSoon" as Pages,
   },
   reducers: {
     moveToPage: (state, action: PayloadAction<Pages>) => {

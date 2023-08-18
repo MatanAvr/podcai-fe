@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export interface INewUser {
   name: string;
   email: string;
@@ -89,7 +91,8 @@ export type Voices = "Guy" | "Aria";
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";
 
-export const LOGIN_URL = "/user/login/";
+export const USER_LOGIN_URL = "/user/login/";
+export const USER_AUTH_URL = "/user/auth/";
 export type loginRequest = { email: string; password: string };
 export type loginResponse = {
   access_token: string;
@@ -111,6 +114,19 @@ export type signUpResponse = {
   voice: Voices;
   country: Countries;
   language: Languages;
+};
+
+export const USER_UPDATE_URL = "/user/update_user/";
+export type updateUserRequest = {
+  name: string;
+  num_of_articles: number;
+  categories: Categories[];
+  country: Countries;
+  language: Languages;
+  voice: Voices;
+};
+export type updateUserResponse = {
+  is_success: boolean;
 };
 
 export const GET_PODCASTS_URL = "/user/get_podcasts/";

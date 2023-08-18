@@ -212,7 +212,7 @@ export const SignUp = () => {
               }}
             >
               {voiceSample.name}
-              <audio src={voiceSample.url} controls />
+              <audio src={voiceSample.url} controls controlsList="nodownload" />
             </div>
           );
         })}

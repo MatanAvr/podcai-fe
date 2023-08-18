@@ -6,13 +6,10 @@
   justify-content: center;
   background-color: rgba(white, 0.1);
   border-radius: 20px;
-  border: 1px solid white;
+  border: 1px solid $primary;
+  // border: 1px solid white;
   width: max-content;
   padding: 5px;
-  // &:hover {
-  //   cursor: pointer;
-  //   border-color: $secondry;
-  // }
 
   &.disabled {
     opacity: 0.6;
@@ -25,6 +22,10 @@
   &.active {
     background-color: $secondry;
     color: black;
+  }
+
+  &.small {
+    font-size: 0.8rem;
   }
   .chip-container {
   }
