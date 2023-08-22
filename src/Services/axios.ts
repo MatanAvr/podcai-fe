@@ -15,6 +15,12 @@ import {
   updateUserResponse,
   updateUserRequest,
   USER_UPDATE_URL,
+  sendOtpRequest,
+  sendOtpResponse,
+  SEND_OTP_URL,
+  verifyOtpRequest,
+  verifyOtpResponse,
+  VERIFY_OTP_URL,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -68,11 +74,11 @@ export class ApiClient {
       return response.data;
     } catch (error) {
       console.log("userLogin, error:", error);
+      this.handleAxiosError(error as AxiosError);
       throw error;
     }
   }
 
-  //  CHECK
   async userAuth(): Promise<loginResponse> {
     try {
       const response: AxiosResponse<loginResponse> =
@@ -144,6 +150,28 @@ export class ApiClient {
     } catch (error) {
       console.warn(`getVoiceSamples error`);
       return { voice_samples: [] };
+    }
+  }
+
+  async sendOtp(sendOtpReq: sendOtpRequest): Promise<sendOtpResponse> {
+    try {
+      const response: AxiosResponse<sendOtpResponse> =
+        await this.axiosInstance.post(SEND_OTP_URL, sendOtpReq);
+      return response.data;
+    } catch (error) {
+      console.log("sendOtp, error:", error);
+      throw error;
+    }
+  }
+
+  async verifyOtp(verifyOtpReq: verifyOtpRequest): Promise<verifyOtpResponse> {
+    try {
+      const response: AxiosResponse<verifyOtpResponse> =
+        await this.axiosInstance.post(VERIFY_OTP_URL, verifyOtpReq);
+      return response.data;
+    } catch (error) {
+      console.log("verifyOtp, error:", error);
+      throw error;
     }
   }
 }

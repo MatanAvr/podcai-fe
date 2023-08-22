@@ -1,13 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit'
-import UserReducer from '../Features/User/User'
-import navigationReducer from '../Features/Navigation/Navigation'
+import { configureStore } from "@reduxjs/toolkit";
+import UserReducer from "../Features/User/User";
+import navigationReducer from "../Features/Navigation/Navigation";
+import styleReducer from "../Features/Style/Style";
 
 export const store = configureStore({
   reducer: {
     user: UserReducer,
-    navigation:navigationReducer
-  }
-})
+    navigation: navigationReducer,
+    style: styleReducer,
+  },
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export interface INewUser {
   name: string;
   email: string;
@@ -9,6 +7,7 @@ export interface INewUser {
   categories: Categories[];
   country: Countries;
   language: Languages;
+  should_send_episode_email: boolean;
 }
 
 export type loggedInUser = Omit<INewUser, "num_of_articles" | "password">;
@@ -21,6 +20,7 @@ export type Pages =
   | "Login"
   | "SignUp"
   | "Home";
+
 export type Categories =
   | "general"
   | "world"
@@ -94,7 +94,7 @@ export const BASE_URL: string = "https://www.podcai.co/api";
 export const USER_LOGIN_URL = "/user/login/";
 export const USER_AUTH_URL = "/user/auth/";
 export type loginRequest = { email: string; password: string };
-export type loginResponse = {
+export interface loginResponse {
   access_token: string;
   name: string;
   email: string;
@@ -102,20 +102,12 @@ export type loginResponse = {
   voice: Voices;
   country: Countries;
   language: Languages;
-};
+  should_send_episode_email: boolean;
+}
 
 export const SIGNUP_URL = "/sign_up/";
 export interface signUpRequest extends INewUser {}
-export type signUpResponse = {
-  access_token: string;
-  name: string;
-  email: string;
-  categories: Categories[];
-  voice: Voices;
-  country: Countries;
-  language: Languages;
-};
-
+export interface signUpResponse extends loginResponse {}
 export const USER_UPDATE_URL = "/user/update_user/";
 export type updateUserRequest = {
   name: string;
@@ -155,3 +147,28 @@ export interface ArticleData {
   source_name: string;
   source_url: string;
 }
+
+type sendMethods = "EMAIL";
+
+export const SEND_OTP_URL = "/send_otp/";
+export type sendOtpRequest = {
+  name: string;
+  send_to: string;
+  method: sendMethods;
+};
+export type sendOtpResponse = {
+  is_success: boolean;
+};
+
+export const VERIFY_OTP_URL = "/verify_otp/";
+export type verifyOtpRequest = {
+  send_to: string;
+  otp: string;
+};
+export type verifyOtpResponse = {
+  is_success: boolean;
+};
+
+export const MIN_NAME_LENGTH = 2;
+export const OTP_LENGTH = 6;
+export const MIN_PASS_LENGTH = 4;

@@ -11,6 +11,7 @@ const emptyUser: loggedInUser = {
   categories: [],
   country: "us",
   language: "en",
+  should_send_episode_email: false,
 };
 
 export const userSlice = createSlice({

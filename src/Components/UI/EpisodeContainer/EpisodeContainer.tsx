@@ -1,6 +1,7 @@
+import { Box, Card, Chip } from "@mui/material";
 import { Episode } from "../../../ConstAndTypes/consts";
-import { Chip } from "../Chip/Chip";
 import "./EpisodeContainer.scss";
+import _ from "lodash";
 
 interface episodeProps {
   episode: Episode;
@@ -8,19 +9,33 @@ interface episodeProps {
 
 export const EpisodeContainer = ({ episode }: episodeProps) => {
   return (
-    <div className={`episode-wrapper`}>
-      <div className="episode-container">
-        <div className="episode-name"> {episode.name}</div>
+    <Card sx={{ p: 1, m: 1 }}>
+      <div>{episode.name}</div>
 
-        <audio src={episode.link} controls controlsList="nodownload" />
-        <div className="episode-categories">
-          {episode.categories.map((category, index) => {
-            return (
-              <Chip key={"CatChip" + index} text={category} size="small" />
-            );
-          })}
-        </div>
-      </div>
-    </div>
+      <audio
+        className="audio-track"
+        src={episode.link}
+        controls
+        controlsList="nodownload"
+      />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignContent: "center",
+          justifyContent: "center",
+        }}
+      >
+        {episode.categories.map((category, index) => (
+          <Chip
+            key={"CatChip" + index}
+            label={_.capitalize(category)}
+            size="small"
+            sx={{ mx: 0.5 }}
+            variant="outlined"
+          />
+        ))}
+      </Box>
+    </Card>
   );
 };
