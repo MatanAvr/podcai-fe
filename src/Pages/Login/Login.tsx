@@ -86,7 +86,7 @@ export const Login = () => {
       }}
       onSubmit={loginHandler}
     >
-      <Typography variant="h4" component="div">
+      <Typography variant="h4" component="div" sx={{ alignSelf: "center" }}>
         Login
       </Typography>
 
