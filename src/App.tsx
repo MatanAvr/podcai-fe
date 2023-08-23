@@ -12,6 +12,17 @@ const defaultTheme = createTheme({
       textTransform: "none",
     },
   },
+
+  palette: {
+    text: {
+      primary: "rgba(255,255,255,0.87)",
+      secondary: "rgba(255,255,255,0.87)",
+    },
+    background: {
+      default: "linear-gradient(125deg, #8c52ff, #5ce1e6)",
+      paper: "linear-gradient(125deg, #8c52ff, #5ce1e6)",
+    },
+  },
 });
 
 const darkTheme = createTheme({

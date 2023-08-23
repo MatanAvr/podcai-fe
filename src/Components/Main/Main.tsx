@@ -22,7 +22,7 @@ export const Main = ({ currentPage }: mainIprops) => {
         {currentPage === "Features" && <Features />}
         {currentPage === "Team" && <Team />}
         {currentPage === "Login" && <Login />}
-        {currentPage === "SignUp" && <SignUpNew />}
+        {currentPage === "Sign up" && <SignUpNew />}
         {currentPage === "Home" && <Home />}
       </div>
     </Paper>

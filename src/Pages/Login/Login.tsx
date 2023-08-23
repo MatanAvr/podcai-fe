@@ -5,8 +5,10 @@ import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import { Box, TextField, Typography } from "@mui/material";
+import { Alert, Box, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { isValidEmail } from "../../Utils/Utils";
+import { isAxiosError } from "axios";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -18,6 +20,7 @@ const defaultUser: loginRequest = {
 export const Login = () => {
   const [user, setUser] = useState<loginRequest>(defaultUser);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [emailErr, setEmailErr] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   const dispatch = useAppDispatch();
@@ -30,7 +33,8 @@ export const Login = () => {
     });
   };
 
-  const submitHandler = async (e: React.FormEvent) => {
+  const loginHandler = async (e: React.FormEvent) => {
+    //validate field
     setIsLoading(true);
     e.preventDefault();
     setErrorMsg("");
@@ -43,10 +47,33 @@ export const Login = () => {
         dispatch(setAuth({ newMode: true, token }));
         dispatch(moveToPage("Home"));
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (typeof error.response?.data.detail === "string") {
+          setErrorMsg(error.response?.data.detail);
+        } else {
+          setErrorMsg("General error");
+        }
+      } else {
+        setErrorMsg("General error");
+      }
     }
     setIsLoading(false);
+  };
+
+  const validateEmail = () => {
+    let error = "";
+    const emailValid = isValidEmail(user.email);
+    if (!emailValid) {
+      error = "Invalid email";
+      setEmailErr(error);
+    } else {
+    }
+    if (error !== "") {
+      return false;
+    }
+    setEmailErr(error);
+    return true;
   };
 
   return (
@@ -57,17 +84,21 @@ export const Login = () => {
         display: "flex",
         flexDirection: "column",
       }}
-      onSubmit={submitHandler}
+      onSubmit={loginHandler}
     >
       <Typography variant="h4" component="div">
         Login
       </Typography>
+
       <TextField
         id="email"
         label="Email"
         variant="standard"
         onChange={onChange}
+        onBlur={validateEmail}
         value={user.email}
+        error={emailErr.length > 0 ? true : false}
+        helperText={emailErr}
       />
       <TextField
         id="password"
@@ -79,12 +110,17 @@ export const Login = () => {
       />
       <LoadingButton
         loading={isLoading}
-        variant="outlined"
-        onClick={submitHandler}
+        variant="contained"
+        onClick={loginHandler}
+        // disabled={!(isValidEmail(user.email) && user.password.length > 3)}
       >
-        {errorMsg && errorMsg}
         Login
       </LoadingButton>
+      {errorMsg && (
+        <Alert sx={{ my: 1 }} severity="error">
+          {errorMsg}
+        </Alert>
+      )}
     </Box>
   );
 };

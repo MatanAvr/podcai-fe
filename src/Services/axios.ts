@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 import {
   USER_AUTH_URL,
   BASE_URL,
@@ -53,28 +53,12 @@ export class ApiClient {
     delete this.axiosInstance.defaults.headers.common["Authorization"];
   }
 
-  handleAxiosError(error: AxiosError) {
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      console.log("Response Status:", error.response.status);
-      console.log("Response Data:", error.response.data);
-    } else if (error.request) {
-      // The request was made but no response was received
-      console.log("Request made but no response received");
-    } else {
-      // Something happened in setting up the request that triggered an error
-      console.log("Error:", error.message);
-    }
-  }
-
   async userLogin(loginReq: loginRequest): Promise<loginResponse> {
     try {
       const response: AxiosResponse<loginResponse> =
         await this.axiosInstance.post(USER_LOGIN_URL, loginReq);
       return response.data;
     } catch (error) {
-      console.log("userLogin, error:", error);
-      this.handleAxiosError(error as AxiosError);
       throw error;
     }
   }
@@ -114,7 +98,6 @@ export class ApiClient {
       }
       return response.data;
     } catch (error) {
-      this.handleAxiosError(error as AxiosError);
       console.error(error);
       throw error;
     }

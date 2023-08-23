@@ -6,6 +6,7 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import {
+  Alert,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -34,6 +35,7 @@ import _ from "lodash";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import { setLoggedUser, setAuth } from "../../Features/User/User";
+import { isAxiosError } from "axios";
 
 const apiClientInstance = ApiClient.getInstance();
 const numOfCategoriesToChoose = 3;
@@ -50,7 +52,7 @@ const newUserDefault: INewUser = {
   should_send_episode_email: true,
 };
 
-const steps = ["Details", "Verify email", "Sign-up!"];
+const steps = ["Details", "Verify email", "Sign up!"];
 const onlyNumbersRegex = /^[0-9]+$/;
 const categories: Categories[] = [
   "general",
@@ -69,6 +71,7 @@ export const SignUpNew = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [skipped, setSkipped] = useState(new Set<number>());
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [emailErr, setEmailErr] = useState<string>("");
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
   const [chosenCategories, setChosenCategories] = useState<Categories[]>([]);
@@ -94,13 +97,13 @@ export const SignUpNew = () => {
     const emailValid = isValidEmail(newUser.email);
     if (!emailValid) {
       error = "Invalid email";
-      setErrorMsg(error);
+      setEmailErr(error);
     } else {
     }
     if (error !== "") {
       return false;
     }
-    setErrorMsg(error);
+    setEmailErr(error);
     return true;
   };
 
@@ -121,6 +124,7 @@ export const SignUpNew = () => {
   };
 
   const handleNext = () => {
+    setErrorMsg("");
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -171,6 +175,9 @@ export const SignUpNew = () => {
         "& .MuiTextField-root": { mb: 2, width: "auto" },
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
       }}
     >
       <TextField
@@ -187,8 +194,8 @@ export const SignUpNew = () => {
         onChange={onChange}
         value={newUser.email}
         onBlur={validateEmail}
-        error={errorMsg.length > 0 ? true : false}
-        helperText={errorMsg}
+        error={emailErr.length > 0 ? true : false}
+        helperText={emailErr}
       />
       <TextField
         id="password"
@@ -204,10 +211,10 @@ export const SignUpNew = () => {
 
   const verifyOtpWrapper = (
     <Box>
-      <div>Enter the one time password</div>
+      <div>Enter the confirmation code</div>
       <TextField
         id="otp"
-        label="Otp"
+        // label="Otp"
         variant="standard"
         onChange={(e) => changeOtpHandler(e)}
         value={otp}
@@ -226,12 +233,18 @@ export const SignUpNew = () => {
       };
       const sendOtpRes = await apiClientInstance.sendOtp(sendOtpReqObj);
       if (sendOtpRes.is_success) {
-        console.log("send succses");
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
-    } catch (err) {
-      console.log(err);
-      setErrorMsg(err as string);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (typeof error.response?.data.detail === "string") {
+          setErrorMsg(error.response?.data.detail);
+        } else {
+          setErrorMsg("General error");
+        }
+      } else {
+        setErrorMsg("General error");
+      }
     }
     setLoading(false);
   };
@@ -245,11 +258,18 @@ export const SignUpNew = () => {
       };
       const verifyOtpRes = await apiClientInstance.verifyOtp(verifyOtpReqObj);
       if (verifyOtpRes.is_success) {
-        console.log("verified");
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (typeof error.response?.data.detail === "string") {
+          setErrorMsg(error.response?.data.detail);
+        } else {
+          setErrorMsg("General error");
+        }
+      } else {
+        setErrorMsg("General error");
+      }
     }
     setLoading(false);
   };
@@ -282,7 +302,7 @@ export const SignUpNew = () => {
         </div>
         <Grid
           container
-          spacing={{ xs: 2, md: 3 }}
+          spacing={{ xs: 1, md: 1 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
           {categories.map((category, index) => {
@@ -306,42 +326,42 @@ export const SignUpNew = () => {
           })}
         </Grid>
 
-        <div>
-          <FormControl>
-            <u>Voice options:</u>
-            <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue={chosenVoiceSample}
-              name="radio-buttons-group"
-              value={chosenVoiceSample}
-              onChange={handleVoiceChange}
-            >
-              {voiceSamples &&
-                voiceSamples.length > 0 &&
-                voiceSamples.map((voiceSample, index) => {
-                  return (
-                    <div
-                      key={"div" + index}
-                      style={{ display: "flex", alignContent: "center" }}
-                    >
-                      <FormControlLabel
-                        value={voiceSample.name}
-                        control={<Radio />}
-                        label={voiceSample.name}
-                      />
-                      <audio
-                        src={voiceSample.url}
-                        controls
-                        controlsList="nodownload"
-                      />
-                    </div>
-                  );
-                })}
-            </RadioGroup>
-          </FormControl>
-        </div>
-        <Box>
+        <FormControl sx={{ my: 1 }}>
+          <u>Voice options:</u>
+          <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue={chosenVoiceSample}
+            name="radio-buttons-group"
+            value={chosenVoiceSample}
+            onChange={handleVoiceChange}
+          >
+            {voiceSamples &&
+              voiceSamples.length > 0 &&
+              voiceSamples.map((voiceSample, index) => {
+                return (
+                  <div
+                    key={"div" + index}
+                    style={{ display: "flex", alignContent: "center" }}
+                  >
+                    <FormControlLabel
+                      value={voiceSample.name}
+                      control={<Radio />}
+                      label={voiceSample.name}
+                      sx={{ my: 1 }}
+                    />
+                    <audio
+                      src={voiceSample.url}
+                      controls
+                      controlsList="nodownload"
+                    />
+                  </div>
+                );
+              })}
+          </RadioGroup>
+        </FormControl>
+
+        <Box sx={{ my: 1 }}>
           <FormControlLabel
             control={
               <Checkbox
@@ -350,7 +370,7 @@ export const SignUpNew = () => {
                 onClick={() => setDailyNotification((prev) => !prev)}
               />
             }
-            label="Send me an email when my podcai us ready!"
+            label="Send me an email when my podcai is ready!"
           />
         </Box>
       </div>
@@ -387,7 +407,7 @@ export const SignUpNew = () => {
     } else if (activeStep === 1) {
       return !(otp?.length === OTP_LENGTH);
     } else if (activeStep === 2) {
-      return !(chosenCategories.length === 3);
+      return !(chosenCategories.length === 3 && chosenVoiceSample !== "");
     }
   };
 
@@ -414,8 +434,16 @@ export const SignUpNew = () => {
         dispatch(setAuth({ newMode: true, token }));
         dispatch(moveToPage("Home"));
       }
-    } catch (err) {
-      setErrorMsg("Sign up error, please try again!");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (typeof error.response?.data.detail === "string") {
+          setErrorMsg(error.response?.data.detail);
+        } else {
+          setErrorMsg("General error");
+        }
+      } else {
+        setErrorMsg("General error");
+      }
     }
     setLoading(false);
   };
@@ -462,19 +490,13 @@ export const SignUpNew = () => {
               justifyContent: "center",
               mt: 2,
               mb: 1,
-              width: "80%",
+              width: "100%",
               height: "80%",
             }}
           >
             {contentArr[activeStep]}
           </Box>
           {/* //--------------------------------- */}
-          <div
-            className="error"
-            style={{ display: "flex", width: "100%", justifyContent: "center" }}
-          >
-            {errorMsg}
-          </div>
 
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
@@ -482,13 +504,19 @@ export const SignUpNew = () => {
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
+              variant="contained"
             >
               Back
             </Button>
 
             <Box sx={{ flex: "1 1 auto" }} />
             {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+              <Button
+                color="inherit"
+                onClick={handleSkip}
+                sx={{ mr: 1 }}
+                variant="contained"
+              >
                 Skip
               </Button>
             )}
@@ -497,6 +525,7 @@ export const SignUpNew = () => {
               onClick={handleNext}
               disabled={checkIfNextDisabled()}
               loading={loading}
+              variant="contained"
             >
               {activeStep === steps.length - 1
                 ? "Sign up!"
@@ -505,6 +534,11 @@ export const SignUpNew = () => {
                 : "Next"}
             </LoadingButton>
           </Box>
+          {errorMsg && (
+            <Alert sx={{ my: 1 }} severity="error">
+              {errorMsg}
+            </Alert>
+          )}
         </React.Fragment>
       )}
     </Box>

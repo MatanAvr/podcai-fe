@@ -83,7 +83,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
   };
 
   return (
-    <Card sx={{ p: 1, m: 1 }}>
+    <Card sx={{ p: 1, m: 1, background: "rgba(255,255,255,0.2)" }}>
       <div>{episode.name}</div>
       <audio
         ref={audioRef}
@@ -105,7 +105,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
         }}
         onProgress={handleBufferProgress}
       />
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      {/* <Box sx={{ display: "flex", alignItems: "center" }}>
         <LoadingButton
           disabled={!isReady}
           onClick={togglePlayPause}
@@ -158,9 +158,9 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
             variant="outlined"
           />
         ))}
-      </Box>
+      </Box> */}
       {/* Rating */}
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -182,7 +182,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
           name="episode-rating"
           value={null}
         />
-      </Box>
+      </Box> */}
     </Card>
   );
 };

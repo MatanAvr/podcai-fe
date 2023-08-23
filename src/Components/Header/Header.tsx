@@ -1,6 +1,6 @@
 import { Pages } from "../../ConstAndTypes/consts";
 import "./Header.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
@@ -23,7 +23,7 @@ import {
 const apiClientInstance = ApiClient.getInstance();
 
 const startBtnsArr: Pages[] = ["About", "Features", "Team"];
-const endBtnsArr: Pages[] = ["Login", "SignUp"];
+const endBtnsArr: Pages[] = ["Login", "Sign up"];
 const mobile = isMobile();
 
 export const Header = () => {
@@ -31,6 +31,7 @@ export const Header = () => {
   const isAuth = useAppSelector((state) => state.user.auth);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const themeMode = useAppSelector((state) => state.style.themeMode);
+  const hasMounted = useRef(false);
 
   const dispatch = useAppDispatch();
 
@@ -39,13 +40,11 @@ export const Header = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      authAndLogin(token);
-    } else {
-      dispatch(setAuth({ newMode: false, token: "" }));
-    }
-  }, [dispatch]);
+    if (hasMounted.current) return;
+    const tokenLocal = localStorage.getItem("token");
+    if (tokenLocal) authAndLogin(tokenLocal);
+    hasMounted.current = true;
+  }, []);
 
   const authAndLogin = async (token: string) => {
     try {
@@ -72,7 +71,9 @@ export const Header = () => {
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >
-      <Toolbar sx={{ flexWrap: "wrap" }}>
+      <Toolbar
+      // sx={{ flexWrap: "wrap" }}
+      >
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
           <Button
             onClick={() =>
@@ -82,7 +83,7 @@ export const Header = () => {
             }
           >
             <Avatar
-              alt="Podcai logo"
+              alt="podcai logo"
               src={podcaiLogo}
               sizes="small"
               sx={{ scale: 0.6, mx: 0.5 }}
@@ -93,7 +94,7 @@ export const Header = () => {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Podcai
+              podcai
             </Typography>
           </Button>
           <FormControlLabel
@@ -173,12 +174,12 @@ export const Header = () => {
               </Button>
               <Button
                 onClick={() => {
-                  changePageHandler("SignUp");
+                  changePageHandler("Sign up");
                 }}
                 variant="outlined"
                 sx={{ my: 1, mx: 1.5 }}
               >
-                Signup
+                Sign up
               </Button>
             </>
           )}

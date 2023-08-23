@@ -18,7 +18,7 @@ export type Pages =
   | "About"
   | "Features"
   | "Login"
-  | "SignUp"
+  | "Sign up"
   | "Home";
 
 export type Categories =
@@ -172,3 +172,7 @@ export type verifyOtpResponse = {
 export const MIN_NAME_LENGTH = 2;
 export const OTP_LENGTH = 6;
 export const MIN_PASS_LENGTH = 4;
+
+export interface CustomAxiosError {
+  detail: string;
+}

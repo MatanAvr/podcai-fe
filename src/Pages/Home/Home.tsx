@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ApiClient } from "../../Services/axios";
 import "./Home.scss";
 import { Categories, Episode } from "../../ConstAndTypes/consts";
@@ -41,14 +41,14 @@ export const Home = () => {
     [...loggedUser.categories] || []
   );
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
-  const [oneTimeFlag, setOneTimeFlag] = useState<boolean>(false);
+  // const [oneTimeFlag, setOneTimeFlag] = useState<boolean>(false);
+  const hasMounted = useRef(false);
 
   useEffect(() => {
-    if (!oneTimeFlag) {
-      getEpisodes();
-      setOneTimeFlag(true);
-    }
-  }, [oneTimeFlag]);
+    if (hasMounted.current) return;
+    getEpisodes();
+    hasMounted.current = true;
+  }, []);
 
   const toggleShowArticles = () => {
     showArticles((prev) => !prev);
@@ -101,7 +101,7 @@ export const Home = () => {
         <LoadingButton
           sx={{ marginInlineStart: "10px" }}
           key={"get-episodes"}
-          variant="text"
+          variant="contained"
           onClick={getEpisodes}
           loading={isLoadingEpisodes}
         >
@@ -110,6 +110,79 @@ export const Home = () => {
       </Typography>
 
       <div className={`home-container ${mobile ? "mobile" : ""}`}>
+        <Card
+          key={"start-card"}
+          sx={{
+            p: 1,
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            width: "100%",
+            height: "min-content",
+            background: "rgba(255,255,255,0.2)",
+          }}
+        >
+          <Typography key={"start-title"} variant="h5" component="div">
+            Currently playing
+          </Typography>
+
+          <div className="episodes-wrapper">
+            {isLoadingEpisodes ? (
+              <LoadingSpinner />
+            ) : (
+              <>
+                {currentlyPlaying ? (
+                  <>
+                    <CustomAudioPlayer key="AP" episode={currentlyPlaying} />
+                    {!isMobile() && (
+                      <>
+                        <Box className="source-articles-wrapper" sx={{ my: 1 }}>
+                          <u>Source articles</u>
+                        </Box>
+
+                        <div
+                          className={`articles-wrapper 
+                      ${showAllArticles ? "show" : ""}`}
+                        >
+                          {currentlyPlaying.articles_data.map(
+                            (article, index) => {
+                              return (
+                                <Accordion
+                                  key={"AR" + index}
+                                  sx={{
+                                    p: 0,
+                                    textOverflow: "ellipsis",
+                                    background: "rgba(255,255,255,0.2)",
+                                  }}
+                                >
+                                  <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header"
+                                  >
+                                    <Typography>{article.title}</Typography>
+                                  </AccordionSummary>
+                                  <AccordionDetails>
+                                    <Typography>
+                                      {article.description}
+                                    </Typography>
+                                  </AccordionDetails>
+                                </Accordion>
+                              );
+                            }
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <div>Choose an episode</div>
+                )}
+              </>
+            )}
+          </div>
+        </Card>
+        {/* all episodes */}
         <Card
           key={"middle-card"}
           variant="elevation"
@@ -120,11 +193,15 @@ export const Home = () => {
             // maxWidth: "32%",
             display: "flex",
             flexDirection: "column",
-            flex: 0.5,
+            flex: isMobile() ? 3 : 0.5,
+            overflow: "auto",
+            width: "100%",
+            maxHeight: "100%",
+            background: "rgba(255,255,255,0.2)",
           }}
         >
           <Typography key={"middle-title"} variant="h5" component="div">
-            All episodes:
+            All episodes
           </Typography>
           <div className="episodes-wrapper">
             {isLoadingEpisodes ? (
@@ -142,6 +219,7 @@ export const Home = () => {
                       display: "flex",
                       alignContent: "center",
                       justifyContent: "space-between",
+                      background: "rgba(255,255,255,0.2)",
                     }}
                   >
                     <CardActions
@@ -176,67 +254,6 @@ export const Home = () => {
               })
             ) : (
               <>No data</>
-            )}
-          </div>
-        </Card>
-
-        <Card
-          key={"start-card"}
-          sx={{
-            p: 1,
-            display: "flex",
-            flexDirection: "column",
-            flex: 1,
-          }}
-        >
-          <Typography key={"start-title"} variant="h5" component="div">
-            Currently playing:
-          </Typography>
-
-          <div className="episodes-wrapper">
-            {isLoadingEpisodes ? (
-              <LoadingSpinner />
-            ) : (
-              <>
-                {currentlyPlaying ? (
-                  <>
-                    <CustomAudioPlayer key="AP" episode={currentlyPlaying} />
-                    <div className="source-articles-wrapper">
-                      <u>Source articles</u>
-                    </div>
-
-                    <div
-                      className={`articles-wrapper 
-                      ${showAllArticles ? "show" : ""}`}
-                    >
-                      {currentlyPlaying.articles_data.map((article, index) => {
-                        return (
-                          <Accordion
-                            key={"AR" + index}
-                            sx={{
-                              p: 0,
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            <AccordionSummary
-                              expandIcon={<ExpandMoreIcon />}
-                              aria-controls="panel1a-content"
-                              id="panel1a-header"
-                            >
-                              <Typography>{article.title}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                              <Typography>{article.description}</Typography>
-                            </AccordionDetails>
-                          </Accordion>
-                        );
-                      })}
-                    </div>
-                  </>
-                ) : (
-                  <div>Choose an episode</div>
-                )}
-              </>
             )}
           </div>
         </Card>

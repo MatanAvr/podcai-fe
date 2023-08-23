@@ -23,15 +23,18 @@ export const ComingSoon = () => {
       <div className="info-wrapper">
         Coming Soon...
         <div className="title">
-          Podc<span className="colored">ai</span>
+          podc<span className="colored">ai</span>
           <DynamicLogo />
         </div>
         <div>Personalized podcasts</div>
         <div>powered by AI</div>
       </div>
 
-      <Button variant="outlined" onClick={() => dispatch(moveToPage("SignUp"))}>
-        Sign-up
+      <Button
+        variant="contained"
+        onClick={() => dispatch(moveToPage("Sign up"))}
+      >
+        Sign up
       </Button>
 
       <div className="icons-wrapper">
