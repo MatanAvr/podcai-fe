@@ -1,5 +1,6 @@
 import _ from "lodash";
 import "./SelectBox.scss";
+import { Card } from "@mui/material";
 
 interface selectBoxProps {
   text: string;
@@ -15,13 +16,18 @@ export const SelectBox = ({
   disabled,
 }: selectBoxProps) => {
   return (
-    <div
-      className={`select-box-wrapper ${active ? "active" : ""} ${
-        disabled ? "disabled" : ""
-      }`}
-      onClick={onClick}
+    <Card
+      variant="outlined"
+      className={`select-box-wrapper ${active ? "active" : ""}`}
     >
-      <div className="select-box-container">{_.capitalize(text)}</div>
-    </div>
+      <div
+        className={`select-box-wrapper ${active ? "active" : ""} ${
+          disabled ? "disabled" : ""
+        }`}
+        onClick={onClick}
+      >
+        <div className="select-box-container">{_.capitalize(text)}</div>
+      </div>
+    </Card>
   );
 };

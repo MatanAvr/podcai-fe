@@ -1,16 +1,12 @@
-import "./LoadingSpinner.scss";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
-interface loadingSpinnerProps {}
-
-export const LoadingSpinner = ({}: loadingSpinnerProps) => {
+const LoadingSpinner = () => {
   return (
-    <div className="loading-spinner-wrapper">
-      <div className="lds-ring">
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-    </div>
+    <Box sx={{ display: "flex" }}>
+      <CircularProgress />
+    </Box>
   );
 };
+
+export default LoadingSpinner;

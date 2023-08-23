@@ -1,9 +1,12 @@
+import { Typography } from "@mui/material";
 import "./Features.scss";
 
 export const Features = () => {
   return (
-    <div className="features-wrapper">
-      <h1>Features</h1>
+    <div>
+      <Typography variant="h4" component="div">
+        Features
+      </Typography>
     </div>
   );
 };

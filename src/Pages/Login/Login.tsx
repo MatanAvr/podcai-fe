@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Button } from "../../Components/UI/Button/Button";
-import { Input } from "../../Components/UI/Input/Input";
 import { loginRequest } from "../../ConstAndTypes/consts";
 import "./Login.scss";
 import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
+import { Alert, Box, TextField, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { isValidEmail } from "../../Utils/Utils";
+import { isAxiosError } from "axios";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -15,14 +16,13 @@ const defaultUser: loginRequest = {
   email: "",
   password: "",
 };
-// const defaultUser: loginRequest = {
-//   email: "matan@test.com",
-//   password: "1234",
-// };
 
 export const Login = () => {
   const [user, setUser] = useState<loginRequest>(defaultUser);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [emailErr, setEmailErr] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
   const dispatch = useAppDispatch();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,46 +33,94 @@ export const Login = () => {
     });
   };
 
-  const submitHandler = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const loginHandler = async (e: React.FormEvent) => {
+    //validate field
     setIsLoading(true);
-    const loginRes = await apiClientInstance.userLogin(user);
-    if (loginRes.access_token) {
-      const token = loginRes.access_token;
-      const userToLogIn = loginRes;
-      dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
-      dispatch(setAuth({ newMode: true, token }));
-      dispatch(moveToPage("Home"));
+    e.preventDefault();
+    setErrorMsg("");
+    try {
+      const loginRes = await apiClientInstance.userLogin(user);
+      if (loginRes.access_token) {
+        const token = loginRes.access_token;
+        const userToLogIn = loginRes;
+        dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
+        dispatch(setAuth({ newMode: true, token }));
+        dispatch(moveToPage("Home"));
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (typeof error.response?.data.detail === "string") {
+          setErrorMsg(error.response?.data.detail);
+        } else {
+          setErrorMsg("General error");
+        }
+      } else {
+        setErrorMsg("General error");
+      }
     }
     setIsLoading(false);
   };
 
-  return (
-    <div className="login-wrapper">
-      <h1>Login</h1>
+  const validateEmail = () => {
+    let error = "";
+    const emailValid = isValidEmail(user.email);
+    if (!emailValid) {
+      error = "Invalid email";
+      setEmailErr(error);
+    } else {
+    }
+    if (error !== "") {
+      return false;
+    }
+    setEmailErr(error);
+    return true;
+  };
 
-      {isLoading ? (
-        <DynamicLogo />
-      ) : (
-        <form className="form-wrapper" onSubmit={submitHandler}>
-          <Input
-            id="email"
-            value={user.email}
-            placeholder="Email"
-            inputStyle="underline"
-            onChange={onChange}
-          />
-          <Input
-            id="password"
-            value={user.password}
-            placeholder="Password"
-            inputStyle="underline"
-            onChange={onChange}
-            type="password"
-          />
-          <Button text="Login" type="outline" />
-        </form>
+  return (
+    <Box
+      component="form"
+      sx={{
+        "& .MuiTextField-root": { m: 1, width: "auto" },
+        display: "flex",
+        flexDirection: "column",
+      }}
+      onSubmit={loginHandler}
+    >
+      <Typography variant="h4" component="div">
+        Login
+      </Typography>
+
+      <TextField
+        id="email"
+        label="Email"
+        variant="standard"
+        onChange={onChange}
+        onBlur={validateEmail}
+        value={user.email}
+        error={emailErr.length > 0 ? true : false}
+        helperText={emailErr}
+      />
+      <TextField
+        id="password"
+        label="Password"
+        variant="standard"
+        onChange={onChange}
+        value={user.password}
+        type="password"
+      />
+      <LoadingButton
+        loading={isLoading}
+        variant="contained"
+        onClick={loginHandler}
+        // disabled={!(isValidEmail(user.email) && user.password.length > 3)}
+      >
+        Login
+      </LoadingButton>
+      {errorMsg && (
+        <Alert sx={{ my: 1 }} severity="error">
+          {errorMsg}
+        </Alert>
       )}
-    </div>
+    </Box>
   );
 };

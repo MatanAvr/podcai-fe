@@ -1,59 +1,67 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ApiClient } from "../../Services/axios";
 import "./Home.scss";
-import { Button } from "../../Components/UI/Button/Button";
 import { Categories, Episode } from "../../ConstAndTypes/consts";
-import { EpisodeContainer } from "../../Components/UI/EpisodeContainer/EpisodeContainer";
-import { LoadingSpinner } from "../../Components/UI/LoadingSpinner/LoadingSpinner";
 import { useAppSelector } from "../../Hooks/Hooks";
-import { ArticleContainer } from "../../Components/UI/ArticleContainer/ArticleContainer";
 import { isMobile } from "../../Utils/Utils";
-import { MdExpandLess, MdExpandMore } from "react-icons/md";
-import { IconButton } from "../../Components/UI/IconButton/IconButton";
-import { SelectBox } from "../../Components/UI/SelectBox/SelectBox";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { cloneDeep } from "lodash";
+import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
+import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
+import RefreshIcon from "@mui/icons-material/Refresh";
+
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Card,
+  CardActions,
+  Checkbox,
+  Typography,
+} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import _ from "lodash";
+import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
+import { CustomAudioPlayer } from "../../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();
 
 const numOfCategoriesToChoose = 3;
-const categories: Categories[] = [
-  "general",
-  "world",
-  "nation",
-  "business",
-  "technology",
-  "entertainment",
-  "sports",
-  "science",
-  "health",
-];
 
 export const Home = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [allEpisodes, setAllEpisodes] = useState<Episode[]>([]);
-  const [todayEpisode, setTodayEpisode] = useState<Episode>();
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode>();
   const [previousEpisodes, setPreviousEpisodes] = useState<Episode[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingEpisodes, setIsLoadingEpisodes] = useState<boolean>(false);
   const [showAllArticles, showArticles] = useState<boolean>(false);
   const [chosenCategories, setChosenCategories] = useState<Categories[]>(
     [...loggedUser.categories] || []
   );
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
-  // console.log(loggedUser);
+  // const [oneTimeFlag, setOneTimeFlag] = useState<boolean>(false);
+  const hasMounted = useRef(false);
+
+  useEffect(() => {
+    if (hasMounted.current) return;
+    getEpisodes();
+    hasMounted.current = true;
+  }, []);
 
   const toggleShowArticles = () => {
     showArticles((prev) => !prev);
   };
 
   const getEpisodes = async () => {
-    setIsLoading(true);
+    setIsLoadingEpisodes(true);
     const res = await apiClientInstance.getEpisodes();
     const sortedEpisodes = [...res.episodes].reverse();
     setAllEpisodes(sortedEpisodes);
-    setTodayEpisode(sortedEpisodes[0]);
+    setCurrentlyPlaying(sortedEpisodes[0]);
     setPreviousEpisodes(sortedEpisodes.slice(1));
-    setIsLoading(false);
+    setIsLoadingEpisodes(false);
   };
 
   const onClickCategoryHandler = (category: Categories) => {
@@ -80,111 +88,175 @@ export const Home = () => {
     setIsUpdading(false);
   };
 
+  const onClickEpisodeHandler = (newEpisode: Episode) => {
+    if (newEpisode.name === currentlyPlaying?.name) {
+      setCurrentlyPlaying(undefined);
+    } else setCurrentlyPlaying(newEpisode);
+  };
+
   return (
     <div className={`home-wrapper ${mobile ? "mobile" : ""}`}>
-      <h1>Hello {loggedUser.name}!</h1>
-      <Button
-        key={"get-episodes"}
-        text="Get episodes"
-        type="outline"
-        onClick={getEpisodes}
-      />
+      <Typography variant="h4" component="div">
+        Hello {loggedUser.name}!
+        <LoadingButton
+          sx={{ marginInlineStart: "10px" }}
+          key={"get-episodes"}
+          variant="contained"
+          onClick={getEpisodes}
+          loading={isLoadingEpisodes}
+        >
+          <RefreshIcon />
+        </LoadingButton>
+      </Typography>
+
       <div className={`home-container ${mobile ? "mobile" : ""}`}>
-        <div className="home-col">
-          <div className="col-title">
-            <b>Today's podcast:</b>
-          </div>
+        <Card
+          key={"start-card"}
+          sx={{
+            p: 1,
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            width: "100%",
+            height: "min-content",
+            background: "rgba(255,255,255,0.2)",
+          }}
+        >
+          <Typography key={"start-title"} variant="h5" component="div">
+            Currently playing
+          </Typography>
 
           <div className="episodes-wrapper">
-            {isLoading ? (
+            {isLoadingEpisodes ? (
               <LoadingSpinner />
             ) : (
               <>
-                {todayEpisode ? (
+                {currentlyPlaying ? (
                   <>
-                    <EpisodeContainer key={"TP"} episode={todayEpisode} />
-                    <div className="source-articles-wrapper">
-                      <u>Source articles</u>
-                      <IconButton onClick={toggleShowArticles}>
-                        {showAllArticles ? (
-                          <MdExpandLess size={25} />
-                        ) : (
-                          <MdExpandMore size={25} />
-                        )}
-                      </IconButton>
-                    </div>
+                    <CustomAudioPlayer key="AP" episode={currentlyPlaying} />
+                    {!isMobile() && (
+                      <>
+                        <Box className="source-articles-wrapper" sx={{ my: 1 }}>
+                          <u>Source articles</u>
+                        </Box>
 
-                    <div
-                      className={`articles-wrapper ${
-                        showAllArticles ? "show" : ""
-                      }`}
-                    >
-                      {todayEpisode.articles_data.map((article, index) => {
-                        return (
-                          <ArticleContainer
-                            key={"AR" + index}
-                            article={article}
-                          />
-                        );
-                      })}
-                    </div>
+                        <div
+                          className={`articles-wrapper 
+                      ${showAllArticles ? "show" : ""}`}
+                        >
+                          {currentlyPlaying.articles_data.map(
+                            (article, index) => {
+                              return (
+                                <Accordion
+                                  key={"AR" + index}
+                                  sx={{
+                                    p: 0,
+                                    textOverflow: "ellipsis",
+                                    background: "rgba(255,255,255,0.2)",
+                                  }}
+                                >
+                                  <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header"
+                                  >
+                                    <Typography>{article.title}</Typography>
+                                  </AccordionSummary>
+                                  <AccordionDetails>
+                                    <Typography>
+                                      {article.description}
+                                    </Typography>
+                                  </AccordionDetails>
+                                </Accordion>
+                              );
+                            }
+                          )}
+                        </div>
+                      </>
+                    )}
                   </>
                 ) : (
-                  <div>No data</div>
+                  <div>Choose an episode</div>
                 )}
               </>
             )}
           </div>
-        </div>
-        <div className="home-col">
-          <div className="col-title">
-            <b>Previous podcasts:</b>
-          </div>
+        </Card>
+        {/* all episodes */}
+        <Card
+          key={"middle-card"}
+          variant="elevation"
+          elevation={0}
+          sx={{
+            p: 1,
+            // Width: "32%",
+            // maxWidth: "32%",
+            display: "flex",
+            flexDirection: "column",
+            flex: isMobile() ? 3 : 0.5,
+            overflow: "auto",
+            width: "100%",
+            maxHeight: "100%",
+            background: "rgba(255,255,255,0.2)",
+          }}
+        >
+          <Typography key={"middle-title"} variant="h5" component="div">
+            All episodes
+          </Typography>
           <div className="episodes-wrapper">
-            {isLoading ? (
+            {isLoadingEpisodes ? (
               <LoadingSpinner />
-            ) : previousEpisodes ? (
-              previousEpisodes.length > 0 &&
-              previousEpisodes.map((episode, index) => {
+            ) : allEpisodes ? (
+              allEpisodes.length > 0 &&
+              allEpisodes.map((episode, index) => {
+                const active = currentlyPlaying?.name === episode.name;
                 return (
-                  <EpisodeContainer key={"EC-" + index} episode={episode} />
+                  <Card
+                    key={"EC-" + index}
+                    sx={{
+                      m: 1,
+                      p: 1,
+                      display: "flex",
+                      alignContent: "center",
+                      justifyContent: "space-between",
+                      background: "rgba(255,255,255,0.2)",
+                    }}
+                  >
+                    <CardActions
+                      sx={{
+                        ":hover": {
+                          cursor: "pointer",
+                        },
+                        flex: 1,
+                      }}
+                      onClick={() => onClickEpisodeHandler(episode)}
+                    >
+                      <div>
+                        <Checkbox
+                          checked={active}
+                          icon={<PlayArrowOutlinedIcon />}
+                          checkedIcon={<PlayCircleFilledOutlinedIcon />}
+                        />
+                        {episode.name}
+                      </div>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignContent: "center",
+                          justifyContent: "center",
+                        }}
+                      ></Box>
+                    </CardActions>
+                  </Card>
                 );
               })
             ) : (
               <>No data</>
             )}
           </div>
-        </div>
-
-        <div className="home-col">
-          <div className="col-title">
-            <b>Change categories:</b>
-            <div className="categories-wrapper">
-              {categories.map((category, index) => {
-                const active = chosenCategories.includes(category);
-                const disabled =
-                  !active &&
-                  chosenCategories.length === numOfCategoriesToChoose;
-                return (
-                  <SelectBox
-                    key={`CAT-${index}`}
-                    text={category}
-                    active={active}
-                    disabled={disabled}
-                    onClick={() => {
-                      onClickCategoryHandler(category);
-                    }}
-                  />
-                );
-              })}
-            </div>
-            {isUpdading ? (
-              <LoadingSpinner />
-            ) : (
-              <Button type="outline" text="Save" onClick={onClickSaveHandler} />
-            )}
-          </div>
-        </div>
+        </Card>
       </div>
     </div>
   );

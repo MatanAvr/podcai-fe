@@ -11,32 +11,7 @@
   max-height: 100%;
   width: 100%;
   max-width: 100%;
-  background-color: linear;
-  // background: linear-gradient(90deg, $primary, $secondry);
-  background: linear-gradient(125deg, $primary, $secondry);
-  // background: black;
-  color: white;
   flex: 1;
   font-family: "Hero", sans-serif;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: $primary;
-  border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: linear-gradient(125deg, #8c52ff, #5ce1e6);
 }

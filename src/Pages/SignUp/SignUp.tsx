@@ -1,7 +1,5 @@
 import "./SignUp.scss";
 import { useState, useEffect } from "react";
-import { Button } from "../../Components/UI/Button/Button";
-import { Input } from "../../Components/UI/Input/Input";
 import {
   INewUser,
   Categories,
@@ -19,6 +17,16 @@ import { useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+import _ from "lodash";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -31,19 +39,21 @@ const newUserDefault: INewUser = {
   categories: [],
   country: "us",
   language: "en",
+  should_send_episode_email: true,
 };
 
 const numOfCategoriesToChoose = 3;
+
 const categories: Categories[] = [
   "general",
   "world",
   "nation",
   "business",
+  "health",
   "technology",
-  "entertainment",
   "sports",
   "science",
-  "health",
+  "entertainment",
 ];
 
 export const SignUp = () => {
@@ -52,7 +62,7 @@ export const SignUp = () => {
   const [stageIndex, setStageIndex] = useState<number>(0);
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
-  const [error, setError] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -60,15 +70,14 @@ export const SignUp = () => {
     let error = "";
     const emailValid = isValidEmail(newUser.email);
     if (!emailValid) {
-      addErrorToId("email");
       error = "Invalid email";
+      setErrorMsg(error);
     } else {
-      removeErrorFromId("email");
     }
     if (error !== "") {
-      // setShowModal(true);
       return false;
     }
+    setErrorMsg(error);
     return true;
   };
 
@@ -94,7 +103,7 @@ export const SignUp = () => {
   };
 
   const signupHandler = async () => {
-    setError("");
+    setErrorMsg("");
     setIsLoading(true);
     // validate fields
     try {
@@ -107,7 +116,7 @@ export const SignUp = () => {
         dispatch(moveToPage("Home"));
       }
     } catch (err) {
-      setError("Sign up error, please try again!");
+      setErrorMsg("Sign up error, please try again!");
     }
     setIsLoading(false);
   };
@@ -129,7 +138,7 @@ export const SignUp = () => {
   };
 
   const changeIndexHandler = (action: "prev" | "next") => {
-    setError("");
+    setErrorMsg("");
     if (action === "next" && stageIndex + 1 < signUpStagesArr.length) {
       setStageIndex((prev) => prev + 1);
     } else if (action === "prev" && stageIndex - 1 >= 0) {
@@ -138,36 +147,42 @@ export const SignUp = () => {
   };
 
   const userDataContainer = (
-    // <form className="form-wrapper" onSubmit={submitHandler}>
-    <div className="form-wrapper">
-      <Input
+    <Box
+      component="form"
+      sx={{
+        "& .MuiTextField-root": { m: 1, width: "auto" },
+        display: "flex",
+        flexDirection: "column",
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <TextField
         id="name"
+        label="Name"
+        variant="standard"
+        onChange={onChange}
         value={newUser.name}
-        placeholder="First name"
-        inputStyle="underline"
-        onChange={onChange}
       />
-      <Input
+      <TextField
         id="email"
+        label="Email"
+        variant="standard"
+        onChange={onChange}
         value={newUser.email}
-        placeholder="Email"
-        inputStyle="underline"
-        onChange={onChange}
         onBlur={validateEmail}
-        onClick={() => {
-          removeErrorFromId("email");
-        }}
+        error={errorMsg.length > 0 ? true : false}
+        helperText={errorMsg}
       />
-      <Input
+      <TextField
         id="password"
-        value={newUser.password}
-        placeholder="Password"
-        inputStyle="underline"
+        label="Password"
+        variant="standard"
         onChange={onChange}
+        value={newUser.password}
         type="password"
-        note="At least 4 chars"
       />
-    </div>
+    </Box>
   );
 
   const categoriesContainer = (
@@ -176,22 +191,31 @@ export const SignUp = () => {
         <div>
           Choose your top {numOfCategoriesToChoose} favorite categories:
         </div>
-        {categories.map((category, index) => {
-          const active = chosenCategories.includes(category);
-          const disabled =
-            !active && chosenCategories.length === numOfCategoriesToChoose;
-          return (
-            <SelectBox
-              key={`CAT-${index}`}
-              text={category}
-              active={active}
-              disabled={disabled}
-              onClick={() => {
-                onClickCategoryHandler(category);
-              }}
-            />
-          );
-        })}
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+          {categories.map((category, index) => {
+            const active = chosenCategories.includes(category);
+            const disabled =
+              !active && chosenCategories.length === numOfCategoriesToChoose;
+            return (
+              <Grid item xs={2} sm={4} md={4} key={index}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={active}
+                      onChange={() => onClickCategoryHandler(category)}
+                      disabled={disabled}
+                    />
+                  }
+                  label={_.capitalize(category)}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
       </div>
     </>
   );
@@ -243,34 +267,40 @@ export const SignUp = () => {
 
   return (
     <div className="sign-up-wrapper">
-      <h1>Sign-Up</h1>
+      <Typography variant="h4" component="div">
+        Sign-Up
+      </Typography>
       {isLoading ? (
         <DynamicLogo />
       ) : (
         <div className="sign-up-container">
-          {/* <div className="sign-up-pagination">{stageIndex}</div> */}
           <div className="sign-up-content">{signUpStagesArr[stageIndex]}</div>
 
           <div className="sign-up-buttons">
             <Button
-              text={"Prev"}
+              variant="outlined"
               onClick={() => changeIndexHandler("prev")}
               disabled={stageIndex === 0}
-            />
-            {error && <div className="error">{error}</div>}
+            >
+              Prev
+            </Button>
+            {errorMsg && <div className="error">{errorMsg}</div>}
             {stageIndex !== stagesLen - 1 ? (
               <Button
-                text={"Next"}
+                variant="outlined"
                 onClick={() => changeIndexHandler("next")}
                 disabled={checkIfNextDisabled()}
-              />
+              >
+                Next
+              </Button>
             ) : (
               <Button
-                text="Sign-up"
-                type="outline"
+                variant="outlined"
                 onClick={signupHandler}
                 disabled={checkIfNextDisabled()}
-              />
+              >
+                Sign-up
+              </Button>
             )}
           </div>
         </div>
