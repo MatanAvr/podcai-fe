@@ -18,6 +18,7 @@ import {
   Card,
   CardActions,
   Checkbox,
+  Link,
   Typography,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -160,12 +161,18 @@ export const Home = () => {
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
                                   >
-                                    <Typography>{article.title}</Typography>
+                                    <Typography>
+                                      {article.source_name}
+                                    </Typography>
                                   </AccordionSummary>
                                   <AccordionDetails>
-                                    <Typography>
-                                      {article.description}
-                                    </Typography>
+                                    <Link
+                                      href={article.url}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      {article.title}
+                                    </Link>
                                   </AccordionDetails>
                                 </Accordion>
                               );

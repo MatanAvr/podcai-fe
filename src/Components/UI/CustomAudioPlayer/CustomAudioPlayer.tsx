@@ -56,6 +56,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
       }
     }
   };
+
   const handleVolumeChange = (volumeValue: number) => {
     if (!audioRef.current) return;
     audioRef.current.volume = volumeValue;
@@ -84,7 +85,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
 
   return (
     <Card sx={{ p: 1, m: 1, background: "rgba(255,255,255,0.2)" }}>
-      <div>{episode.name}</div>
+      <Box sx={{ my: 1 }}>{episode.name}</Box>
       <audio
         ref={audioRef}
         className="audio-track"
