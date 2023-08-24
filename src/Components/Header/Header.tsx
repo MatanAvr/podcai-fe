@@ -179,7 +179,7 @@ export const Header = () => {
                 variant="outlined"
                 sx={{ my: 1, mx: 1.5 }}
               >
-                Sign up
+                Sign-up
               </Button>
             </>
           )}

@@ -138,7 +138,7 @@ export const Home = () => {
                     {!isMobile() && (
                       <>
                         <Box className="source-articles-wrapper" sx={{ my: 1 }}>
-                          <u>Source articles</u>
+                          <u>Sources</u>
                         </Box>
 
                         <div

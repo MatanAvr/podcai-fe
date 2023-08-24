@@ -114,7 +114,7 @@ export const Login = () => {
         onClick={loginHandler}
         // disabled={!(isValidEmail(user.email) && user.password.length > 3)}
       >
-        Login
+        Log in
       </LoadingButton>
       {errorMsg && (
         <Alert sx={{ my: 1 }} severity="error">
