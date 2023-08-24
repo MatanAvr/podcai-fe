@@ -33,9 +33,9 @@ const numOfCategoriesToChoose = 3;
 
 export const Home = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
-  const [allEpisodes, setAllEpisodes] = useState<Episode[]>([]);
+  const [allEpisodes, setAllEpisodes] = useState<Episode[]>();
   const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode>();
-  const [previousEpisodes, setPreviousEpisodes] = useState<Episode[]>([]);
+  const [previousEpisodes, setPreviousEpisodes] = useState<Episode[]>();
   const [isLoadingEpisodes, setIsLoadingEpisodes] = useState<boolean>(false);
   const [showAllArticles, showArticles] = useState<boolean>(false);
   const [chosenCategories, setChosenCategories] = useState<Categories[]>(
@@ -58,6 +58,7 @@ export const Home = () => {
   const getEpisodes = async () => {
     setIsLoadingEpisodes(true);
     const res = await apiClientInstance.getEpisodes();
+    console.log(res);
     const sortedEpisodes = [...res.episodes].reverse();
     setAllEpisodes(sortedEpisodes);
     setCurrentlyPlaying(sortedEpisodes[0]);
@@ -108,6 +109,13 @@ export const Home = () => {
         >
           <RefreshIcon />
         </LoadingButton>
+      </Typography>
+
+      <Typography variant="h5" component="div">
+        {allEpisodes &&
+          allEpisodes.length === 0 &&
+          `Your first podcai wiil be ready in a few short minutes!
+          `}
       </Typography>
 
       <div className={`home-container ${mobile ? "mobile" : ""}`}>
