@@ -68,7 +68,7 @@ const categories: Categories[] = [
 export const SignUpNew = () => {
   const [newUser, setNewUser] = useState<INewUser>(newUserDefault);
   const [otp, setOtp] = useState<string>("");
-  const [activeStep, setActiveStep] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(2);
   const [skipped, setSkipped] = useState(new Set<number>());
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [emailErr, setEmailErr] = useState<string>("");
@@ -298,7 +298,7 @@ export const SignUpNew = () => {
     <>
       <div className="categories-wrapper">
         <div>
-          <u>Choose your top {numOfCategoriesToChoose} favorite categories:</u>
+          <u>Choose your {numOfCategoriesToChoose} categories</u>
         </div>
         <Grid
           container
@@ -327,7 +327,7 @@ export const SignUpNew = () => {
         </Grid>
 
         <FormControl sx={{ my: 1 }}>
-          <u>Voice options:</u>
+          <u>Choose your podcaster</u>
           <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
@@ -370,7 +370,7 @@ export const SignUpNew = () => {
                 onClick={() => setDailyNotification((prev) => !prev)}
               />
             }
-            label="Send me an email when my podcai is ready!"
+            label="Send me emails when my podcai are ready!"
           />
         </Box>
       </div>
@@ -500,7 +500,7 @@ export const SignUpNew = () => {
 
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
-              color="inherit"
+              // color="inherit"
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
@@ -512,7 +512,7 @@ export const SignUpNew = () => {
             <Box sx={{ flex: "1 1 auto" }} />
             {isStepOptional(activeStep) && (
               <Button
-                color="inherit"
+                // color="inherit"
                 onClick={handleSkip}
                 sx={{ mr: 1 }}
                 variant="contained"
