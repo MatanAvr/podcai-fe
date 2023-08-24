@@ -68,7 +68,7 @@ const categories: Categories[] = [
 export const SignUpNew = () => {
   const [newUser, setNewUser] = useState<INewUser>(newUserDefault);
   const [otp, setOtp] = useState<string>("");
-  const [activeStep, setActiveStep] = useState<number>(2);
+  const [activeStep, setActiveStep] = useState<number>(0);
   const [skipped, setSkipped] = useState(new Set<number>());
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [emailErr, setEmailErr] = useState<string>("");
