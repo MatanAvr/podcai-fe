@@ -21,6 +21,7 @@ import {
   INewUser,
   MIN_NAME_LENGTH,
   MIN_PASS_LENGTH,
+  NUM_OF_CATEGORIES,
   OTP_LENGTH,
   VoiceSample,
   Voices,
@@ -38,7 +39,6 @@ import { setLoggedUser, setAuth } from "../../Features/User/User";
 import { isAxiosError } from "axios";
 
 const apiClientInstance = ApiClient.getInstance();
-const numOfCategoriesToChoose = 3;
 
 const newUserDefault: INewUser = {
   name: "",
@@ -52,7 +52,7 @@ const newUserDefault: INewUser = {
   should_send_episode_email: true,
 };
 
-const steps = ["Details", "Verify email", "Sign up!"];
+const steps = ["Details", "Verify email", "Personalization"];
 const onlyNumbersRegex = /^[0-9]+$/;
 const categories: Categories[] = [
   "general",
@@ -66,6 +66,7 @@ const categories: Categories[] = [
   "entertainment",
 ];
 export const SignUpNew = () => {
+  const dispatch = useAppDispatch();
   const [newUser, setNewUser] = useState<INewUser>(newUserDefault);
   const [otp, setOtp] = useState<string>("");
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -77,7 +78,6 @@ export const SignUpNew = () => {
   const [chosenCategories, setChosenCategories] = useState<Categories[]>([]);
   const [dailyNotification, setDailyNotification] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!voiceSamples) {
@@ -214,7 +214,6 @@ export const SignUpNew = () => {
       <div>Enter the confirmation code</div>
       <TextField
         id="otp"
-        // label="Otp"
         variant="standard"
         onChange={(e) => changeOtpHandler(e)}
         value={otp}
@@ -294,11 +293,11 @@ export const SignUpNew = () => {
     });
   }, [dailyNotification]);
 
-  const categoriesContainer = (
+  const settingsContainer = (
     <>
-      <div className="categories-wrapper">
+      <div className="categories-wrapper" style={{ maxWidth: "90%" }}>
         <div>
-          <u>Choose your {numOfCategoriesToChoose} categories</u>
+          <u>Choose your {NUM_OF_CATEGORIES} categories</u>
         </div>
         <Grid
           container
@@ -308,7 +307,7 @@ export const SignUpNew = () => {
           {categories.map((category, index) => {
             const active = chosenCategories.includes(category);
             const disabled =
-              !active && chosenCategories.length === numOfCategoriesToChoose;
+              !active && chosenCategories.length === NUM_OF_CATEGORIES;
             return (
               <Grid key={"grid" + index} item xs={2} sm={4} md={4}>
                 <FormControlLabel
@@ -326,7 +325,14 @@ export const SignUpNew = () => {
           })}
         </Grid>
 
-        <FormControl sx={{ my: 1 }}>
+        <FormControl
+          sx={{
+            display: "flex",
+            alignContent: "center",
+            my: 1,
+            maxWidth: "100%",
+          }}
+        >
           <u>Choose your podcaster</u>
           <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
           <RadioGroup
@@ -341,8 +347,12 @@ export const SignUpNew = () => {
               voiceSamples.map((voiceSample, index) => {
                 return (
                   <div
-                    key={"div" + index}
-                    style={{ display: "flex", alignContent: "center" }}
+                    key={"voice-sample" + index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      maxWidth: "100%",
+                    }}
                   >
                     <FormControlLabel
                       value={voiceSample.name}
@@ -354,6 +364,7 @@ export const SignUpNew = () => {
                       src={voiceSample.url}
                       controls
                       controlsList="nodownload"
+                      style={{ maxWidth: "80%" }}
                     />
                   </div>
                 );
@@ -382,7 +393,7 @@ export const SignUpNew = () => {
     const index = tempCatArr.indexOf(category);
     if (index > -1) {
       tempCatArr.splice(index, 1);
-    } else if (tempCatArr.length < numOfCategoriesToChoose) {
+    } else if (tempCatArr.length < NUM_OF_CATEGORIES) {
       tempCatArr.push(category);
     }
     setChosenCategories(() => tempCatArr);
@@ -394,7 +405,7 @@ export const SignUpNew = () => {
 
   const DoneWrapper = <Box>Done</Box>;
 
-  const contentArr = [userDataWrapper, verifyOtpWrapper, categoriesContainer];
+  const contentArr = [userDataWrapper, verifyOtpWrapper, settingsContainer];
 
   const checkIfNextDisabled = () => {
     if (activeStep === 0) {
@@ -449,7 +460,7 @@ export const SignUpNew = () => {
   };
 
   return (
-    <Box sx={{ width: "60%" }}>
+    <Box sx={{ minWidth: "60%", maxWidth: "90%" }}>
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
@@ -528,7 +539,7 @@ export const SignUpNew = () => {
               variant="contained"
             >
               {activeStep === steps.length - 1
-                ? "Sign up!"
+                ? "Activate my account"
                 : activeStep === 0
                 ? "Verify Email"
                 : "Next"}

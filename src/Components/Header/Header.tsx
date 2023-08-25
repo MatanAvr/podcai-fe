@@ -13,9 +13,9 @@ import {
   Avatar,
   Box,
   Button,
-  FormControlLabel,
   IconButton,
-  Switch,
+  Menu,
+  MenuItem,
   Toolbar,
   Tooltip,
   Typography,
@@ -27,12 +27,11 @@ const endBtnsArr: Pages[] = ["Login", "Sign up"];
 const mobile = isMobile();
 
 export const Header = () => {
-  const [manuOpen, setManuOpen] = useState<boolean>(false);
   const isAuth = useAppSelector((state) => state.user.auth);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const themeMode = useAppSelector((state) => state.style.themeMode);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const hasMounted = useRef(false);
-
   const dispatch = useAppDispatch();
 
   const changePageHandler = (newPage: Pages) => {
@@ -62,6 +61,14 @@ export const Header = () => {
     dispatch(toggleDarkMode(themeMode === "dark" ? false : true));
   };
 
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <AppBar
       position="static"
@@ -71,10 +78,8 @@ export const Header = () => {
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >
-      <Toolbar
-      // sx={{ flexWrap: "wrap" }}
-      >
-        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+      <Toolbar sx={{ flexWrap: "wrap" }}>
+        <Box sx={{ flexGrow: 1 }}>
           <Button
             onClick={() =>
               isAuth
@@ -97,7 +102,8 @@ export const Header = () => {
               podcai
             </Typography>
           </Button>
-          <FormControlLabel
+
+          {/* <FormControlLabel
             sx={{ mx: 0.5 }}
             control={
               <Switch
@@ -107,15 +113,16 @@ export const Header = () => {
               />
             }
             label="Dark mode"
-          />
-          {!isAuth && (
+          /> */}
+
+          {!isAuth && !isMobile() && (
             <>
               <Button
                 onClick={() => {
                   changePageHandler("Team");
                 }}
                 variant="text"
-                sx={{ my: 1, mx: 1.5 }}
+                // sx={{ my: 1, mx: 1.5 }}
               >
                 Team
               </Button>
@@ -125,7 +132,7 @@ export const Header = () => {
                   changePageHandler("Features");
                 }}
                 variant="text"
-                sx={{ my: 1, mx: 1.5 }}
+                // sx={{ my: 1, mx: 1.5 }}
               >
                 Features
               </Button>
@@ -135,22 +142,59 @@ export const Header = () => {
                   changePageHandler("About");
                 }}
                 variant="text"
-                sx={{ my: 1, mx: 1.5 }}
+                // sx={{ my: 1, mx: 1.5 }}
               >
                 About
               </Button>
             </>
           )}
         </Box>
-        <Box sx={{ flexGrow: 0 }}>
+        <Box>
           {isAuth ? (
             <>
               <Tooltip title="Open settings">
-                <IconButton onClick={() => {}} sx={{ p: 0 }} size="small">
-                  <Avatar alt="" src="/static/images/avatar/2.jpg" />
+                <IconButton onClick={handleMenu} sx={{ p: 0 }} size="small">
+                  <Avatar />
                 </IconButton>
               </Tooltip>
-              <Button
+
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem
+                  sx={{ background: "white", color: "black" }}
+                  onClick={() => {
+                    changePageHandler("Settings");
+                    handleClose();
+                  }}
+                >
+                  Settings
+                </MenuItem>
+
+                <MenuItem
+                  sx={{ background: "white", color: "black" }}
+                  onClick={() => {
+                    dispatch(setAuth({ newMode: false, token: "" }));
+                    changePageHandler("Login");
+                  }}
+                >
+                  Log out
+                </MenuItem>
+              </Menu>
+
+              {/* <Button
                 onClick={() => {
                   dispatch(setAuth({ newMode: false, token: "" }));
                   changePageHandler("Login");
@@ -159,7 +203,7 @@ export const Header = () => {
                 sx={{ my: 1, mx: 1.5 }}
               >
                 Logout
-              </Button>
+              </Button> */}
             </>
           ) : (
             <>
@@ -179,7 +223,7 @@ export const Header = () => {
                 variant="outlined"
                 sx={{ my: 1, mx: 1.5 }}
               >
-                Sign-up
+                Signup
               </Button>
             </>
           )}
