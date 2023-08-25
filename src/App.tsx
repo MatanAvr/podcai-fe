@@ -38,14 +38,13 @@ const darkTheme = createTheme({
 });
 
 const App = () => {
-  const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const themeMode = useAppSelector((state) => state.style.themeMode);
 
   return (
     <ThemeProvider theme={themeMode === "dark" ? darkTheme : defaultTheme}>
       <div className="App">
         <Header />
-        <Main currentPage={currentPage} />
+        <Main />
         {/* <Footer /> */}
       </div>
     </ThemeProvider>

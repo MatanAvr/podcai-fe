@@ -26,7 +26,7 @@ export const ComingSoon = () => {
           podc<span className="colored">ai</span>
           <DynamicLogo />
         </div>
-        <div>Personalized podcasts</div>
+        <div>Daily personalized news podcasts</div>
         <div>powered by AI</div>
       </div>
 

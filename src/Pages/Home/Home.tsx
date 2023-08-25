@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { ApiClient } from "../../Services/axios";
 import "./Home.scss";
-import { Categories, Episode } from "../../ConstAndTypes/consts";
+import {
+  Categories,
+  Episode,
+  NUM_OF_CATEGORIES,
+} from "../../ConstAndTypes/consts";
 import { useAppSelector } from "../../Hooks/Hooks";
 import { isMobile } from "../../Utils/Utils";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -28,8 +32,6 @@ import { CustomAudioPlayer } from "../../Components/UI/CustomAudioPlayer/CustomA
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();
-
-const numOfCategoriesToChoose = 3;
 
 export const Home = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
@@ -58,7 +60,6 @@ export const Home = () => {
   const getEpisodes = async () => {
     setIsLoadingEpisodes(true);
     const res = await apiClientInstance.getEpisodes();
-    console.log(res);
     const sortedEpisodes = [...res.episodes].reverse();
     setAllEpisodes(sortedEpisodes);
     setCurrentlyPlaying(sortedEpisodes[0]);
@@ -72,7 +73,7 @@ export const Home = () => {
     if (index > -1) {
       // only splice array when item is found
       tempCatArr.splice(index, 1); // 2nd parameter means remove one item only
-    } else if (tempCatArr.length < numOfCategoriesToChoose) {
+    } else if (tempCatArr.length < NUM_OF_CATEGORIES) {
       tempCatArr.push(category);
     }
     setChosenCategories(() => tempCatArr);
@@ -129,6 +130,7 @@ export const Home = () => {
             width: "100%",
             height: "min-content",
             background: "rgba(255,255,255,0.2)",
+            overflow: "auto",
           }}
         >
           <Typography key={"start-title"} variant="h5" component="div">
@@ -143,8 +145,8 @@ export const Home = () => {
                 {currentlyPlaying ? (
                   <>
                     <CustomAudioPlayer key="AP" episode={currentlyPlaying} />
-                    {!isMobile() && (
-                      <>
+                    {true && (
+                      <Box>
                         <Box className="source-articles-wrapper" sx={{ my: 1 }}>
                           <u>Sources</u>
                         </Box>
@@ -160,14 +162,12 @@ export const Home = () => {
                                   key={"AR" + index}
                                   sx={{
                                     p: 0,
-                                    textOverflow: "ellipsis",
                                     background: "rgba(255,255,255,0.2)",
                                   }}
                                 >
                                   <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-controls="panel1a-content"
-                                    id="panel1a-header"
                                   >
                                     <Typography>
                                       {article.source_name}
@@ -187,7 +187,7 @@ export const Home = () => {
                             }
                           )}
                         </div>
-                      </>
+                      </Box>
                     )}
                   </>
                 ) : (
@@ -197,7 +197,7 @@ export const Home = () => {
             )}
           </div>
         </Card>
-        {/* all episodes */}
+        {/* all episodes card*/}
         <Card
           key={"middle-card"}
           variant="elevation"
@@ -208,7 +208,7 @@ export const Home = () => {
             // maxWidth: "32%",
             display: "flex",
             flexDirection: "column",
-            flex: isMobile() ? 3 : 0.5,
+            flex: isMobile() ? 0.75 : 0.5,
             overflow: "auto",
             width: "100%",
             maxHeight: "100%",
@@ -229,8 +229,8 @@ export const Home = () => {
                   <Card
                     key={"EC-" + index}
                     sx={{
-                      m: 1,
-                      p: 1,
+                      my: 0.5,
+                      p: 0,
                       display: "flex",
                       alignContent: "center",
                       justifyContent: "space-between",

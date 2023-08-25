@@ -1,5 +1,4 @@
 import "./Main.scss";
-import { Pages } from "../../ConstAndTypes/consts";
 import { ComingSoon } from "../../Pages/ComingSoon/ComingSoon";
 import { About } from "../../Pages/About/About";
 import { Features } from "../../Pages/Features/Features";
@@ -8,12 +7,16 @@ import { Login } from "../../Pages/Login/Login";
 import { Home } from "../../Pages/Home/Home";
 import { Paper } from "@mui/material";
 import { SignUpNew } from "../../Pages/SignUpNew/SignUpNew";
+import { Settings } from "../../Pages/Template/Settings";
+import { useAppSelector } from "../../Hooks/Hooks";
 
 interface mainIprops {
-  currentPage: Pages;
+  // currentPage: Pages;
 }
 
-export const Main = ({ currentPage }: mainIprops) => {
+export const Main = ({}: mainIprops) => {
+  const currentPage = useAppSelector((state) => state.navigation.currentPage);
+
   return (
     <Paper sx={{ height: "100%", width: "100%", overflowY: "auto", pt: 1 }}>
       <div className="main-wrapper">
@@ -24,6 +27,7 @@ export const Main = ({ currentPage }: mainIprops) => {
         {currentPage === "Login" && <Login />}
         {currentPage === "Sign up" && <SignUpNew />}
         {currentPage === "Home" && <Home />}
+        {currentPage === "Settings" && <Settings />}
       </div>
     </Paper>
   );
