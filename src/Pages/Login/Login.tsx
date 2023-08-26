@@ -34,9 +34,9 @@ export const Login = () => {
   };
 
   const loginHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
     //validate field
     setIsLoading(true);
-    e.preventDefault();
     setErrorMsg("");
     try {
       const loginRes = await apiClientInstance.userLogin(user);
@@ -112,6 +112,7 @@ export const Login = () => {
         loading={isLoading}
         variant="contained"
         onClick={loginHandler}
+        type="submit"
         // disabled={!(isValidEmail(user.email) && user.password.length > 3)}
       >
         Log in
