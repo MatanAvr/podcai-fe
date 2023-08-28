@@ -113,7 +113,7 @@ export const Login = () => {
         variant="contained"
         onClick={loginHandler}
         type="submit"
-        // disabled={!(isValidEmail(user.email) && user.password.length > 3)}
+        disabled={!(isValidEmail(user.email) && user.password.length > 3)}
       >
         Log in
       </LoadingButton>

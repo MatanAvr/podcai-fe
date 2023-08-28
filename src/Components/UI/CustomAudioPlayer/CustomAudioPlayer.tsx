@@ -1,4 +1,4 @@
-import { Card, Box, Chip, Rating, IconButton } from "@mui/material";
+import { Card, Box, Chip, Rating, IconButton, Typography } from "@mui/material";
 import _ from "lodash";
 import "./CustomAudioPlayer.scss";
 import { Episode } from "../../../ConstAndTypes/consts";
@@ -17,7 +17,7 @@ import { VolumeInput } from "./VolumeInput/VolumeInput";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import VolumeDownRoundedIcon from "@mui/icons-material/VolumeDownRounded";
 import { AudioProgressBar } from "./ProgressBar/ProgressBar";
-import { formatDurationDisplay } from "../../../Utils/Utils";
+import { formatDurationDisplay, isMobile } from "../../../Utils/Utils";
 
 interface audioPlayerProps {
   episode: Episode;
@@ -161,13 +161,108 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
 
       <Box
         sx={{
-          p: 0.5,
+          p: 0.1,
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          // border: "1px solid white",
-          // borderRadius: "10px",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            // flex: 1,
+            width: "100%",
+          }}
+        >
+          {/* <LoadingButton
+            disabled={!isReady}
+            onClick={togglePlayPause}
+            aria-label={isPlaying ? "Pause" : "Play"}
+            loading={!isReady}
+          >
+            {isPlaying ? (
+              <PauseRoundedIcon fontSize="medium" />
+            ) : (
+              <PlayArrowRoundedIcon fontSize="medium" />
+            )}
+          </LoadingButton> */}
+
+          <Box sx={{ display: "flex", flex: 1, alignItems: "center" }}>
+            <AudioProgressBar
+              duration={duration}
+              currentProgress={currrentProgress}
+              buffered={buffered}
+              customOnChange={(newValue: number) => {
+                if (!audioRef.current) return;
+                audioRef.current.currentTime = newValue;
+                setCurrrentProgress(newValue);
+              }}
+            />
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flex: 1,
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          {/* <div className="timeline">{`${elapsedDisplay}/${durationDisplay}`}</div> */}
+          <div className="timeline">{`${elapsedDisplay}`}</div>
+          {!isMobile() && (
+            <Box
+              sx={{
+                display: "flex",
+                flex: 1,
+                alignItems: "center",
+                maxWidth: "60%",
+              }}
+            >
+              <IconButton
+                onClick={handleMuteUnmute}
+                aria-label={volume === 0 ? "unmute" : "mute"}
+              >
+                {volume === 0 ? (
+                  <VolumeOffRoundedIcon color="primary" />
+                ) : (
+                  <VolumeDownRoundedIcon color="primary" />
+                )}
+              </IconButton>
+              <VolumeInput
+                volume={volume}
+                onVolumeChange={handleVolumeChange}
+              />
+            </Box>
+          )}
+          <div className="timeline">{`${durationDisplay}`}</div>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          p: 0.5,
+          display: "flex",
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* <IconButton>
+          <SkipPreviousIcon fontSize="medium" color="primary" />
+        </IconButton> */}
+
+        <IconButton onClick={handlePlaybackSpeed} color="primary">
+          <Typography>{playSpeed}x</Typography>
+        </IconButton>
+        {/* <IconButton onClick={() => handleDurationChange(-30)}>
+          <Replay30Icon fontSize="medium" color="primary" />
+        </IconButton> */}
+        <IconButton onClick={() => handleDurationChange(-10)}>
+          <Replay10Icon fontSize="medium" color="primary" />
+        </IconButton>
         <LoadingButton
           disabled={!isReady}
           onClick={togglePlayPause}
@@ -180,64 +275,15 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
             <PlayArrowRoundedIcon fontSize="large" />
           )}
         </LoadingButton>
-
-        <Box sx={{ display: "flex", flex: 1, alignItems: "center" }}>
-          <AudioProgressBar
-            duration={duration}
-            currentProgress={currrentProgress}
-            buffered={buffered}
-            customOnChange={(newValue: number) => {
-              if (!audioRef.current) return;
-              audioRef.current.currentTime = newValue;
-              setCurrrentProgress(newValue);
-            }}
-          />
-          <div className="timeline">{`${elapsedDisplay}/${durationDisplay}`}</div>
-        </Box>
-
-        <IconButton
-          onClick={handleMuteUnmute}
-          aria-label={volume === 0 ? "unmute" : "mute"}
-        >
-          {volume === 0 ? (
-            <VolumeOffRoundedIcon color="primary" />
-          ) : (
-            <VolumeDownRoundedIcon color="primary" />
-          )}
-        </IconButton>
-        <VolumeInput volume={volume} onVolumeChange={handleVolumeChange} />
-      </Box>
-      <Box
-        sx={{
-          p: 0.5,
-          display: "flex",
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <IconButton>
-          <SkipPreviousIcon fontSize="large" color="primary" />
-        </IconButton>
-
-        <IconButton onClick={handlePlaybackSpeed} color="primary">
-          {playSpeed}x
-        </IconButton>
-        <IconButton onClick={() => handleDurationChange(-30)}>
-          <Replay30Icon fontSize="large" color="primary" />
-        </IconButton>
-        <IconButton onClick={() => handleDurationChange(-10)}>
-          <Replay10Icon fontSize="large" color="primary" />
-        </IconButton>
         <IconButton onClick={() => handleDurationChange(10)}>
-          <Forward10Icon fontSize="large" color="primary" />
+          <Forward10Icon fontSize="medium" color="primary" />
         </IconButton>
-        <IconButton onClick={() => handleDurationChange(30)}>
-          <Forward30Icon fontSize="large" color="primary" />
-        </IconButton>
-        <IconButton>
-          <SkipNextIcon fontSize="large" color="primary" />
-        </IconButton>
+        {/* <IconButton onClick={() => handleDurationChange(30)}>
+          <Forward30Icon fontSize="medium" color="primary" />
+        </IconButton> */}
+        {/* <IconButton>
+          <SkipNextIcon fontSize="medium" color="primary" />
+        </IconButton> */}
       </Box>
       {/* <Box sx={{ display: "flex", alignItems: "center" }}>
         <AudioProgressBar
