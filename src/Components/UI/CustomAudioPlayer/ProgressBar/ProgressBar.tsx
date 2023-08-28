@@ -33,7 +33,7 @@ export const AudioProgressBar = (props: AudioProgressBarProps) => {
   return (
     <>
       <Slider
-        sx={{ marginInline: 2 }}
+        sx={{ marginInline: 1 }}
         min={0}
         step={0.05}
         max={duration}

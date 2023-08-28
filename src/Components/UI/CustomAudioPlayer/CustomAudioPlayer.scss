@@ -1,14 +1,11 @@
 @import "../../../Styles/Styles.scss";
 
-.avatar-wrapper {
-}
-
 .audio-track {
   width: 100%;
+  display: none;
 }
 
 .timeline {
   display: flex;
-  height: auto;
-  width: 90px;
+  width: 38px;
 }
