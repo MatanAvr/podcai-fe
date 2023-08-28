@@ -39,6 +39,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
 
   useEnhancedEffect(() => {
     setIsReady(false);
+    setIsPlaying(false);
   }, [episode]);
 
   useEnhancedEffect(() => {
@@ -126,8 +127,6 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
     setPlaySpeed(localPlaySpeed);
     audioRef.current.playbackRate = localPlaySpeed;
   };
-
-  useEffect(() => {});
 
   return (
     <Card
