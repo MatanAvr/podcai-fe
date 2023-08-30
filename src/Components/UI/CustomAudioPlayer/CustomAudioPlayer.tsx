@@ -263,10 +263,10 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
           <Replay10Icon fontSize="medium" color="primary" />
         </IconButton>
         <LoadingButton
-          disabled={!isReady}
+          // disabled={!isReady}
           onClick={togglePlayPause}
           aria-label={isPlaying ? "Pause" : "Play"}
-          loading={!isReady}
+          // loading={!isReady}
         >
           {isPlaying ? (
             <PauseRoundedIcon fontSize="large" />
@@ -283,6 +283,18 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
         {/* <IconButton>
           <SkipNextIcon fontSize="medium" color="primary" />
         </IconButton> */}
+        {isMobile() && (
+          <IconButton
+            onClick={handleMuteUnmute}
+            aria-label={volume === 0 ? "unmute" : "mute"}
+          >
+            {volume === 0 ? (
+              <VolumeOffRoundedIcon color="primary" />
+            ) : (
+              <VolumeDownRoundedIcon color="primary" />
+            )}
+          </IconButton>
+        )}
       </Box>
       {/* <Box sx={{ display: "flex", alignItems: "center" }}>
         <AudioProgressBar
