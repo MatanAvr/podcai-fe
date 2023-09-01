@@ -7,7 +7,7 @@ import { Login } from "../../Pages/Login/Login";
 import { Home } from "../../Pages/Home/Home";
 import { Paper } from "@mui/material";
 import { SignUpNew } from "../../Pages/SignUpNew/SignUpNew";
-import { Settings } from "../../Pages/Template/Settings";
+import { Settings } from "../../Pages/Settings/Settings";
 import { useAppSelector } from "../../Hooks/Hooks";
 
 interface mainIprops {
