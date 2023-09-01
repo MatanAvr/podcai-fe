@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Categories,
   NUM_OF_CATEGORIES,
@@ -40,21 +40,21 @@ export const Settings = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
-
-  const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">(
+  const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices>(
     loggedUser.voice
   );
-  const [dailyNotification, setDailyNotification] = useState<boolean>(
+  const [shouldSendEpisodeEmail, setShouldSendEpisodeEmail] = useState<boolean>(
     loggedUser.should_send_episode_email
   );
   const [chosenCategories, setChosenCategories] = useState<Categories[]>(
     [...loggedUser.categories] || []
   );
+  const hasMounted = useRef(false);
 
   useEffect(() => {
-    if (!voiceSamples) {
-      getVoiceSamepls();
-    }
+    if (hasMounted.current) return;
+    getVoiceSamepls();
+    hasMounted.current = true;
   }, [voiceSamples]);
 
   const getVoiceSamepls = async () => {
@@ -80,6 +80,8 @@ export const Settings = () => {
     setIsUpdading(true);
     const userToUpdate = cloneDeep(loggedUser);
     userToUpdate.categories = chosenCategories;
+    userToUpdate.should_send_episode_email = shouldSendEpisodeEmail;
+    userToUpdate.voice = chosenVoiceSample;
     const updateRes = await apiClientInstance.userUpdate({
       ...userToUpdate,
       num_of_articles: 2,
@@ -92,6 +94,8 @@ export const Settings = () => {
     const newVoice = event.target.value;
     setChosenVoiceSample(newVoice as Voices);
   };
+
+  useEffect(() => {}, []);
 
   const settingsContainer = (
     <>
@@ -178,8 +182,8 @@ export const Settings = () => {
             control={
               <Checkbox
                 id="should_send_episode_email"
-                checked={dailyNotification}
-                onClick={() => setDailyNotification((prev) => !prev)}
+                checked={shouldSendEpisodeEmail}
+                onClick={() => setShouldSendEpisodeEmail((prev) => !prev)}
               />
             }
             label="Send me emails when my podcai are ready!"
@@ -228,7 +232,7 @@ export const Settings = () => {
       <LoadingButton
         variant="contained"
         loading={isUpdading}
-        disabled={!(chosenCategories.length === 3 && chosenVoiceSample !== "")}
+        disabled={!(chosenCategories.length === 3)}
         onClick={onClickSaveHandler}
       >
         Save
