@@ -6,25 +6,27 @@ import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import { isMobile } from "../../Utils/Utils";
 import { ApiClient } from "../../Services/axios";
-import podcaiLogo from "../../Assets/Images/logo.jpg";
+import podcaiLogo2 from "../../Assets/Images/podcai-logo2.jpg";
 import { toggleDarkMode } from "../../Features/Style/Style";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
 import {
   AppBar,
   Avatar,
   Box,
   Button,
   IconButton,
+  ListItemIcon,
   Menu,
   MenuItem,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
-const apiClientInstance = ApiClient.getInstance();
+import { useNavigate } from "react-router-dom";
+import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
-const startBtnsArr: Pages[] = ["About", "Features", "Team"];
-const endBtnsArr: Pages[] = ["Login", "Sign up"];
-const mobile = isMobile();
+const apiClientInstance = ApiClient.getInstance();
 
 export const Header = () => {
   const isAuth = useAppSelector((state) => state.user.auth);
@@ -33,6 +35,11 @@ export const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const hasMounted = useRef(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEnhancedEffect(() => {
+    navigate(`/${currentPage}`);
+  }, [currentPage]);
 
   const changePageHandler = (newPage: Pages) => {
     dispatch(moveToPage(newPage));
@@ -89,9 +96,9 @@ export const Header = () => {
           >
             <Avatar
               alt="podcai logo"
-              src={podcaiLogo}
+              src={podcaiLogo2}
               sizes="small"
-              sx={{ scale: 0.6, mx: 0.5 }}
+              sx={{ mr: 1 }}
             />
             <Typography
               variant="h6"
@@ -103,51 +110,7 @@ export const Header = () => {
             </Typography>
           </Button>
 
-          {/* <FormControlLabel
-            sx={{ mx: 0.5 }}
-            control={
-              <Switch
-                checked={themeMode === "dark"}
-                onChange={toggleDarkModeLocal}
-                name="jason"
-              />
-            }
-            label="Dark mode"
-          /> */}
-
-          {!isAuth && !isMobile() && (
-            <>
-              <Button
-                onClick={() => {
-                  changePageHandler("Team");
-                }}
-                variant="text"
-                // sx={{ my: 1, mx: 1.5 }}
-              >
-                Team
-              </Button>
-
-              <Button
-                onClick={() => {
-                  changePageHandler("Features");
-                }}
-                variant="text"
-                // sx={{ my: 1, mx: 1.5 }}
-              >
-                Features
-              </Button>
-
-              <Button
-                onClick={() => {
-                  changePageHandler("About");
-                }}
-                variant="text"
-                // sx={{ my: 1, mx: 1.5 }}
-              >
-                About
-              </Button>
-            </>
-          )}
+          {!isAuth && !isMobile() && <></>}
         </Box>
         <Box>
           {isAuth ? (
@@ -161,15 +124,9 @@ export const Header = () => {
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
                 keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
@@ -180,6 +137,9 @@ export const Header = () => {
                     handleClose();
                   }}
                 >
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
                   Settings
                 </MenuItem>
 
@@ -187,23 +147,15 @@ export const Header = () => {
                   sx={{ background: "white", color: "black" }}
                   onClick={() => {
                     dispatch(setAuth({ newMode: false, token: "" }));
-                    changePageHandler("Login");
+                    changePageHandler("ComingSoon");
                   }}
                 >
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
                   Log out
                 </MenuItem>
               </Menu>
-
-              {/* <Button
-                onClick={() => {
-                  dispatch(setAuth({ newMode: false, token: "" }));
-                  changePageHandler("Login");
-                }}
-                variant="outlined"
-                sx={{ my: 1, mx: 1.5 }}
-              >
-                Logout
-              </Button> */}
             </>
           ) : (
             <>
@@ -211,7 +163,7 @@ export const Header = () => {
                 onClick={() => {
                   changePageHandler("Login");
                 }}
-                variant="outlined"
+                variant="contained"
                 sx={{ my: 1, mx: 1.5 }}
               >
                 Login

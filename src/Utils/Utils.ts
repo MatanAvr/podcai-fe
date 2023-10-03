@@ -1,7 +1,10 @@
-export const isValidEmail = (email: string): boolean =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-export const isValidEmail2 = (email: string): boolean =>
-  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+export const isValidEmail = (email: string): boolean => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+export const isValidEmail2 = (email: string): boolean => {
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+};
 
 export const addErrorToId = (id: string) => {
   const el = document.getElementById(id);
@@ -39,8 +42,14 @@ export const isMobile = () => {
 export const formatDurationDisplay = (duration: number) => {
   const min = Math.floor(duration / 60);
   const sec = Math.floor(duration - min * 60);
-
   const formatted = [min, sec].map((n) => (n < 10 ? "0" + n : n)).join(":"); // format - mm:ss
-
   return formatted;
+};
+
+export const getFileType = (file: File): string => {
+  return file.type;
+};
+
+export const getFileSizeInBytes = (file: File): number => {
+  return file.size;
 };
