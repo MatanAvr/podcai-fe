@@ -35,7 +35,7 @@ export const Login = () => {
 
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    //validate field
+    //validate fields
     setIsLoading(true);
     setErrorMsg("");
     try {
@@ -87,7 +87,7 @@ export const Login = () => {
       onSubmit={loginHandler}
     >
       <Typography variant="h4" component="div" sx={{ alignSelf: "center" }}>
-        Login
+        Log in to podcai
       </Typography>
 
       <TextField
