@@ -2,15 +2,11 @@ import { Card, Box, Chip, Rating, IconButton, Typography } from "@mui/material";
 import _ from "lodash";
 import "./CustomAudioPlayer.scss";
 import { Episode } from "../../../ConstAndTypes/consts";
-import { useEffect, useRef, useState } from "react";
-import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import { useRef, useState } from "react";
+import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
+import PauseCircleFilledOutlinedIcon from "@mui/icons-material/PauseCircleFilledOutlined";
 import Forward10Icon from "@mui/icons-material/Forward10";
-import Forward30Icon from "@mui/icons-material/Forward30";
 import Replay10Icon from "@mui/icons-material/Replay10";
-import Replay30Icon from "@mui/icons-material/Replay30";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import { LoadingButton } from "@mui/lab";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 import { VolumeInput } from "./VolumeInput/VolumeInput";
@@ -169,23 +165,9 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
         <Box
           sx={{
             display: "flex",
-            // flex: 1,
             width: "100%",
           }}
         >
-          {/* <LoadingButton
-            disabled={!isReady}
-            onClick={togglePlayPause}
-            aria-label={isPlaying ? "Pause" : "Play"}
-            loading={!isReady}
-          >
-            {isPlaying ? (
-              <PauseRoundedIcon fontSize="medium" />
-            ) : (
-              <PlayArrowRoundedIcon fontSize="medium" />
-            )}
-          </LoadingButton> */}
-
           <Box sx={{ display: "flex", flex: 1, alignItems: "center" }}>
             <AudioProgressBar
               duration={duration}
@@ -209,7 +191,6 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
             justifyContent: "space-between",
           }}
         >
-          {/* <div className="timeline">{`${elapsedDisplay}/${durationDisplay}`}</div> */}
           <div className="timeline">{`${elapsedDisplay}`}</div>
           {!isMobile() && (
             <Box
@@ -249,40 +230,27 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
           justifyContent: "space-between",
         }}
       >
-        {/* <IconButton>
-          <SkipPreviousIcon fontSize="medium" color="primary" />
-        </IconButton> */}
-
         <IconButton onClick={handlePlaybackSpeed} color="primary">
           <Typography>{playSpeed}x</Typography>
         </IconButton>
-        {/* <IconButton onClick={() => handleDurationChange(-30)}>
-          <Replay30Icon fontSize="medium" color="primary" />
-        </IconButton> */}
+
         <IconButton onClick={() => handleDurationChange(-10)}>
           <Replay10Icon fontSize="medium" color="primary" />
         </IconButton>
         <LoadingButton
-          // disabled={!isReady}
           onClick={togglePlayPause}
           aria-label={isPlaying ? "Pause" : "Play"}
-          // loading={!isReady}
         >
           {isPlaying ? (
-            <PauseRoundedIcon fontSize="large" />
+            <PauseCircleFilledOutlinedIcon fontSize="large" />
           ) : (
-            <PlayArrowRoundedIcon fontSize="large" />
+            <PlayCircleFilledOutlinedIcon fontSize="large" />
           )}
         </LoadingButton>
         <IconButton onClick={() => handleDurationChange(10)}>
           <Forward10Icon fontSize="medium" color="primary" />
         </IconButton>
-        {/* <IconButton onClick={() => handleDurationChange(30)}>
-          <Forward30Icon fontSize="medium" color="primary" />
-        </IconButton> */}
-        {/* <IconButton>
-          <SkipNextIcon fontSize="medium" color="primary" />
-        </IconButton> */}
+
         {isMobile() && (
           <IconButton
             onClick={handleMuteUnmute}
@@ -296,64 +264,6 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
           </IconButton>
         )}
       </Box>
-      {/* <Box sx={{ display: "flex", alignItems: "center" }}>
-        <AudioProgressBar
-          duration={duration}
-          currentProgress={currrentProgress}
-          buffered={buffered}
-          customOnChange={(newValue: number) => {
-            if (!audioRef.current) return;
-            audioRef.current.currentTime = newValue;
-            setCurrrentProgress(newValue);
-          }}
-        />
-        <div className="timeline">{`${elapsedDisplay}/${durationDisplay}`}</div>
-      </Box> */}
-
-      {/* Rating */}
-      {/* <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignContent: "center",
-          justifyContent: "center",
-          my: 0.5,
-        }}
-      >
-        <Rating
-          sx={
-            {
-              // border: "1px solid gold",
-              // height: "min-content",
-              // alignSelf: "center",
-              // justifySelf: "center",
-              // width: "100%",
-            }
-          }
-          name="episode-rating"
-          value={null}
-        />
-      </Box> */}
-
-      {/* //episode categories */}
-      {/* <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignContent: "center",
-          justifyContent: "center",
-        }}
-      >
-        {episode.categories.map((category, index) => (
-          <Chip
-            key={"CatChip" + index}
-            label={_.capitalize(category)}
-            size="small"
-            sx={{ mx: 0.5 }}
-            variant="outlined"
-          />
-        ))}
-      </Box> */}
     </Card>
   );
 };

@@ -44,7 +44,6 @@ export const Home = () => {
     [...loggedUser.categories] || []
   );
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
-  // const [oneTimeFlag, setOneTimeFlag] = useState<boolean>(false);
   const hasMounted = useRef(false);
 
   useEffect(() => {
@@ -99,10 +98,22 @@ export const Home = () => {
 
   return (
     <div className={`home-wrapper ${mobile ? "mobile" : ""}`}>
-      <Typography variant="h4" component="div">
-        Hello {loggedUser.name}!
+      <Typography
+        variant="h4"
+        component="div"
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div>Hello {loggedUser.name}!</div>
         <LoadingButton
-          sx={{ marginInlineStart: "10px" }}
+          sx={{
+            marginInlineStart: "10px",
+            borderRadius: "50px",
+            height: "80%",
+          }}
           key={"get-episodes"}
           variant="contained"
           onClick={getEpisodes}
@@ -197,6 +208,7 @@ export const Home = () => {
             )}
           </div>
         </Card>
+
         {/* all episodes card*/}
         <Card
           key={"middle-card"}
@@ -204,8 +216,6 @@ export const Home = () => {
           elevation={0}
           sx={{
             p: 1,
-            // Width: "32%",
-            // maxWidth: "32%",
             display: "flex",
             flexDirection: "column",
             flex: isMobile() ? 0.75 : 0.5,
@@ -217,6 +227,7 @@ export const Home = () => {
         >
           <Typography key={"middle-title"} variant="h5" component="div">
             All episodes
+            {allEpisodes?.length ? ` [${allEpisodes?.length}]` : ""}
           </Typography>
           <div className="episodes-wrapper">
             {isLoadingEpisodes ? (

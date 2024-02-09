@@ -1,8 +1,6 @@
 import "./DynamicLogo.scss";
 
-interface dynamicLogoProps {}
-
-export const DynamicLogo = ({}: dynamicLogoProps) => {
+export const DynamicLogo = () => {
   return (
     <div className="dynamic-logo-wrapper">
       <div className="dynamic-logo-container">

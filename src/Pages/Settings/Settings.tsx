@@ -6,10 +6,11 @@ import {
   Voices,
 } from "../../ConstAndTypes/consts";
 import "./Settings.scss";
-import { useAppSelector } from "../../Hooks/Hooks";
+import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
 import {
+  Avatar,
   Box,
   Checkbox,
   FormControl,
@@ -22,6 +23,8 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import _ from "lodash";
+import { moveToPage } from "../../Features/Navigation/Navigation";
+
 const apiClientInstance = ApiClient.getInstance();
 
 const categories: Categories[] = [
@@ -50,6 +53,8 @@ export const Settings = () => {
     [...loggedUser.categories] || []
   );
   const hasMounted = useRef(false);
+  const dispatch = useAppDispatch();
+  const [imgUrl, setImgUrl] = useState<string>("");
 
   useEffect(() => {
     if (hasMounted.current) return;
@@ -68,8 +73,7 @@ export const Settings = () => {
     const tempCatArr = [...chosenCategories];
     const index = tempCatArr.indexOf(category);
     if (index > -1) {
-      // only splice array when item is found
-      tempCatArr.splice(index, 1); // 2nd parameter means remove one item only
+      tempCatArr.splice(index, 1);
     } else if (tempCatArr.length < NUM_OF_CATEGORIES) {
       tempCatArr.push(category);
     }
@@ -86,16 +90,21 @@ export const Settings = () => {
       ...userToUpdate,
       num_of_articles: 2,
     });
-    if (updateRes.is_success) console.log("user updated");
+    if (updateRes.is_success) {
+      console.log("user updated");
+      // reload page or update loggedUser data
+    }
     setIsUpdading(false);
+  };
+
+  const onClickBackHandler = async () => {
+    dispatch(moveToPage("Home"));
   };
 
   const handleVoiceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
     setChosenVoiceSample(newVoice as Voices);
   };
-
-  useEffect(() => {}, []);
 
   const settingsContainer = (
     <>
@@ -208,6 +217,15 @@ export const Settings = () => {
     );
   }
 
+  const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    const file: File = event.target.files[0];
+    console.log(file);
+    const imgUrl = URL.createObjectURL(file);
+    setImgUrl(imgUrl);
+    console.log(imgUrl);
+  };
+
   return (
     <div className="settings-wrapper">
       <Typography variant="h4" component="div">
@@ -221,10 +239,12 @@ export const Settings = () => {
           type="file"
           accept="image/*"
           style={{ display: "none" }}
+          onChange={uploadFile}
         />
         <button id="fileSelect" type="button">
           Select some files
         </button>
+        {imgUrl && <Avatar src={imgUrl} />}
       </Box> */}
 
       {settingsContainer}
@@ -236,6 +256,14 @@ export const Settings = () => {
         onClick={onClickSaveHandler}
       >
         Save
+      </LoadingButton>
+
+      <LoadingButton
+        sx={{ mx: 1 }}
+        variant="contained"
+        onClick={onClickBackHandler}
+      >
+        Back
       </LoadingButton>
     </div>
   );
