@@ -208,6 +208,7 @@ export const Home = () => {
             )}
           </div>
         </Card>
+
         {/* all episodes card*/}
         <Card
           key={"middle-card"}
@@ -226,6 +227,7 @@ export const Home = () => {
         >
           <Typography key={"middle-title"} variant="h5" component="div">
             All episodes
+            {allEpisodes?.length ? ` [${allEpisodes?.length}]` : ""}
           </Typography>
           <div className="episodes-wrapper">
             {isLoadingEpisodes ? (

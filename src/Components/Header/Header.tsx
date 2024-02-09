@@ -89,9 +89,7 @@ export const Header = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Button
             onClick={() =>
-              isAuth
-                ? changePageHandler("Home")
-                : changePageHandler("ComingSoon")
+              isAuth ? changePageHandler("Home") : changePageHandler("")
             }
           >
             <Avatar
@@ -126,7 +124,7 @@ export const Header = () => {
                 anchorEl={anchorEl}
                 keepMounted
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
@@ -147,7 +145,7 @@ export const Header = () => {
                   sx={{ background: "white", color: "black" }}
                   onClick={() => {
                     dispatch(setAuth({ newMode: false, token: "" }));
-                    changePageHandler("ComingSoon");
+                    changePageHandler("");
                   }}
                 >
                   <ListItemIcon>

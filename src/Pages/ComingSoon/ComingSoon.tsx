@@ -1,5 +1,5 @@
 import "./ComingSoon.scss";
-import { BsTwitter } from "react-icons/bs";
+import { BsTwitterX } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFacebook } from "react-icons/bs";
 import { BsLinkedin } from "react-icons/bs";
@@ -11,9 +11,9 @@ import { useAppDispatch } from "../../Hooks/Hooks";
 import { Button } from "@mui/material";
 
 const twitterLink = "https://twitter.com/podcai";
-const facebookLink = "https://www.facebook.com/podcai.co?mibextid=LQQJ4d";
-const instagramLink = "https://instagram.com/podcai?igshid=MzRlODBiNWFlZA==";
-const linkedinLink = "https://www.linkedin.com/company/podcai/";
+const facebookLink = "https://www.facebook.com/podcai.co";
+const instagramLink = "https://instagram.com/podcai";
+const linkedinLink = "https://www.linkedin.com/company/podcai";
 
 export const ComingSoon = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,6 @@ export const ComingSoon = () => {
   return (
     <div className="coming-soon-wrapper">
       <div className="info-wrapper">
-        Coming Soon...
         <div className="title">
           podc<span className="colored">ai</span>
           <DynamicLogo />
@@ -39,19 +38,19 @@ export const ComingSoon = () => {
 
       <div className="icons-wrapper">
         <IconButton onClick={() => openInNewWindow(twitterLink)}>
-          <BsTwitter size={25} />
+          <BsTwitterX size={30} />
         </IconButton>
 
         <IconButton onClick={() => openInNewWindow(instagramLink)}>
-          <BsInstagram size={25} />
+          <BsInstagram size={30} />
         </IconButton>
 
         <IconButton onClick={() => openInNewWindow(facebookLink)}>
-          <BsFacebook size={25} />
+          <BsFacebook size={30} />
         </IconButton>
 
         <IconButton onClick={() => openInNewWindow(linkedinLink)}>
-          <BsLinkedin size={25} />
+          <BsLinkedin size={30} />
         </IconButton>
       </div>
     </div>

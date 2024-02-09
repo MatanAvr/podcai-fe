@@ -7,6 +7,9 @@ import {
   GET_VOICE_SAMPLES_URL,
   USER_LOGIN_URL,
   SIGNUP_URL,
+  USER_UPDATE_URL,
+  VERIFY_OTP_URL,
+  SEND_OTP_URL,
   getEpisodesResponse,
   getPodcastsResponse,
   getVoiceSamplesResponse,
@@ -14,13 +17,13 @@ import {
   signUpResponse,
   updateUserResponse,
   updateUserRequest,
-  USER_UPDATE_URL,
   sendOtpRequest,
   sendOtpResponse,
-  SEND_OTP_URL,
   verifyOtpRequest,
   verifyOtpResponse,
-  VERIFY_OTP_URL,
+  unsubscribeRequest,
+  unsubscribeResponse,
+  UNSUBSCRIBE_URL,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -154,6 +157,19 @@ export class ApiClient {
       return response.data;
     } catch (error) {
       console.log("verifyOtp, error:", error);
+      throw error;
+    }
+  }
+
+  async unsubscribe(
+    unsubscribeReq: unsubscribeRequest
+  ): Promise<unsubscribeResponse> {
+    try {
+      const response: AxiosResponse<unsubscribeResponse> =
+        await this.axiosInstance.post(UNSUBSCRIBE_URL, unsubscribeReq);
+      return response.data;
+    } catch (error) {
+      console.log("unsubscribeReq, error:", error);
       throw error;
     }
   }

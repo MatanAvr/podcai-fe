@@ -6,7 +6,7 @@ import {
   Voices,
 } from "../../ConstAndTypes/consts";
 import "./Settings.scss";
-import { useAppSelector } from "../../Hooks/Hooks";
+import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
 import {
@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import _ from "lodash";
+import { moveToPage } from "../../Features/Navigation/Navigation";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -52,6 +53,7 @@ export const Settings = () => {
     [...loggedUser.categories] || []
   );
   const hasMounted = useRef(false);
+  const dispatch = useAppDispatch();
   const [imgUrl, setImgUrl] = useState<string>("");
 
   useEffect(() => {
@@ -95,12 +97,14 @@ export const Settings = () => {
     setIsUpdading(false);
   };
 
+  const onClickBackHandler = async () => {
+    dispatch(moveToPage("Home"));
+  };
+
   const handleVoiceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
     setChosenVoiceSample(newVoice as Voices);
   };
-
-  useEffect(() => {}, []);
 
   const settingsContainer = (
     <>
@@ -252,6 +256,14 @@ export const Settings = () => {
         onClick={onClickSaveHandler}
       >
         Save
+      </LoadingButton>
+
+      <LoadingButton
+        sx={{ mx: 1 }}
+        variant="contained"
+        onClick={onClickBackHandler}
+      >
+        Back
       </LoadingButton>
     </div>
   );
