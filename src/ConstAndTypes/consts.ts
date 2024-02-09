@@ -20,7 +20,8 @@ export type Pages =
   | "Login"
   | "Sign up"
   | "Home"
-  | "Settings";
+  | "Settings"
+  | "";
 
 export type Categories =
   | "general"
@@ -91,7 +92,6 @@ export type Voices = "Guy" | "Aria";
 
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";
-
 export const USER_LOGIN_URL = "/user/login/";
 export const USER_AUTH_URL = "/user/auth/";
 export type loginRequest = { email: string; password: string };
@@ -178,3 +178,11 @@ export const NUM_OF_CATEGORIES = 3;
 export interface CustomAxiosError {
   detail: string;
 }
+
+export const UNSUBSCRIBE_URL = "/unsubscribe/";
+export type unsubscribeRequest = {
+  email: string;
+};
+export type unsubscribeResponse = {
+  is_success: boolean;
+};
