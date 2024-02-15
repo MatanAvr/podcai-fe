@@ -12,16 +12,7 @@ export interface INewUser {
 
 export type loggedInUser = Omit<INewUser, "num_of_articles" | "password">;
 
-export type Pages =
-  | "ComingSoon"
-  | "Team"
-  | "About"
-  | "Features"
-  | "Login"
-  | "Sign up"
-  | "Home"
-  | "Settings"
-  | "";
+export type Pages = "Login" | "Sign up" | "Home" | "Settings" | "LandingPage";
 
 export type Categories =
   | "general"

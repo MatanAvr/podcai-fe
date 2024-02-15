@@ -1,10 +1,23 @@
-@import "../../../src/Styles/Styles.scss";
-
 .sign-up-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 60%;
+
+  .choose-voice-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+      outline: 1px solid white;
+    }
+
+    &.active {
+      outline: 1px solid gold;
+    }
+  }
   .sign-up-container {
     display: flex;
     flex-direction: column;
@@ -17,7 +30,7 @@
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 20px;
     }
     .voices-wrapper {
       display: flex;
@@ -25,21 +38,6 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-
-      .choose-voice-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        &:hover {
-          cursor: pointer;
-          outline: 1px solid white;
-        }
-
-        &.active {
-          outline: 1px solid gold;
-        }
-      }
     }
 
     .sign-up-buttons {

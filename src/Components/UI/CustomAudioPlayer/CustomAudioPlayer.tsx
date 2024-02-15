@@ -1,5 +1,4 @@
-import { Card, Box, Chip, Rating, IconButton, Typography } from "@mui/material";
-import _ from "lodash";
+import { Card, Box, IconButton, Typography } from "@mui/material";
 import "./CustomAudioPlayer.scss";
 import { Episode } from "../../../ConstAndTypes/consts";
 import { useRef, useState } from "react";
