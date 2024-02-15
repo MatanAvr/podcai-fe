@@ -1,11 +1,11 @@
 import "./App.scss";
 import { Main } from "./Components/Main/Main";
-import { Header } from "./Components/Header/Header";
 import { useAppSelector } from "./Hooks/Hooks";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
+import CustomAppBar from "./Pages/landing-page/components/CustomAppBar";
 
-const defaultTheme = createTheme({
+export const customDefaultTheme = createTheme({
   typography: {
     fontFamily: ["Hero", "sans-serif"].join(","),
     button: {
@@ -15,12 +15,12 @@ const defaultTheme = createTheme({
 
   palette: {
     text: {
-      primary: "rgba(255,255,255,0.87)",
-      secondary: "rgba(255,255,255,0.87)",
+      // primary: "rgba(255,255,255,0.87)",
+      // secondary: "rgba(255,255,255,0.87)",
     },
     background: {
-      default: "linear-gradient(125deg, #8c52ff, #5ce1e6)",
-      paper: "linear-gradient(125deg, #8c52ff, #5ce1e6)",
+      // default: "linear-gradient(125deg, #8c52ff, #5ce1e6)",
+      // paper: "linear-gradient(125deg, #8c52ff, #5ce1e6)",
     },
   },
 });
@@ -38,14 +38,15 @@ const darkTheme = createTheme({
 });
 
 const App = () => {
-  const themeMode = useAppSelector((state) => state.style.themeMode);
+  const themeMode = useAppSelector((state) => state.theme.themeMode);
 
   return (
-    <ThemeProvider theme={themeMode === "dark" ? darkTheme : defaultTheme}>
+    <ThemeProvider
+      theme={themeMode === "dark" ? darkTheme : customDefaultTheme}
+    >
       <div className="App">
-        <Header />
+        <CustomAppBar />
         <Main />
-        {/* <Footer /> */}
       </div>
     </ThemeProvider>
   );

@@ -10,7 +10,6 @@ import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
 import {
-  Avatar,
   Box,
   Checkbox,
   FormControl,
@@ -54,7 +53,6 @@ export const Settings = () => {
   );
   const hasMounted = useRef(false);
   const dispatch = useAppDispatch();
-  const [imgUrl, setImgUrl] = useState<string>("");
 
   useEffect(() => {
     if (hasMounted.current) return;
@@ -202,50 +200,11 @@ export const Settings = () => {
     </>
   );
 
-  const fileSelect = document.getElementById("fileSelect");
-  const fileElem = document.getElementById("fileElem");
-
-  if (fileSelect) {
-    fileSelect.addEventListener(
-      "click",
-      (e) => {
-        if (fileElem) {
-          fileElem.click();
-        }
-      },
-      false
-    );
-  }
-
-  const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
-    const file: File = event.target.files[0];
-    console.log(file);
-    const imgUrl = URL.createObjectURL(file);
-    setImgUrl(imgUrl);
-    console.log(imgUrl);
-  };
-
   return (
     <div className="settings-wrapper">
       <Typography variant="h4" component="div">
         Settings
       </Typography>
-
-      {/* <Box sx={{ my: 1 }}>
-        upload a profile picture
-        <input
-          id="fileElem"
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={uploadFile}
-        />
-        <button id="fileSelect" type="button">
-          Select some files
-        </button>
-        {imgUrl && <Avatar src={imgUrl} />}
-      </Box> */}
 
       {settingsContainer}
 

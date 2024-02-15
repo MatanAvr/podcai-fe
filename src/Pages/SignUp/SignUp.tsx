@@ -1,32 +1,42 @@
-import "./SignUp.scss";
-import { useState, useEffect } from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import {
-  INewUser,
+  Alert,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
+import {
   Categories,
+  INewUser,
+  MIN_NAME_LENGTH,
+  MIN_PASS_LENGTH,
+  NUM_OF_CATEGORIES,
+  OTP_LENGTH,
   VoiceSample,
   Voices,
+  sendOtpRequest,
+  verifyOtpRequest,
 } from "../../ConstAndTypes/consts";
-import { SelectBox } from "../../Components/UI/SelectBox/SelectBox";
 import { ApiClient } from "../../Services/axios";
-import {
-  addErrorToId,
-  isValidEmail,
-  removeErrorFromId,
-} from "../../Utils/Utils";
+import { isValidEmail } from "../../Utils/Utils";
+import { useEffect, useState } from "react";
+import { LoadingButton } from "@mui/lab";
+import _ from "lodash";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import { setAuth, setLoggedUser } from "../../Features/User/User";
-import { DynamicLogo } from "../../Components/UI/DynamicLogo/DynamicLogo";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
-import _ from "lodash";
+import { setLoggedUser, setAuth } from "../../Features/User/User";
+import { isAxiosError } from "axios";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -42,8 +52,8 @@ const newUserDefault: INewUser = {
   should_send_episode_email: true,
 };
 
-const numOfCategoriesToChoose = 3;
-
+const steps = ["Details", "Verify email", "Personalization"];
+const onlyNumbersRegex = /^[0-9]+$/;
 const categories: Categories[] = [
   "general",
   "world",
@@ -55,31 +65,19 @@ const categories: Categories[] = [
   "science",
   "entertainment",
 ];
-
 export const SignUp = () => {
+  const dispatch = useAppDispatch();
   const [newUser, setNewUser] = useState<INewUser>(newUserDefault);
-  const [chosenCategories, setChosenCategories] = useState<Categories[]>([]);
-  const [stageIndex, setStageIndex] = useState<number>(0);
+  const [otp, setOtp] = useState<string>("");
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const [skipped, setSkipped] = useState(new Set<number>());
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [emailErr, setEmailErr] = useState<string>("");
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
-  const [errorMsg, setErrorMsg] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-
-  const validateEmail = () => {
-    let error = "";
-    const emailValid = isValidEmail(newUser.email);
-    if (!emailValid) {
-      error = "Invalid email";
-      setErrorMsg(error);
-    } else {
-    }
-    if (error !== "") {
-      return false;
-    }
-    setErrorMsg(error);
-    return true;
-  };
+  const [chosenCategories, setChosenCategories] = useState<Categories[]>([]);
+  const [dailyNotification, setDailyNotification] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!voiceSamples) {
@@ -94,6 +92,21 @@ export const SignUp = () => {
     }
   };
 
+  const validateEmail = () => {
+    let error = "";
+    const emailValid = isValidEmail(newUser.email);
+    if (!emailValid) {
+      error = "Invalid email";
+      setEmailErr(error);
+    } else {
+    }
+    if (error !== "") {
+      return false;
+    }
+    setEmailErr(error);
+    return true;
+  };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id: key, value } = e.target;
     setNewUser({
@@ -102,60 +115,70 @@ export const SignUp = () => {
     });
   };
 
-  const signupHandler = async () => {
-    setErrorMsg("");
-    setIsLoading(true);
-    // validate fields
-    try {
-      const signUpRes = await apiClientInstance.signUp(newUser);
-      if (signUpRes.access_token) {
-        const token = signUpRes.access_token;
-        const userToLogIn = signUpRes;
-        dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
-        dispatch(setAuth({ newMode: true, token }));
-        dispatch(moveToPage("Home"));
-      }
-    } catch (err) {
-      setErrorMsg("Sign up error, please try again!");
-    }
-    setIsLoading(false);
+  const isStepOptional = (step: number) => {
+    return false;
   };
 
-  const onClickCategoryHandler = (category: Categories) => {
-    const tempCatArr = [...chosenCategories];
-    const index = tempCatArr.indexOf(category);
-    if (index > -1) {
-      // only splice array when item is found
-      tempCatArr.splice(index, 1); // 2nd parameter means remove one item only
-    } else if (tempCatArr.length < numOfCategoriesToChoose) {
-      tempCatArr.push(category);
+  const isStepSkipped = (step: number) => {
+    return skipped.has(step);
+  };
+
+  const handleNext = () => {
+    setErrorMsg("");
+    let newSkipped = skipped;
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values());
+      newSkipped.delete(activeStep);
     }
-    setChosenCategories(() => tempCatArr);
-    setNewUser({
-      ...newUser,
-      categories: tempCatArr,
+    if (activeStep === 0) {
+      sendOtp();
+      return;
+    } else if (activeStep === 1) {
+      verifyOtp();
+      return;
+    } else if (activeStep === 2) {
+      signupHandler();
+      return;
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped(newSkipped);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      // You probably want to guard against something like this,
+      // it should never occur unless someone's actively trying to break something.
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
     });
   };
 
-  const changeIndexHandler = (action: "prev" | "next") => {
-    setErrorMsg("");
-    if (action === "next" && stageIndex + 1 < signUpStagesArr.length) {
-      setStageIndex((prev) => prev + 1);
-    } else if (action === "prev" && stageIndex - 1 >= 0) {
-      setStageIndex((prev) => prev - 1);
-    }
+  const handleReset = () => {
+    setActiveStep(0);
   };
 
-  const userDataContainer = (
+  const userDataWrapper = (
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 1, width: "auto" },
+        "& .MuiTextField-root": { mb: 2, width: "auto" },
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
       }}
-      noValidate
-      autoComplete="off"
     >
       <TextField
         id="name"
@@ -171,8 +194,8 @@ export const SignUp = () => {
         onChange={onChange}
         value={newUser.email}
         onBlur={validateEmail}
-        error={errorMsg.length > 0 ? true : false}
-        helperText={errorMsg}
+        error={emailErr.length > 0 ? true : false}
+        helperText={emailErr}
       />
       <TextField
         id="password"
@@ -181,27 +204,112 @@ export const SignUp = () => {
         onChange={onChange}
         value={newUser.password}
         type="password"
+        helperText={`At least ${MIN_PASS_LENGTH} digits`}
       />
     </Box>
   );
 
-  const categoriesContainer = (
+  const verifyOtpWrapper = (
+    <Box>
+      <div>Enter the confirmation code</div>
+      <TextField
+        id="otp"
+        variant="standard"
+        onChange={(e) => changeOtpHandler(e)}
+        value={otp}
+        helperText={`${OTP_LENGTH} digits`}
+      />
+    </Box>
+  );
+
+  const sendOtp = async () => {
+    try {
+      setLoading(true);
+      const sendOtpReqObj: sendOtpRequest = {
+        name: newUser.name,
+        send_to: newUser.email,
+        method: "EMAIL",
+      };
+      const sendOtpRes = await apiClientInstance.sendOtp(sendOtpReqObj);
+      if (sendOtpRes.is_success) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (typeof error.response?.data.detail === "string") {
+          setErrorMsg(error.response?.data.detail);
+        } else {
+          setErrorMsg("General error");
+        }
+      } else {
+        setErrorMsg("General error");
+      }
+    }
+    setLoading(false);
+  };
+
+  const verifyOtp = async () => {
+    try {
+      setLoading(true);
+      const verifyOtpReqObj: verifyOtpRequest = {
+        send_to: newUser.email,
+        otp: otp,
+      };
+      const verifyOtpRes = await apiClientInstance.verifyOtp(verifyOtpReqObj);
+      if (verifyOtpRes.is_success) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (typeof error.response?.data.detail === "string") {
+          setErrorMsg(error.response?.data.detail);
+        } else {
+          setErrorMsg("General error");
+        }
+      } else {
+        setErrorMsg("General error");
+      }
+    }
+    setLoading(false);
+  };
+
+  const handleVoiceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newVoice = event.target.value;
+    setChosenVoiceSample(newVoice as Voices);
+  };
+
+  useEffect(() => {
+    if (chosenVoiceSample === "") return;
+    setNewUser({
+      ...newUser,
+      voice: chosenVoiceSample,
+    });
+  }, [chosenVoiceSample]);
+
+  useEffect(() => {
+    setNewUser({
+      ...newUser,
+      should_send_episode_email: dailyNotification,
+    });
+  }, [dailyNotification]);
+
+  const settingsContainer = (
     <>
-      <div className="categories-wrapper">
+      <div className="categories-wrapper" style={{ maxWidth: "90%" }}>
         <div>
-          Choose your top {numOfCategoriesToChoose} favorite categories:
+          <u>Choose your {NUM_OF_CATEGORIES} categories</u>
         </div>
         <Grid
           container
-          spacing={{ xs: 2, md: 3 }}
+          spacing={{ xs: 1, md: 1 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
           {categories.map((category, index) => {
             const active = chosenCategories.includes(category);
             const disabled =
-              !active && chosenCategories.length === numOfCategoriesToChoose;
+              !active && chosenCategories.length === NUM_OF_CATEGORIES;
             return (
-              <Grid item xs={2} sm={4} md={4} key={index}>
+              <Grid key={"grid" + index} item xs={2} sm={4} md={4}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -216,95 +324,234 @@ export const SignUp = () => {
             );
           })}
         </Grid>
+
+        <FormControl
+          sx={{
+            display: "flex",
+            alignContent: "center",
+            my: 1,
+            maxWidth: "100%",
+          }}
+        >
+          <u>Choose your podcaster</u>
+          <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue={chosenVoiceSample}
+            name="radio-buttons-group"
+            value={chosenVoiceSample}
+            onChange={handleVoiceChange}
+          >
+            {voiceSamples &&
+              voiceSamples.length > 0 &&
+              voiceSamples.map((voiceSample, index) => {
+                return (
+                  <div
+                    key={"voice-sample" + index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    <FormControlLabel
+                      value={voiceSample.name}
+                      control={<Radio />}
+                      label={voiceSample.name}
+                      sx={{ my: 1 }}
+                    />
+                    <audio
+                      src={voiceSample.url}
+                      controls
+                      controlsList="nodownload"
+                      style={{ maxWidth: "80%" }}
+                    />
+                  </div>
+                );
+              })}
+          </RadioGroup>
+        </FormControl>
+
+        <Box sx={{ my: 1 }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                id="should_send_episode_email"
+                checked={dailyNotification}
+                onClick={() => setDailyNotification((prev) => !prev)}
+              />
+            }
+            label="Send me emails when my podcai are ready!"
+          />
+        </Box>
       </div>
     </>
   );
 
-  const voiceContainer = (
-    <div className="voices-wrapper">
-      Voice options:
-      {voiceSamples &&
-        voiceSamples.length > 0 &&
-        voiceSamples.map((voiceSample, index) => {
-          const active = chosenVoiceSample === voiceSample.name;
-          return (
-            <div
-              key={"VS-" + index}
-              className={`choose-voice-container ${active ? "active" : ""}`}
-              onClick={() => {
-                setChosenVoiceSample(voiceSample.name);
-              }}
-            >
-              {voiceSample.name}
-              <audio src={voiceSample.url} controls controlsList="nodownload" />
-            </div>
-          );
-        })}
-    </div>
-  );
+  const onClickCategoryHandler = (category: Categories) => {
+    const tempCatArr = [...chosenCategories];
+    const index = tempCatArr.indexOf(category);
+    if (index > -1) {
+      tempCatArr.splice(index, 1);
+    } else if (tempCatArr.length < NUM_OF_CATEGORIES) {
+      tempCatArr.push(category);
+    }
+    setChosenCategories(() => tempCatArr);
+    setNewUser({
+      ...newUser,
+      categories: tempCatArr,
+    });
+  };
 
-  const signUpStagesArr = [
-    userDataContainer,
-    categoriesContainer,
-    voiceContainer,
-  ];
+  const DoneWrapper = <Box>Done</Box>;
+
+  const contentArr = [userDataWrapper, verifyOtpWrapper, settingsContainer];
 
   const checkIfNextDisabled = () => {
-    if (stageIndex === 0) {
+    if (activeStep === 0) {
+      // return false;
       return !(
-        newUser.name.length > 2 &&
+        newUser.name.length > MIN_NAME_LENGTH &&
         isValidEmail(newUser.email) &&
-        newUser.password.length >= 4
+        newUser.password.length >= MIN_PASS_LENGTH
       );
-    } else if (stageIndex === 1) {
-      return !(chosenCategories.length === 3);
-    } else if (stageIndex === 2) {
-      return !chosenVoiceSample;
+    } else if (activeStep === 1) {
+      return !(otp?.length === OTP_LENGTH);
+    } else if (activeStep === 2) {
+      return !(chosenCategories.length === 3 && chosenVoiceSample !== "");
     }
   };
 
-  const stagesLen = signUpStagesArr.length;
+  const changeOtpHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const value = e.target.value;
+    const valid =
+      value === "" ||
+      (onlyNumbersRegex.test(value) && value.length <= OTP_LENGTH);
+    if (valid) setOtp(value);
+  };
+
+  const signupHandler = async () => {
+    setErrorMsg("");
+    setLoading(true);
+    // validate fields
+    try {
+      const signUpRes = await apiClientInstance.signUp(newUser);
+      if (signUpRes.access_token) {
+        const token = signUpRes.access_token;
+        const userToLogIn = signUpRes;
+        dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
+        dispatch(setAuth({ newMode: true, token }));
+        dispatch(moveToPage("Home"));
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (typeof error.response?.data.detail === "string") {
+          setErrorMsg(error.response?.data.detail);
+        } else {
+          setErrorMsg("General error");
+        }
+      } else {
+        setErrorMsg("General error");
+      }
+    }
+    setLoading(false);
+  };
 
   return (
-    <div className="sign-up-wrapper">
-      <Typography variant="h4" component="div">
-        Sign-Up
-      </Typography>
-      {isLoading ? (
-        <DynamicLogo />
+    <Box sx={{ minWidth: "60%", maxWidth: "90%" }}>
+      <Stepper activeStep={activeStep} alternativeLabel>
+        {steps.map((label, index) => {
+          const stepProps: { completed?: boolean } = {};
+          const labelProps: {
+            optional?: React.ReactNode;
+          } = {};
+          if (isStepOptional(index)) {
+            labelProps.optional = (
+              <Typography variant="caption">Optional</Typography>
+            );
+          }
+          if (isStepSkipped(index)) {
+            stepProps.completed = false;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+      {activeStep === steps.length ? (
+        <React.Fragment>
+          <Typography sx={{ mt: 2, mb: 1 }}>
+            All steps completed - you&apos;re finished
+          </Typography>
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Box sx={{ flex: "1 1 auto" }} />
+            <Button onClick={handleReset}>Reset</Button>
+          </Box>
+        </React.Fragment>
       ) : (
-        <div className="sign-up-container">
-          <div className="sign-up-content">{signUpStagesArr[stageIndex]}</div>
+        <React.Fragment>
+          {/* //--------------------------------- */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 2,
+              mb: 1,
+              width: "100%",
+              height: "80%",
+            }}
+          >
+            {contentArr[activeStep]}
+          </Box>
+          {/* //--------------------------------- */}
 
-          <div className="sign-up-buttons">
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
-              variant="outlined"
-              onClick={() => changeIndexHandler("prev")}
-              disabled={stageIndex === 0}
+              // color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+              variant="contained"
             >
-              Prev
+              Back
             </Button>
-            {errorMsg && <div className="error">{errorMsg}</div>}
-            {stageIndex !== stagesLen - 1 ? (
+
+            <Box sx={{ flex: "1 1 auto" }} />
+            {isStepOptional(activeStep) && (
               <Button
-                variant="outlined"
-                onClick={() => changeIndexHandler("next")}
-                disabled={checkIfNextDisabled()}
+                // color="inherit"
+                onClick={handleSkip}
+                sx={{ mr: 1 }}
+                variant="contained"
               >
-                Next
-              </Button>
-            ) : (
-              <Button
-                variant="outlined"
-                onClick={signupHandler}
-                disabled={checkIfNextDisabled()}
-              >
-                Sign-up
+                Skip
               </Button>
             )}
-          </div>
-        </div>
+
+            <LoadingButton
+              onClick={handleNext}
+              disabled={checkIfNextDisabled()}
+              loading={loading}
+              variant="contained"
+            >
+              {activeStep === steps.length - 1
+                ? "Activate my account"
+                : activeStep === 0
+                ? "Verify Email"
+                : "Next"}
+            </LoadingButton>
+          </Box>
+          {errorMsg && (
+            <Alert sx={{ my: 1 }} severity="error">
+              {errorMsg}
+            </Alert>
+          )}
+        </React.Fragment>
       )}
-    </div>
+    </Box>
   );
 };

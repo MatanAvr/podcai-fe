@@ -1,5 +1,4 @@
 import { Slider } from "@mui/material";
-import * as React from "react";
 
 interface ProgressCSSProps extends React.CSSProperties {
   "--progress-width": number;

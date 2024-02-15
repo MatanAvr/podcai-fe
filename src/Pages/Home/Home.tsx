@@ -1,15 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { ApiClient } from "../../Services/axios";
 import "./Home.scss";
-import {
-  Categories,
-  Episode,
-  NUM_OF_CATEGORIES,
-} from "../../ConstAndTypes/consts";
+import { Episode } from "../../ConstAndTypes/consts";
 import { useAppSelector } from "../../Hooks/Hooks";
 import { isMobile } from "../../Utils/Utils";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { cloneDeep } from "lodash";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -26,7 +21,6 @@ import {
   Typography,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import _ from "lodash";
 import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
 import { CustomAudioPlayer } from "../../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
 
@@ -39,11 +33,7 @@ export const Home = () => {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode>();
   const [previousEpisodes, setPreviousEpisodes] = useState<Episode[]>();
   const [isLoadingEpisodes, setIsLoadingEpisodes] = useState<boolean>(false);
-  const [showAllArticles, showArticles] = useState<boolean>(false);
-  const [chosenCategories, setChosenCategories] = useState<Categories[]>(
-    [...loggedUser.categories] || []
-  );
-  const [isUpdading, setIsUpdading] = useState<boolean>(false);
+  const [showAllArticles, setShowAllArticles] = useState<boolean>(false);
   const hasMounted = useRef(false);
 
   useEffect(() => {
@@ -51,10 +41,6 @@ export const Home = () => {
     getEpisodes();
     hasMounted.current = true;
   }, []);
-
-  const toggleShowArticles = () => {
-    showArticles((prev) => !prev);
-  };
 
   const getEpisodes = async () => {
     setIsLoadingEpisodes(true);
@@ -64,30 +50,6 @@ export const Home = () => {
     setCurrentlyPlaying(sortedEpisodes[0]);
     setPreviousEpisodes(sortedEpisodes.slice(1));
     setIsLoadingEpisodes(false);
-  };
-
-  const onClickCategoryHandler = (category: Categories) => {
-    const tempCatArr = [...chosenCategories];
-    const index = tempCatArr.indexOf(category);
-    if (index > -1) {
-      // only splice array when item is found
-      tempCatArr.splice(index, 1); // 2nd parameter means remove one item only
-    } else if (tempCatArr.length < NUM_OF_CATEGORIES) {
-      tempCatArr.push(category);
-    }
-    setChosenCategories(() => tempCatArr);
-  };
-
-  const onClickSaveHandler = async () => {
-    setIsUpdading(true);
-    const userToUpdate = cloneDeep(loggedUser);
-    userToUpdate.categories = chosenCategories;
-    const updateRes = await apiClientInstance.userUpdate({
-      ...userToUpdate,
-      num_of_articles: 2,
-    });
-    if (updateRes.is_success) console.log("user updated");
-    setIsUpdading(false);
   };
 
   const onClickEpisodeHandler = (newEpisode: Episode) => {

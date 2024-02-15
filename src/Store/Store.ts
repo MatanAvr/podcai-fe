@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import UserReducer from "../Features/User/User";
+import userReducer from "../Features/User/User";
 import navigationReducer from "../Features/Navigation/Navigation";
-import styleReducer from "../Features/Style/Style";
+import themeReducer from "../Features/Theme/Theme";
 
 export const store = configureStore({
   reducer: {
-    user: UserReducer,
+    user: userReducer,
     navigation: navigationReducer,
-    style: styleReducer,
+    theme: themeReducer,
   },
 });
 
