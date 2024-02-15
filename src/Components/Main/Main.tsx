@@ -1,31 +1,78 @@
 import "./Main.scss";
-import { Routes, Route } from "react-router-dom";
-import { ComingSoon } from "../../Pages/ComingSoon/ComingSoon";
-import { About } from "../../Pages/About/About";
-import { Features } from "../../Pages/Features/Features";
-import { Team } from "../../Pages/Team/Team";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Login } from "../../Pages/Login/Login";
-import { SignUpNew } from "../../Pages/SignUpNew/SignUpNew";
+import { SignUp } from "../../Pages/SignUp/SignUp";
 import { Home } from "../../Pages/Home/Home";
 import { Settings } from "../../Pages/Settings/Settings";
 import { Unsubscribe } from "../../Pages/Unsubscribe/Unsubscribe";
 import { Paper } from "@mui/material";
+import LandingPage from "../../Pages/landing-page/LandingPage";
+import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
+import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
+import { useRef } from "react";
+import { setAuth, setLoggedUser } from "../../Features/User/User";
+import { ApiClient } from "../../Services/axios";
+import { ToggleColorMode } from "../../Features/Theme/Theme";
+
+const apiClientInstance = ApiClient.getInstance();
 
 export const Main = () => {
+  const navigate = useNavigate();
+  const currentPage = useAppSelector((state) => state.navigation.currentPage);
+  const dispatch = useAppDispatch();
+  const hasMounted = useRef(false);
+
+  useEnhancedEffect(() => {
+    navigate(`/${currentPage}`);
+  }, [currentPage]);
+
+  useEnhancedEffect(() => {
+    if (hasMounted.current) return;
+    const tokenLocal = localStorage.getItem("token");
+    const themeLocal = localStorage.getItem("theme");
+    if (tokenLocal) authAndLogin(tokenLocal);
+    if (themeLocal && themeLocal === "dark") {
+      dispatch(ToggleColorMode("dark"));
+    }
+    hasMounted.current = true;
+  }, []);
+
+  const authAndLogin = async (token: string) => {
+    try {
+      dispatch(setAuth({ newMode: true, token })); // attach token to apiClient
+      //try to login with the token
+      const authResUser = await apiClientInstance.userAuth();
+      dispatch(setLoggedUser({ newLoggeduser: authResUser }));
+      // dispatch(moveToPage("Home"));
+    } catch (err) {
+      dispatch(setAuth({ newMode: false, token: "" }));
+    }
+  };
+
   return (
-    <Paper sx={{ height: "100%", width: "100%", overflowY: "auto", pt: 1 }}>
+    <Paper
+      sx={(theme) => ({
+        height: "100%",
+        width: "100%",
+        overflowY: "auto",
+        pt: { xs: 14, sm: 15 },
+        backgroundImage:
+          theme.palette.mode === "light"
+            ? "linear-gradient(180deg, #CEE5FD, #FFF)"
+            : "linear-gradient(#02294F, #090E10)",
+        backgroundSize: "100% 25%",
+        backgroundRepeat: "no-repeat",
+      })}
+    >
       <div className="main-wrapper">
         <Routes>
-          <Route path="/" element={<ComingSoon />} />
-          <Route path="/About" element={<About />} />
-          <Route path="/Features" element={<Features />} />
-          <Route path="/Team" element={<Team />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/Sign up" element={<SignUpNew />} />
+          <Route path="/Sign up" element={<SignUp />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Settings" element={<Settings />} />
           <Route path="/Unsubscribe" element={<Unsubscribe />} />
-          <Route path="*" element={<ComingSoon />} />
+          <Route path="*" element={<LandingPage />} />
         </Routes>
       </div>
     </Paper>
