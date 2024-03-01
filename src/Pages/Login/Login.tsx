@@ -1,14 +1,23 @@
 import { useState } from "react";
-import { loginRequest } from "../../ConstAndTypes/consts";
+import { deleteErrorTimeout, loginRequest } from "../../ConstAndTypes/consts";
 import "./Login.scss";
 import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import { Alert, Box, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Card,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { isValidEmail } from "../../Utils/Utils";
 import { isAxiosError } from "axios";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -22,6 +31,10 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [emailErr, setEmailErr] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const dispatch = useAppDispatch();
 
@@ -64,9 +77,12 @@ export const Login = () => {
   const validateEmail = () => {
     let error = "";
     const emailValid = isValidEmail(user.email);
-    if (!emailValid) {
+    if (!emailValid && user.email.length > 0) {
       error = "Invalid email";
       setEmailErr(error);
+      setTimeout(() => {
+        setEmailErr("");
+      }, deleteErrorTimeout);
     } else {
     }
     if (error !== "") {
@@ -77,18 +93,18 @@ export const Login = () => {
   };
 
   return (
-    <Box
+    <Card
       component="form"
       sx={{
         "& .MuiTextField-root": { m: 1, width: "auto" },
         display: "flex",
         flexDirection: "column",
+        p: 4,
+        gap: 1,
       }}
       onSubmit={loginHandler}
     >
-      <Typography variant="h4" component="div" sx={{ alignSelf: "center" }}>
-        Log in to podcai
-      </Typography>
+      <Typography variant="h4">Log in to podcai</Typography>
 
       <TextField
         id="email"
@@ -99,6 +115,7 @@ export const Login = () => {
         value={user.email}
         error={emailErr.length > 0 ? true : false}
         helperText={emailErr}
+        required
       />
       <TextField
         id="password"
@@ -106,7 +123,21 @@ export const Login = () => {
         variant="standard"
         onChange={onChange}
         value={user.password}
-        type="password"
+        type={showPassword ? "text" : "password"}
+        required
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
       <LoadingButton
         loading={isLoading}
@@ -122,6 +153,6 @@ export const Login = () => {
           {errorMsg}
         </Alert>
       )}
-    </Box>
+    </Card>
   );
 };

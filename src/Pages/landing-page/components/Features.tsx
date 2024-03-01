@@ -7,7 +7,6 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 import EdgesensorHighRoundedIcon from "@mui/icons-material/EdgesensorHighRounded";
 import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
@@ -20,12 +19,12 @@ import mobileDark from "../../../Assets/Images/Hero-images/mobile-dark.png";
 import devicesLight from "../../../Assets/Images/Hero-images/devices-light.png";
 import devicesDark from "../../../Assets/Images/Hero-images/devices-dark.png";
 
-const items = [
+const features = [
   {
     icon: <ViewQuiltRoundedIcon />,
     title: "Topic categories",
     description: `Podcai offers a selection of 9 topic categories for news podcasts. 
-      Choose 3 topics, and Podcai will generate a daily news podcast 
+      Choose 3 topics, and Podcai will generate a news podcast 
       on these topics. Topics for your personalized podcast can be 
       changed at any time on the settings page.`,
     imageLight: `url('${dashLight}')`,
@@ -50,16 +49,16 @@ const items = [
 ];
 
 export default function Features() {
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+  const [selectedFeatureIndex, setSelectedFeatureIndex] = useState(0);
 
   const handleItemClick = (index: number) => {
-    setSelectedItemIndex(index);
+    setSelectedFeatureIndex(index);
   };
 
-  const selectedFeature = items[selectedItemIndex];
+  const selectedFeature = features[selectedFeatureIndex];
 
   return (
-    <Container id="features" sx={{ py: { xs: 8, sm: 16 } }}>
+    <Container id="Features" sx={{ py: { xs: 8, sm: 16 } }}>
       <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
           <div>
@@ -82,28 +81,32 @@ export default function Features() {
             gap={1}
             sx={{ display: { xs: "auto", sm: "none" } }}
           >
-            {items.map(({ title }, index) => (
+            {features.map(({ title }, index) => (
               <Chip
-                key={index}
+                key={`feature-chip-${index}`}
                 label={title}
                 onClick={() => handleItemClick(index)}
                 sx={{
                   borderColor: (theme) => {
                     if (theme.palette.mode === "light") {
-                      return selectedItemIndex === index ? "primary.light" : "";
+                      return selectedFeatureIndex === index
+                        ? "primary.light"
+                        : "";
                     }
-                    return selectedItemIndex === index ? "primary.light" : "";
+                    return selectedFeatureIndex === index
+                      ? "primary.light"
+                      : "";
                   },
                   background: (theme) => {
                     if (theme.palette.mode === "light") {
-                      return selectedItemIndex === index ? "none" : "";
+                      return selectedFeatureIndex === index ? "none" : "";
                     }
-                    return selectedItemIndex === index ? "none" : "";
+                    return selectedFeatureIndex === index ? "none" : "";
                   },
                   backgroundColor:
-                    selectedItemIndex === index ? "primary.main" : "",
+                    selectedFeatureIndex === index ? "primary.main" : "",
                   "& .MuiChip-label": {
-                    color: selectedItemIndex === index ? "#fff" : "",
+                    color: selectedFeatureIndex === index ? "#fff" : "",
                   },
                 }}
               />
@@ -121,8 +124,8 @@ export default function Features() {
               sx={{
                 backgroundImage: (theme) =>
                   theme.palette.mode === "light"
-                    ? items[selectedItemIndex].imageLight
-                    : items[selectedItemIndex].imageDark,
+                    ? features[selectedFeatureIndex].imageLight
+                    : features[selectedFeatureIndex].imageDark,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 minHeight: 280,
@@ -170,9 +173,9 @@ export default function Features() {
             useFlexGap
             sx={{ width: "100%", display: { xs: "none", sm: "flex" } }}
           >
-            {items.map(({ icon, title, description }, index) => (
+            {features.map(({ icon, title, description }, index) => (
               <Card
-                key={index}
+                key={`feature-card-${index}`}
                 component={Button}
                 onClick={() => handleItemClick(index)}
                 sx={{
@@ -181,14 +184,16 @@ export default function Features() {
                   width: "100%",
                   background: "none",
                   backgroundColor:
-                    selectedItemIndex === index ? "action.selected" : undefined,
+                    selectedFeatureIndex === index
+                      ? "action.selected"
+                      : undefined,
                   borderColor: (theme) => {
                     if (theme.palette.mode === "light") {
-                      return selectedItemIndex === index
+                      return selectedFeatureIndex === index
                         ? "primary.light"
                         : "grey.200";
                     }
-                    return selectedItemIndex === index
+                    return selectedFeatureIndex === index
                       ? "primary.dark"
                       : "grey.800";
                   },
@@ -208,11 +213,11 @@ export default function Features() {
                     sx={{
                       color: (theme) => {
                         if (theme.palette.mode === "light") {
-                          return selectedItemIndex === index
+                          return selectedFeatureIndex === index
                             ? "primary.main"
                             : "grey.300";
                         }
-                        return selectedItemIndex === index
+                        return selectedFeatureIndex === index
                           ? "primary.main"
                           : "grey.700";
                       },
@@ -284,8 +289,8 @@ export default function Features() {
                 backgroundSize: "contain",
                 backgroundImage: (theme) =>
                   theme.palette.mode === "light"
-                    ? items[selectedItemIndex].imageLight
-                    : items[selectedItemIndex].imageDark,
+                    ? features[selectedFeatureIndex].imageLight
+                    : features[selectedFeatureIndex].imageDark,
               }}
             />
           </Card>

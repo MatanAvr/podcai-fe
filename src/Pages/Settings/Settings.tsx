@@ -121,7 +121,7 @@ export const Settings = () => {
             const disabled =
               !active && chosenCategories.length === NUM_OF_CATEGORIES;
             return (
-              <Grid key={"grid" + index} item xs={1} sm={1} md={4}>
+              <Grid key={"category-grid-" + index} item xs={1} sm={1} md={4}>
                 <FormControlLabel
                   control={
                     <Checkbox

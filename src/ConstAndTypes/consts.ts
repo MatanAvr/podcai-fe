@@ -24,6 +24,7 @@ export type Categories =
   | "sports"
   | "science"
   | "health";
+
 type Countries =
   | "au"
   | "br"
@@ -55,6 +56,7 @@ type Countries =
   | "ua"
   | "gb"
   | "us";
+
 type Languages =
   | "ar"
   | "zh"
@@ -80,6 +82,8 @@ type Languages =
   | "uk";
 
 export type Voices = "Guy" | "Aria";
+
+export const deleteErrorTimeout = 2500;
 
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";

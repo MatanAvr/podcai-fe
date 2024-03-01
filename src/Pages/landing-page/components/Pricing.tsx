@@ -56,7 +56,7 @@ const tiers = [
 export default function Pricing() {
   return (
     <Container
-      id="pricing"
+      id="Pricing"
       sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
@@ -84,10 +84,10 @@ export default function Pricing() {
         </Typography>
       </Box>
       <Grid container spacing={3} alignItems="center" justifyContent="center">
-        {tiers.map((tier) => (
+        {tiers.map((tier, index) => (
           <Grid
             item
-            key={tier.title}
+            key={`${tier.title}-${index}`}
             xs={12}
             sm={tier.title === "Enterprise" ? 12 : 6}
             md={4}

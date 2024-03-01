@@ -33,7 +33,6 @@ export const Home = () => {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode>();
   const [previousEpisodes, setPreviousEpisodes] = useState<Episode[]>();
   const [isLoadingEpisodes, setIsLoadingEpisodes] = useState<boolean>(false);
-  const [showAllArticles, setShowAllArticles] = useState<boolean>(false);
   const hasMounted = useRef(false);
 
   useEffect(() => {
@@ -61,7 +60,7 @@ export const Home = () => {
   return (
     <div className={`home-wrapper ${mobile ? "mobile" : ""}`}>
       <Typography
-        variant="h4"
+        variant="h5"
         component="div"
         sx={{
           display: "flex",
@@ -72,45 +71,44 @@ export const Home = () => {
         <div>Hello {loggedUser.name}!</div>
         <LoadingButton
           sx={{
-            marginInlineStart: "10px",
-            borderRadius: "50px",
-            height: "80%",
+            borderRadius: "500px",
           }}
           key={"get-episodes"}
           variant="contained"
           onClick={getEpisodes}
           loading={isLoadingEpisodes}
+          size="small"
         >
           <RefreshIcon />
         </LoadingButton>
       </Typography>
 
-      <Typography variant="h5" component="div">
-        {allEpisodes &&
-          allEpisodes.length === 0 &&
-          `Your first podcai wiil be ready in a few short minutes!
-          `}
-      </Typography>
+      {allEpisodes && allEpisodes.length === 0 && (
+        <Typography variant="h5" component="div">
+          Your first podcai wiil be ready in a few short minutes!
+        </Typography>
+      )}
 
       <div className={`home-container ${mobile ? "mobile" : ""}`}>
         <Card
           key={"start-card"}
           sx={{
+            width: "100%",
+            height: "min-content",
+            maxHeight: "100%",
+            justifyContent: "flex-start",
             p: 1,
             display: "flex",
             flexDirection: "column",
             flex: 1,
-            width: "100%",
-            height: "min-content",
-            background: "rgba(255,255,255,0.2)",
-            overflow: "auto",
+            gap: 1.2,
           }}
         >
-          <Typography key={"start-title"} variant="h5" component="div">
+          <Typography key={"start-title"} component="div">
             Currently playing
           </Typography>
 
-          <div className="episodes-wrapper">
+          <>
             {isLoadingEpisodes ? (
               <LoadingSpinner />
             ) : (
@@ -118,132 +116,113 @@ export const Home = () => {
                 {currentlyPlaying ? (
                   <>
                     <CustomAudioPlayer key="AP" episode={currentlyPlaying} />
-                    {true && (
-                      <Box>
-                        <Box className="source-articles-wrapper" sx={{ my: 1 }}>
-                          <u>Sources</u>
-                        </Box>
-
-                        <div
-                          className={`articles-wrapper 
-                      ${showAllArticles ? "show" : ""}`}
-                        >
-                          {currentlyPlaying.articles_data.map(
-                            (article, index) => {
-                              return (
-                                <Accordion
-                                  key={"AR" + index}
-                                  sx={{
-                                    p: 0,
-                                    background: "rgba(255,255,255,0.2)",
-                                  }}
-                                >
-                                  <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1a-content"
-                                  >
-                                    <Typography>
-                                      {article.source_name}
-                                    </Typography>
-                                  </AccordionSummary>
-                                  <AccordionDetails>
-                                    <Link
-                                      href={article.url}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                    >
-                                      {article.title}
-                                    </Link>
-                                  </AccordionDetails>
-                                </Accordion>
-                              );
-                            }
-                          )}
-                        </div>
-                      </Box>
-                    )}
+                    <Typography>Sources</Typography>
+                    <Card sx={{ overflow: "auto", flex: 1, maxHeight: "40%" }}>
+                      {currentlyPlaying.articles_data.map((article, index) => {
+                        return (
+                          <Accordion key={"Accordion" + index}>
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="summery-content"
+                            >
+                              <Typography>{article.source_name}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                              <Link
+                                href={article.url}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                {article.title}
+                              </Link>
+                            </AccordionDetails>
+                          </Accordion>
+                        );
+                      })}
+                    </Card>
                   </>
                 ) : (
                   <div>Choose an episode</div>
                 )}
               </>
             )}
-          </div>
+          </>
         </Card>
 
         {/* all episodes card*/}
+
         <Card
           key={"middle-card"}
           variant="elevation"
-          elevation={0}
           sx={{
             p: 1,
             display: "flex",
             flexDirection: "column",
-            flex: isMobile() ? 0.75 : 0.5,
-            overflow: "auto",
+            flex: 0.5,
             width: "100%",
             maxHeight: "100%",
-            background: "rgba(255,255,255,0.2)",
+            gap: 1,
           }}
         >
-          <Typography key={"middle-title"} variant="h5" component="div">
+          <Typography key={"middle-title"}>
             All episodes
             {allEpisodes?.length ? ` [${allEpisodes?.length}]` : ""}
           </Typography>
-          <div className="episodes-wrapper">
-            {isLoadingEpisodes ? (
-              <LoadingSpinner />
-            ) : allEpisodes ? (
-              allEpisodes.length > 0 &&
-              allEpisodes.map((episode, index) => {
-                const active = currentlyPlaying?.name === episode.name;
-                return (
-                  <Card
-                    key={"EC-" + index}
-                    sx={{
-                      my: 0.5,
-                      p: 0,
-                      display: "flex",
-                      alignContent: "center",
-                      justifyContent: "space-between",
-                      background: "rgba(255,255,255,0.2)",
-                    }}
-                  >
-                    <CardActions
+          {isLoadingEpisodes ? (
+            <LoadingSpinner />
+          ) : (
+            <Card sx={{ overflow: "auto" }}>
+              {allEpisodes ? (
+                allEpisodes.length > 0 &&
+                allEpisodes.map((episode, index) => {
+                  const active = currentlyPlaying?.name === episode.name;
+                  return (
+                    <Card
+                      key={"EC-" + index}
+                      elevation={2}
                       sx={{
-                        ":hover": {
-                          cursor: "pointer",
-                        },
-                        flex: 1,
+                        my: 0.5,
+                        p: 0,
+                        display: "flex",
+                        alignContent: "center",
+                        justifyContent: "space-between",
                       }}
-                      onClick={() => onClickEpisodeHandler(episode)}
                     >
-                      <div>
-                        <Checkbox
-                          checked={active}
-                          icon={<PlayArrowOutlinedIcon />}
-                          checkedIcon={<PlayCircleFilledOutlinedIcon />}
-                        />
-                        {episode.name}
-                      </div>
-
-                      <Box
+                      <CardActions
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignContent: "center",
-                          justifyContent: "center",
+                          ":hover": {
+                            cursor: "pointer",
+                          },
+                          flex: 1,
                         }}
-                      ></Box>
-                    </CardActions>
-                  </Card>
-                );
-              })
-            ) : (
-              <>No data</>
-            )}
-          </div>
+                        onClick={() => onClickEpisodeHandler(episode)}
+                      >
+                        <div>
+                          <Checkbox
+                            checked={active}
+                            icon={<PlayArrowOutlinedIcon />}
+                            checkedIcon={<PlayCircleFilledOutlinedIcon />}
+                          />
+                          {episode.name}
+                        </div>
+
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignContent: "center",
+                            justifyContent: "center",
+                          }}
+                        ></Box>
+                      </CardActions>
+                    </Card>
+                  );
+                })
+              ) : (
+                <>No data</>
+              )}
+            </Card>
+          )}
         </Card>
       </div>
     </div>

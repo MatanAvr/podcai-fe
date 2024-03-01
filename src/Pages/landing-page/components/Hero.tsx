@@ -20,15 +20,9 @@ export default function Hero() {
 
   return (
     <Box
-      id="hero"
+      id="Hero"
       sx={(theme) => ({
         width: "100%",
-        // backgroundImage:
-        //   theme.palette.mode === "light"
-        //     ? "linear-gradient(180deg, #CEE5FD, #FFF)"
-        //     : "linear-gradient(#02294F, #090E10)",
-        // backgroundSize: "100% 50%",
-        // backgroundRepeat: "no-repeat",
       })}
     >
       <Container
@@ -36,8 +30,6 @@ export default function Hero() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          // pt: { xs: 14, sm: 20 },
-          // pb: { xs: 8, sm: 12 },
         }}
       >
         <Stack spacing={2} useFlexGap sx={{ width: { xs: "100%", sm: "70%" } }}>
@@ -65,13 +57,13 @@ export default function Hero() {
             </Typography>
           </Typography>
           <Typography variant="h4" textAlign="center" color="text.secondary">
-            Daily personalized news podcasts
+            Personalized news podcasts
             <br />
             powered by AI
           </Typography>
 
           <Typography variant="h5" textAlign="center" color="text.secondary">
-            Stay curious, stay informed - without all the ruckus
+            Stay curious, stay informed
           </Typography>
 
           <Stack
@@ -81,7 +73,7 @@ export default function Hero() {
             useFlexGap
             sx={{ pt: 2, width: { xs: "100%", sm: "auto" } }}
           >
-            <TextField
+            {/* <TextField
               id="outlined-basic"
               hiddenLabel
               size="small"
@@ -92,7 +84,7 @@ export default function Hero() {
                 autocomplete: "off",
                 ariaLabel: "Enter your email address",
               }}
-            />
+            /> */}
             <Button
               variant="contained"
               color="primary"
@@ -110,7 +102,7 @@ export default function Hero() {
           >
             By clicking &quot;Sign up now&quot; you agree to our&nbsp;
             <Link href="#" color="primary">
-              Terms & Conditions
+              Terms of Service
             </Link>
             .
           </Typography>
