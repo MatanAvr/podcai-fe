@@ -85,7 +85,7 @@ export default function Testimonials() {
 
   return (
     <Container
-      id="testimonials"
+      id="Testimonials"
       sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
@@ -113,7 +113,7 @@ export default function Testimonials() {
       </Box>
       <Masonry columns={columns} spacing={2}>
         {userTestimonials.map((testimonial, index) => (
-          <Card key={index} sx={{ p: 1 }}>
+          <Card key={`testimonial-${index}`} sx={{ p: 1 }}>
             <CardContent>
               <Typography variant="body2" color="text.secondary">
                 {testimonial.testimonial}
@@ -136,6 +136,7 @@ export default function Testimonials() {
                 src={logos[index]}
                 alt={`Logo ${index + 1}`}
                 style={logoStyle}
+                draggable="false"
               />
             </Box>
           </Card>

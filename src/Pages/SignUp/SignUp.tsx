@@ -5,13 +5,16 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import {
   Alert,
+  Card,
   Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
-  Grid,
+  IconButton,
+  InputAdornment,
   Radio,
   RadioGroup,
   TextField,
@@ -25,6 +28,7 @@ import {
   OTP_LENGTH,
   VoiceSample,
   Voices,
+  deleteErrorTimeout,
   sendOtpRequest,
   verifyOtpRequest,
 } from "../../ConstAndTypes/consts";
@@ -37,6 +41,7 @@ import { useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import { setLoggedUser, setAuth } from "../../Features/User/User";
 import { isAxiosError } from "axios";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -65,6 +70,7 @@ const categories: Categories[] = [
   "science",
   "entertainment",
 ];
+
 export const SignUp = () => {
   const dispatch = useAppDispatch();
   const [newUser, setNewUser] = useState<INewUser>(newUserDefault);
@@ -76,8 +82,12 @@ export const SignUp = () => {
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
   const [chosenCategories, setChosenCategories] = useState<Categories[]>([]);
-  const [dailyNotification, setDailyNotification] = useState<boolean>(true);
+  const [emailNotification, setEmailNotification] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   useEffect(() => {
     if (!voiceSamples) {
@@ -95,9 +105,12 @@ export const SignUp = () => {
   const validateEmail = () => {
     let error = "";
     const emailValid = isValidEmail(newUser.email);
-    if (!emailValid) {
+    if (!emailValid && newUser.email.length > 0) {
       error = "Invalid email";
       setEmailErr(error);
+      setTimeout(() => {
+        setEmailErr("");
+      }, deleteErrorTimeout);
     } else {
     }
     if (error !== "") {
@@ -172,49 +185,64 @@ export const SignUp = () => {
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { mb: 2, width: "auto" },
+        "& .MuiTextField-root": { m: 0.5, width: "auto" },
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
       }}
     >
       <TextField
         id="name"
-        label="Name"
+        label="First name"
         variant="standard"
         onChange={onChange}
         value={newUser.name}
+        required
       />
       <TextField
         id="email"
         label="Email"
+        type="email"
         variant="standard"
         onChange={onChange}
         value={newUser.email}
         onBlur={validateEmail}
         error={emailErr.length > 0 ? true : false}
         helperText={emailErr}
+        required
       />
       <TextField
         id="password"
         label="Password"
+        type="password"
         variant="standard"
         onChange={onChange}
         value={newUser.password}
-        type="password"
         helperText={`At least ${MIN_PASS_LENGTH} digits`}
+        required
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
     </Box>
   );
 
   const verifyOtpWrapper = (
-    <Box>
+    <Box sx={{ gap: 2 }}>
       <div>Enter the confirmation code</div>
       <TextField
         id="otp"
         variant="standard"
+        label="Enter code"
         onChange={(e) => changeOtpHandler(e)}
         value={otp}
         helperText={`${OTP_LENGTH} digits`}
@@ -289,103 +317,99 @@ export const SignUp = () => {
   useEffect(() => {
     setNewUser({
       ...newUser,
-      should_send_episode_email: dailyNotification,
+      should_send_episode_email: emailNotification,
     });
-  }, [dailyNotification]);
+  }, [emailNotification]);
 
   const settingsContainer = (
-    <>
-      <div className="categories-wrapper" style={{ maxWidth: "90%" }}>
-        <div>
-          <u>Choose your {NUM_OF_CATEGORIES} categories</u>
-        </div>
-        <Grid
-          container
-          spacing={{ xs: 1, md: 1 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-        >
-          {categories.map((category, index) => {
-            const active = chosenCategories.includes(category);
-            const disabled =
-              !active && chosenCategories.length === NUM_OF_CATEGORIES;
-            return (
-              <Grid key={"grid" + index} item xs={2} sm={4} md={4}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={active}
-                      onChange={() => onClickCategoryHandler(category)}
-                      disabled={disabled}
-                    />
-                  }
-                  label={_.capitalize(category)}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
-
-        <FormControl
-          sx={{
-            display: "flex",
-            alignContent: "center",
-            my: 1,
-            maxWidth: "100%",
-          }}
-        >
-          <u>Choose your podcaster</u>
-          <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
-          <RadioGroup
-            aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue={chosenVoiceSample}
-            name="radio-buttons-group"
-            value={chosenVoiceSample}
-            onChange={handleVoiceChange}
-          >
-            {voiceSamples &&
-              voiceSamples.length > 0 &&
-              voiceSamples.map((voiceSample, index) => {
-                return (
-                  <div
-                    key={"voice-sample" + index}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      maxWidth: "100%",
-                    }}
-                  >
-                    <FormControlLabel
-                      value={voiceSample.name}
-                      control={<Radio />}
-                      label={voiceSample.name}
-                      sx={{ my: 1 }}
-                    />
-                    <audio
-                      src={voiceSample.url}
-                      controls
-                      controlsList="nodownload"
-                      style={{ maxWidth: "80%" }}
-                    />
-                  </div>
-                );
-              })}
-          </RadioGroup>
-        </FormControl>
-
-        <Box sx={{ my: 1 }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                id="should_send_episode_email"
-                checked={dailyNotification}
-                onClick={() => setDailyNotification((prev) => !prev)}
-              />
-            }
-            label="Send me emails when my podcai are ready!"
-          />
-        </Box>
+    <div>
+      <div>
+        <u>Choose your {NUM_OF_CATEGORIES} categories</u>
       </div>
-    </>
+      <Grid
+        container
+        spacing={{ xs: 1, md: 1 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        {categories.map((category, index) => {
+          const active = chosenCategories.includes(category);
+          const disabled =
+            !active && chosenCategories.length === NUM_OF_CATEGORIES;
+          return (
+            <Grid key={"category-grid-" + index} xs={2} sm={4} md={4}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={active}
+                    onChange={() => onClickCategoryHandler(category)}
+                    disabled={disabled}
+                  />
+                }
+                label={_.capitalize(category)}
+              />
+            </Grid>
+          );
+        })}
+      </Grid>
+
+      <FormControl
+        sx={{
+          display: "flex",
+          alignContent: "center",
+          maxWidth: "100%",
+        }}
+      >
+        <u>Choose your podcaster</u>
+        <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue={chosenVoiceSample}
+          name="radio-buttons-group"
+          value={chosenVoiceSample}
+          onChange={handleVoiceChange}
+        >
+          {voiceSamples &&
+            voiceSamples.length > 0 &&
+            voiceSamples.map((voiceSample, index) => {
+              return (
+                <div
+                  key={"voice-sample-" + index}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    maxWidth: "100%",
+                  }}
+                >
+                  <FormControlLabel
+                    value={voiceSample.name}
+                    control={<Radio />}
+                    label={voiceSample.name}
+                  />
+                  <audio
+                    src={voiceSample.url}
+                    controls
+                    controlsList="nodownload"
+                    style={{ maxWidth: "80%" }}
+                  />
+                </div>
+              );
+            })}
+        </RadioGroup>
+      </FormControl>
+
+      <Box>
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="should_send_episode_email"
+              checked={emailNotification}
+              onClick={() => setEmailNotification((prev) => !prev)}
+            />
+          }
+          label="Send me emails when my podcai are ready!"
+        />
+      </Box>
+    </div>
   );
 
   const onClickCategoryHandler = (category: Categories) => {
@@ -460,8 +484,20 @@ export const SignUp = () => {
   };
 
   return (
-    <Box sx={{ minWidth: "60%", maxWidth: "90%" }}>
-      <Stepper activeStep={activeStep} alternativeLabel>
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        maxWidth: "80%",
+        p: 3,
+        gap: 1,
+        overflowY: "auto",
+      }}
+    >
+      <Typography variant="h4">Sign up to podcai</Typography>
+
+      <Stepper activeStep={activeStep} alternativeLabel sx={{ width: "100%" }}>
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
@@ -483,7 +519,7 @@ export const SignUp = () => {
         })}
       </Stepper>
       {activeStep === steps.length ? (
-        <React.Fragment>
+        <>
           <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished
           </Typography>
@@ -491,43 +527,40 @@ export const SignUp = () => {
             <Box sx={{ flex: "1 1 auto" }} />
             <Button onClick={handleReset}>Reset</Button>
           </Box>
-        </React.Fragment>
+        </>
       ) : (
-        <React.Fragment>
-          {/* //--------------------------------- */}
+        <>
           <Box
             sx={{
               display: "flex",
               justifyContent: "center",
-              mt: 2,
+              mt: 1,
               mb: 1,
               width: "100%",
-              height: "80%",
             }}
           >
             {contentArr[activeStep]}
           </Box>
-          {/* //--------------------------------- */}
 
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
             <Button
-              // color="inherit"
               disabled={activeStep === 0}
               onClick={handleBack}
-              sx={{ mr: 1 }}
               variant="contained"
             >
               Back
             </Button>
 
-            <Box sx={{ flex: "1 1 auto" }} />
+            <Box />
             {isStepOptional(activeStep) && (
-              <Button
-                // color="inherit"
-                onClick={handleSkip}
-                sx={{ mr: 1 }}
-                variant="contained"
-              >
+              <Button onClick={handleSkip} sx={{ mr: 1 }} variant="contained">
                 Skip
               </Button>
             )}
@@ -550,8 +583,8 @@ export const SignUp = () => {
               {errorMsg}
             </Alert>
           )}
-        </React.Fragment>
+        </>
       )}
-    </Box>
+    </Card>
   );
 };

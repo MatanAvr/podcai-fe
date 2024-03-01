@@ -12,6 +12,9 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import podcaiLogo from "../../../Assets/Images/Podcai logo.png";
+import podcaiLogoDark from "../../../Assets/Images/Podcai logo - dark.png";
+import { useAppSelector } from "../../../Hooks/Hooks";
+import { enabledSections } from "../LandingPage";
 
 const twitterLink = "https://twitter.com/podcai";
 const instagramLink = "https://instagram.com/podcai";
@@ -47,14 +50,16 @@ const Copyright = () => {
 };
 
 export default function Footer() {
+  const currentTheme = useAppSelector((state) => state.theme.themeMode);
+
   return (
     <Container
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: { xs: 4, sm: 16 },
-        py: { xs: 8, sm: 10 },
+        gap: { xs: 4, sm: 8 },
+        py: { xs: 8, sm: 5 },
         textAlign: { sm: "center", md: "left" },
       }}
     >
@@ -75,10 +80,16 @@ export default function Footer() {
           }}
         >
           <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
-            <Box sx={{ ml: "-15px" }}>
-              <img src={podcaiLogo} style={logoStyle} alt="logo of podcai" />
+            <Box>
+              <img
+                src={currentTheme === "light" ? podcaiLogo : podcaiLogoDark}
+                style={logoStyle}
+                alt="Podcai logo"
+                draggable="false"
+              />
             </Box>
-            <Typography variant="body2" fontWeight={600} gutterBottom>
+            {/* Newsletter related  ---------------------------------------------*/}
+            {/* <Typography variant="body2" fontWeight={600} gutterBottom>
               Newsletter
             </Typography>
             <Typography variant="body2" color="text.secondary" mb={2}>
@@ -105,7 +116,7 @@ export default function Footer() {
               >
                 Subscribe
               </Button>
-            </Stack>
+            </Stack> */}
           </Box>
         </Box>
         <Box
@@ -118,43 +129,21 @@ export default function Footer() {
           <Typography variant="body2" fontWeight={600}>
             Product
           </Typography>
-          <Link
-            color="text.secondary"
-            sx={{ cursor: "pointer" }}
-            onClick={() => scrollToSection("features")}
-          >
-            Features
-          </Link>
-          <Link
-            color="text.secondary"
-            sx={{ cursor: "pointer" }}
-            onClick={() => scrollToSection("testimonials")}
-          >
-            Testimonials
-          </Link>
-          <Link
-            color="text.secondary"
-            sx={{ cursor: "pointer" }}
-            onClick={() => scrollToSection("highlights")}
-          >
-            Highlights
-          </Link>
-          <Link
-            color="text.secondary"
-            sx={{ cursor: "pointer" }}
-            onClick={() => scrollToSection("pricing")}
-          >
-            Pricing
-          </Link>
-          <Link
-            color="text.secondary"
-            sx={{ cursor: "pointer" }}
-            onClick={() => scrollToSection("faq")}
-          >
-            FAQs
-          </Link>
+
+          {enabledSections.map((section, index) => {
+            return (
+              <Link
+                key={`link-${index}`}
+                color="text.secondary"
+                sx={{ cursor: "pointer" }}
+                onClick={() => scrollToSection(section)}
+              >
+                {section}
+              </Link>
+            );
+          })}
         </Box>
-        {/* Company */}
+        {/* Company -------------------------------------------------*/}
         {/* <Box
           sx={{
             display: { xs: "none", sm: "flex" },
@@ -175,7 +164,7 @@ export default function Footer() {
             Press
           </Link>
         </Box> */}
-        {/* // Legal */}
+        {/* // Legal -------------------------------------------------*/}
         {/* <Box
           sx={{
             display: { xs: "none", sm: "flex" },
@@ -187,10 +176,10 @@ export default function Footer() {
             Legal
           </Typography>
           <Link color="text.secondary" href="#">
-            Terms
+            Terms of Service
           </Link>
           <Link color="text.secondary" href="#">
-            Privacy
+            Privacy Policy
           </Link>
           <Link color="text.secondary" href="#">
             Contact

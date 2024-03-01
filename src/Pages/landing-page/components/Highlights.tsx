@@ -11,7 +11,7 @@ import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRound
 import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
 
-const items = [
+const highlights = [
   {
     icon: <SettingsSuggestRoundedIcon />,
     title: "Adaptable performance",
@@ -53,7 +53,7 @@ const items = [
 export default function Highlights() {
   return (
     <Box
-      id="highlights"
+      id="Highlights"
       sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
@@ -86,8 +86,8 @@ export default function Highlights() {
           </Typography>
         </Box>
         <Grid container spacing={2.5}>
-          {items.map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+          {highlights.map((highlight, index) => (
+            <Grid item xs={12} sm={6} md={4} key={`highlight-${index}`}>
               <Stack
                 direction="column"
                 color="inherit"
@@ -103,13 +103,13 @@ export default function Highlights() {
                   backgroundColor: "grey.900",
                 }}
               >
-                <Box sx={{ opacity: "50%" }}>{item.icon}</Box>
+                <Box sx={{ opacity: "50%" }}>{highlight.icon}</Box>
                 <div>
                   <Typography fontWeight="medium" gutterBottom>
-                    {item.title}
+                    {highlight.title}
                   </Typography>
                   <Typography variant="body2" sx={{ color: "grey.400" }}>
-                    {item.description}
+                    {highlight.description}
                   </Typography>
                 </div>
               </Stack>
