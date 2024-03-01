@@ -27,6 +27,7 @@ export const Main = () => {
   }, [currentPage]);
 
   useEnhancedEffect(() => {
+    // checks theme mode and if there is a token in local storage
     if (hasMounted.current) return;
     const tokenLocal = localStorage.getItem("token");
     const themeLocal = localStorage.getItem("theme");
@@ -59,9 +60,10 @@ export const Main = () => {
         backgroundImage:
           theme.palette.mode === "light"
             ? "linear-gradient(180deg, #CEE5FD, #FFF)"
-            : "linear-gradient(#02294F, #090E10)",
+            : "linear-gradient(#02294F, #121212)",
         backgroundSize: "100% 25%",
         backgroundRepeat: "no-repeat",
+        borderRadius: "0px",
       })}
     >
       <div className="main-wrapper">

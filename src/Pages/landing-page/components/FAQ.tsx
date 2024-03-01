@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export default function FAQ() {
+export default function Faq() {
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
   const handleChange =
@@ -19,9 +19,9 @@ export default function FAQ() {
 
   return (
     <Container
-      id="faq"
+      id="Faq"
       sx={{
-        pt: { xs: 4, sm: 12 },
+        pt: { xs: 8, sm: 16 },
         pb: { xs: 8, sm: 16 },
         position: "relative",
         display: "flex",

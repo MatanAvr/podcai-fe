@@ -16,6 +16,7 @@ import { useState } from "react";
 import podcaiLogo from "../../../Assets/Images/Podcai logo.png";
 import podcaiLogoDark from "../../../Assets/Images/Podcai logo - dark.png";
 import { setAuth } from "../../../Features/User/User";
+import { enabledSections } from "../LandingPage";
 
 const logoStyle = {
   maxHeight: "30px",
@@ -49,6 +50,8 @@ const CustomAppBar = () => {
         behavior: "smooth",
       });
       setOpen(false);
+    } else {
+      console.error(`Could not find element with id:${sectionId}`);
     }
   };
 
@@ -109,13 +112,14 @@ const CustomAppBar = () => {
               <img
                 src={currentTheme === "light" ? podcaiLogo : podcaiLogoDark}
                 style={logoStyle}
-                alt="logo of podcai"
+                alt="Podcai logo"
+                draggable="false"
                 onClick={() => {
                   if (isAuth) {
                     changePageHandler("Home");
                   } else {
                     changePageHandler("LandingPage");
-                    scrollToSection("hero");
+                    scrollToSection("Hero");
                   }
                 }}
               />
@@ -142,46 +146,19 @@ const CustomAppBar = () => {
                   </>
                 ) : (
                   <>
-                    <MenuItem
-                      onClick={() => scrollToSection("features")}
-                      sx={{ py: "6px", px: "12px" }}
-                    >
-                      <Typography variant="body2" color="text.primary">
-                        Features
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => scrollToSection("testimonials")}
-                      sx={{ py: "6px", px: "12px" }}
-                    >
-                      <Typography variant="body2" color="text.primary">
-                        Testimonials
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => scrollToSection("highlights")}
-                      sx={{ py: "6px", px: "12px" }}
-                    >
-                      <Typography variant="body2" color="text.primary">
-                        Highlights
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => scrollToSection("pricing")}
-                      sx={{ py: "6px", px: "12px" }}
-                    >
-                      <Typography variant="body2" color="text.primary">
-                        Pricing
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => scrollToSection("faq")}
-                      sx={{ py: "6px", px: "12px" }}
-                    >
-                      <Typography variant="body2" color="text.primary">
-                        FAQ
-                      </Typography>
-                    </MenuItem>
+                    {enabledSections.map((section, index) => {
+                      return (
+                        <MenuItem
+                          key={`manu-item-${index}`}
+                          onClick={() => scrollToSection(section)}
+                          sx={{ py: "6px", px: "12px" }}
+                        >
+                          <Typography variant="body2" color="text.primary">
+                            {section}
+                          </Typography>
+                        </MenuItem>
+                      );
+                    })}
                   </>
                 )}
               </Box>
@@ -266,21 +243,16 @@ const CustomAppBar = () => {
                     </>
                   ) : (
                     <>
-                      <MenuItem onClick={() => scrollToSection("features")}>
-                        Features
-                      </MenuItem>
-                      <MenuItem onClick={() => scrollToSection("testimonials")}>
-                        Testimonials
-                      </MenuItem>
-                      <MenuItem onClick={() => scrollToSection("highlights")}>
-                        Highlights
-                      </MenuItem>
-                      <MenuItem onClick={() => scrollToSection("pricing")}>
-                        Pricing
-                      </MenuItem>
-                      <MenuItem onClick={() => scrollToSection("faq")}>
-                        FAQ
-                      </MenuItem>
+                      {enabledSections.map((section, index) => {
+                        return (
+                          <MenuItem
+                            key={`manu-item-${index}`}
+                            onClick={() => scrollToSection(section)}
+                          >
+                            {section}
+                          </MenuItem>
+                        );
+                      })}
                     </>
                   )}
 

@@ -8,8 +8,7 @@ import { ApiClient } from "../../Services/axios";
 import { Alert } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-
-const deleteErrorTimeout = 2500;
+import { deleteErrorTimeout } from "../../ConstAndTypes/consts";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -70,10 +69,17 @@ export const Unsubscribe = () => {
           alignItems: "center",
           gap: "15px",
         }}
-        // onSubmit={loginHandler}
       >
         <Typography
-          variant="h4"
+          variant="h3"
+          component="div"
+          textAlign={"center"}
+          width={"max-content"}
+        >
+          Unsubscribe
+        </Typography>
+        <Typography
+          variant="h5"
           component="div"
           textAlign={"center"}
           width={"max-content"}

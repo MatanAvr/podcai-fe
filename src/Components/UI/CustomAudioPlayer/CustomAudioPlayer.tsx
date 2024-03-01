@@ -1,24 +1,26 @@
-import { Card, Box, IconButton, Typography } from "@mui/material";
 import "./CustomAudioPlayer.scss";
+import { Card, Box, IconButton, Typography } from "@mui/material";
 import { Episode } from "../../../ConstAndTypes/consts";
 import { useRef, useState } from "react";
+import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
+import { VolumeInput } from "./VolumeInput/VolumeInput";
 import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
 import PauseCircleFilledOutlinedIcon from "@mui/icons-material/PauseCircleFilledOutlined";
 import Forward10Icon from "@mui/icons-material/Forward10";
 import Replay10Icon from "@mui/icons-material/Replay10";
-import { LoadingButton } from "@mui/lab";
-import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
-import { VolumeInput } from "./VolumeInput/VolumeInput";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import VolumeDownRoundedIcon from "@mui/icons-material/VolumeDownRounded";
+import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUp";
 import { AudioProgressBar } from "./ProgressBar/ProgressBar";
 import { formatDurationDisplay, isMobile } from "../../../Utils/Utils";
 
 interface audioPlayerProps {
   episode: Episode;
 }
-
+type buttonsColorsOptions = "inherit" | "primary";
 type playSpeedOptions = 1 | 1.25 | 1.5 | 1.75 | 2;
+
+const buttonsColor: buttonsColorsOptions = "primary";
 
 export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
   const [duration, setDuration] = useState<number>(0);
@@ -27,6 +29,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [volume, setVolume] = useState(1); // 0-1
+  const [volumeBeforeUnmute, setVolumeBeforeUnmute] = useState(1); // 0-1
   const [currrentProgress, setCurrrentProgress] = useState(0);
   const [buffered, setBuffered] = useState(0);
   const durationDisplay = formatDurationDisplay(duration);
@@ -70,6 +73,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
     if (!audioRef.current) return;
     audioRef.current.volume = volumeValue;
     setVolume(volumeValue);
+    setVolumeBeforeUnmute(volumeValue);
   };
 
   const togglePlayPause = () => {
@@ -88,11 +92,11 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
     if (audioRef.current.volume !== 0) {
       audioRef.current.volume = 0;
     } else {
-      audioRef.current.volume = 1;
+      handleVolumeChange(volumeBeforeUnmute);
     }
   };
 
-  const handleDurationChange = (durationChange: -30 | -10 | 10 | 30) => {
+  const handleDurationChange = (durationChange: -10 | 10) => {
     if (!audioRef.current) return;
     const newProgress = audioRef.current.currentTime + durationChange;
     audioRef.current.currentTime = newProgress;
@@ -125,13 +129,14 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
 
   return (
     <Card
+      id="Custom-Audio-Player"
       sx={{
-        p: 1,
-        m: 1,
-        background: "rgba(255,255,255,0.2)",
+        p: 0.5,
+        background: "rgba(255,255,255,0.1)",
+        overflow: "visible",
       }}
     >
-      <Box sx={{ my: 1 }}>{episode.name}</Box>
+      <Typography sx={{ my: 0.5 }}>{episode.name}</Typography>
       <audio
         ref={audioRef}
         className="audio-track"
@@ -162,23 +167,18 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
         }}
       >
         <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-          }}
+          sx={{ display: "flex", flex: 1, alignItems: "center", width: "100%" }}
         >
-          <Box sx={{ display: "flex", flex: 1, alignItems: "center" }}>
-            <AudioProgressBar
-              duration={duration}
-              currentProgress={currrentProgress}
-              buffered={buffered}
-              customOnChange={(newValue: number) => {
-                if (!audioRef.current) return;
-                audioRef.current.currentTime = newValue;
-                setCurrrentProgress(newValue);
-              }}
-            />
-          </Box>
+          <AudioProgressBar
+            duration={duration}
+            currentProgress={currrentProgress}
+            buffered={buffered}
+            customOnChange={(newValue: number) => {
+              if (!audioRef.current) return;
+              audioRef.current.currentTime = newValue;
+              setCurrrentProgress(newValue);
+            }}
+          />
         </Box>
 
         <Box
@@ -205,9 +205,11 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
                 aria-label={volume === 0 ? "unmute" : "mute"}
               >
                 {volume === 0 ? (
-                  <VolumeOffRoundedIcon color="primary" />
+                  <VolumeOffRoundedIcon color={buttonsColor} />
+                ) : volume < 0.5 ? (
+                  <VolumeDownRoundedIcon color={buttonsColor} />
                 ) : (
-                  <VolumeDownRoundedIcon color="primary" />
+                  <VolumeUpRoundedIcon color={buttonsColor} />
                 )}
               </IconButton>
               <VolumeInput
@@ -222,46 +224,54 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
 
       <Box
         sx={{
-          p: 0.5,
+          p: 0.1,
           display: "flex",
           flex: 1,
           alignItems: "center",
           justifyContent: "space-between",
         }}
       >
-        <IconButton onClick={handlePlaybackSpeed} color="primary">
+        <IconButton
+          onClick={handlePlaybackSpeed}
+          size="large"
+          color={buttonsColor}
+        >
           <Typography>{playSpeed}x</Typography>
         </IconButton>
 
         <IconButton onClick={() => handleDurationChange(-10)}>
-          <Replay10Icon fontSize="medium" color="primary" />
+          <Replay10Icon fontSize="large" color={buttonsColor} />
         </IconButton>
-        <LoadingButton
+        <IconButton
           onClick={togglePlayPause}
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? (
-            <PauseCircleFilledOutlinedIcon fontSize="large" />
+            <PauseCircleFilledOutlinedIcon
+              fontSize="large"
+              color={buttonsColor}
+            />
           ) : (
-            <PlayCircleFilledOutlinedIcon fontSize="large" />
+            <PlayCircleFilledOutlinedIcon
+              fontSize="large"
+              color={buttonsColor}
+            />
           )}
-        </LoadingButton>
+        </IconButton>
         <IconButton onClick={() => handleDurationChange(10)}>
-          <Forward10Icon fontSize="medium" color="primary" />
+          <Forward10Icon fontSize="large" color={buttonsColor} />
         </IconButton>
 
-        {isMobile() && (
-          <IconButton
-            onClick={handleMuteUnmute}
-            aria-label={volume === 0 ? "unmute" : "mute"}
-          >
-            {volume === 0 ? (
-              <VolumeOffRoundedIcon color="primary" />
-            ) : (
-              <VolumeDownRoundedIcon color="primary" />
-            )}
-          </IconButton>
-        )}
+        <IconButton
+          onClick={handleMuteUnmute}
+          aria-label={volume === 0 ? "unmute" : "mute"}
+        >
+          {volume === 0 ? (
+            <VolumeOffRoundedIcon fontSize="large" color={buttonsColor} />
+          ) : (
+            <VolumeDownRoundedIcon fontSize="large" color={buttonsColor} />
+          )}
+        </IconButton>
       </Box>
     </Card>
   );

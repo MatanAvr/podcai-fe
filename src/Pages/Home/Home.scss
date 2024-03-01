@@ -18,81 +18,15 @@
       justify-content: flex-start;
       height: 90%;
       align-items: center;
-
-      .home-col {
-        width: 95%;
-      }
     }
   }
 
-  h1 {
-    margin: unset;
-  }
   .home-container {
     display: flex;
     align-items: flex-start;
     justify-content: center;
     width: 100%;
-    height: 80%;
-    gap: 20px;
-
-    .home-col {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      border: 1px solid white;
-      flex: 1;
-      height: 100%;
-      border-radius: 20px;
-      background-color: rgba(white, 0.8);
-      padding: 10px;
-      .col-title {
-        font-size: 1.4rem;
-      }
-      .episodes-wrapper {
-        display: flex;
-        flex-direction: column;
-        margin-top: 5px;
-        padding: 5px;
-        max-height: 100%;
-        overflow: auto;
-        width: 100%;
-        flex: 1;
-        gap: 5px;
-      }
-      .source-articles-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 10px 0;
-      }
-      .articles-wrapper {
-        display: flex;
-        flex-direction: column;
-        margin-top: 5px;
-        padding: 5px;
-        height: 100%;
-        width: 95%;
-        flex: 1;
-        gap: 5px;
-        height: 0px;
-        display: none;
-        &.show {
-          height: auto;
-          overflow-y: overlay;
-          display: flex;
-        }
-      }
-      .categories-wrapper {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 95%;
-        height: max-content;
-        gap: 15px;
-      }
-    }
+    height: 90%;
+    gap: 15px;
   }
 }
