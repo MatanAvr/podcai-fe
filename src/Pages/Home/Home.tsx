@@ -44,7 +44,7 @@ export const Home = () => {
   const getEpisodes = async () => {
     setIsLoadingEpisodes(true);
     const res = await apiClientInstance.getEpisodes();
-    const sortedEpisodes = [...res.episodes].reverse();
+    const sortedEpisodes = [...res.episodes];
     setAllEpisodes(sortedEpisodes);
     setCurrentlyPlaying(sortedEpisodes[0]);
     setPreviousEpisodes(sortedEpisodes.slice(1));
