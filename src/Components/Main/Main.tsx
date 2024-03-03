@@ -18,8 +18,8 @@ const apiClientInstance = ApiClient.getInstance();
 
 export const Main = () => {
   const navigate = useNavigate();
-  const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const dispatch = useAppDispatch();
+  const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const hasMounted = useRef(false);
 
   useEnhancedEffect(() => {
