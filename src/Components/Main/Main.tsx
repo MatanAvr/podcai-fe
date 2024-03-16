@@ -9,10 +9,11 @@ import { Paper } from "@mui/material";
 import LandingPage from "../../Pages/landing-page/LandingPage";
 import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { ApiClient } from "../../Services/axios";
 import { ToggleColorMode } from "../../Features/Theme/Theme";
+import { moveToPage } from "../../Features/Navigation/Navigation";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -20,13 +21,14 @@ export const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
+  const isAuth = useAppSelector((state) => state.user.auth);
   const hasMounted = useRef(false);
 
   useEnhancedEffect(() => {
     navigate(`/${currentPage}`);
   }, [currentPage]);
 
-  useEnhancedEffect(() => {
+  useEffect(() => {
     // checks theme mode and if there is a token in local storage
     if (hasMounted.current) return;
     const tokenLocal = localStorage.getItem("token");
@@ -40,10 +42,10 @@ export const Main = () => {
 
   const authAndLogin = async (token: string) => {
     try {
+      //try to login with the token from local storage
       dispatch(setAuth({ newMode: true, token })); // attach token to apiClient
-      //try to login with the token
-      const authResUser = await apiClientInstance.userAuth();
-      dispatch(setLoggedUser({ newLoggeduser: authResUser }));
+      const authUserRes = await apiClientInstance.userAuth();
+      dispatch(setLoggedUser({ newLoggeduser: authUserRes }));
       // dispatch(moveToPage("Home"));
     } catch (err) {
       dispatch(setAuth({ newMode: false, token: "" }));
@@ -71,9 +73,13 @@ export const Main = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Sign up" element={<SignUp />} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/Settings" element={<Settings />} />
           <Route path="/Unsubscribe" element={<Unsubscribe />} />
+          {/* private routes */}
+          <Route path="/Home" element={isAuth ? <Home /> : <LandingPage />} />
+          <Route
+            path="/Settings"
+            element={isAuth ? <Settings /> : <LandingPage />}
+          />
           <Route path="*" element={<LandingPage />} />
         </Routes>
       </div>

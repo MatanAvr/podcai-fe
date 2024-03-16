@@ -21,6 +21,11 @@ type buttonsColorsOptions = "inherit" | "primary";
 type playSpeedOptions = 1 | 1.25 | 1.5 | 1.75 | 2;
 
 const buttonsColor: buttonsColorsOptions = "primary";
+const timelineStyle = {
+  width: "50px",
+  display: "flex",
+  justifyContent: "center",
+};
 
 export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
   const [duration, setDuration] = useState<number>(0);
@@ -190,7 +195,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
             justifyContent: "space-between",
           }}
         >
-          <div className="timeline">{`${elapsedDisplay}`}</div>
+          <Box sx={timelineStyle}>{`${elapsedDisplay}`}</Box>
           {!isMobile() && (
             <Box
               sx={{
@@ -218,7 +223,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
               />
             </Box>
           )}
-          <div className="timeline">{`${durationDisplay}`}</div>
+          <Box sx={timelineStyle}>{`${durationDisplay}`}</Box>
         </Box>
       </Box>
 

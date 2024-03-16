@@ -24,6 +24,9 @@ import {
   unsubscribeRequest,
   unsubscribeResponse,
   UNSUBSCRIBE_URL,
+  deleteUserReqeust,
+  deleteUserResponse,
+  DELETE_USER_URL,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -62,6 +65,7 @@ export class ApiClient {
         await this.axiosInstance.post(USER_LOGIN_URL, loginReq);
       return response.data;
     } catch (error) {
+      console.error(`userLogin, error:${error}`);
       throw error;
     }
   }
@@ -72,7 +76,7 @@ export class ApiClient {
         await this.axiosInstance.get(USER_AUTH_URL);
       return response.data;
     } catch (error) {
-      console.log("auth, error:", error);
+      console.error(`userAuth, error:${error}`);
       throw error;
     }
   }
@@ -85,7 +89,7 @@ export class ApiClient {
         await this.axiosInstance.post(USER_UPDATE_URL, userToUpdate);
       return response.data;
     } catch (error) {
-      console.log("userUpdate, error:", error);
+      console.error(`userUpdate, error:${error}`);
       throw error;
     }
   }
@@ -101,7 +105,7 @@ export class ApiClient {
       }
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.error(`signUp, error:${error}`);
       throw error;
     }
   }
@@ -112,7 +116,7 @@ export class ApiClient {
         await this.axiosInstance.get(GET_PODCASTS_URL);
       return response.data;
     } catch (error) {
-      console.warn(`getPodcasts error`);
+      console.error(`getPodcasts, error:${error}`);
       return { urls: [] };
     }
   }
@@ -123,7 +127,7 @@ export class ApiClient {
         await this.axiosInstance.get(GET_EPISODES_URL);
       return response.data;
     } catch (error) {
-      console.warn(`getEpisodes error`);
+      console.error(`getEpisodes, error:${error}`);
       return { episodes: [] };
     }
   }
@@ -134,7 +138,7 @@ export class ApiClient {
         await this.axiosInstance.get(GET_VOICE_SAMPLES_URL);
       return response.data;
     } catch (error) {
-      console.warn(`getVoiceSamples error`);
+      console.error(`getVoiceSamples, error:${error}`);
       return { voice_samples: [] };
     }
   }
@@ -145,7 +149,7 @@ export class ApiClient {
         await this.axiosInstance.post(SEND_OTP_URL, sendOtpReq);
       return response.data;
     } catch (error) {
-      console.log("sendOtp, error:", error);
+      console.error(`sendOtp, error:${error}`);
       throw error;
     }
   }
@@ -156,7 +160,7 @@ export class ApiClient {
         await this.axiosInstance.post(VERIFY_OTP_URL, verifyOtpReq);
       return response.data;
     } catch (error) {
-      console.log("verifyOtp, error:", error);
+      console.error(`verifyOtp, error:${error}`);
       throw error;
     }
   }
@@ -169,7 +173,20 @@ export class ApiClient {
         await this.axiosInstance.post(UNSUBSCRIBE_URL, unsubscribeReq);
       return response.data;
     } catch (error) {
-      console.log("unsubscribeReq, error:", error);
+      console.error(`unsubscribe, error:${error}`);
+      throw error;
+    }
+  }
+
+  async deleteUser(
+    deleteUserReq: deleteUserReqeust
+  ): Promise<deleteUserResponse> {
+    try {
+      const response: AxiosResponse<deleteUserResponse> =
+        await this.axiosInstance.post(DELETE_USER_URL, deleteUserReq);
+      return response.data;
+    } catch (error) {
+      console.error(`deleteUser, error:${error}`);
       throw error;
     }
   }
