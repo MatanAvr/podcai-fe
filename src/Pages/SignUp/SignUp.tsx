@@ -13,8 +13,6 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  IconButton,
-  InputAdornment,
   Radio,
   RadioGroup,
   TextField,
@@ -41,7 +39,7 @@ import { useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import { setLoggedUser, setAuth } from "../../Features/User/User";
 import { isAxiosError } from "axios";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -84,10 +82,6 @@ export const SignUp = () => {
   const [chosenCategories, setChosenCategories] = useState<Categories[]>([]);
   const [emailNotification, setEmailNotification] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   useEffect(() => {
     if (!voiceSamples) {
@@ -210,28 +204,14 @@ export const SignUp = () => {
         helperText={emailErr}
         required
       />
-      <TextField
+      <PasswordTextField
         id="password"
         label="Password"
-        type="password"
         variant="standard"
         onChange={onChange}
         value={newUser.password}
         helperText={`At least ${MIN_PASS_LENGTH} digits`}
         required
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
       />
     </Box>
   );

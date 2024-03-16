@@ -1,23 +1,14 @@
 import { useState } from "react";
 import { deleteErrorTimeout, loginRequest } from "../../ConstAndTypes/consts";
-import "./Login.scss";
 import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import {
-  Alert,
-  Card,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, Card, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { isValidEmail } from "../../Utils/Utils";
 import { isAxiosError } from "axios";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -31,11 +22,6 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [emailErr, setEmailErr] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
   const dispatch = useAppDispatch();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,27 +103,13 @@ export const Login = () => {
         helperText={emailErr}
         required
       />
-      <TextField
+      <PasswordTextField
         id="password"
         label="Password"
         variant="standard"
         onChange={onChange}
         value={user.password}
-        type={showPassword ? "text" : "password"}
         required
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
       />
       <LoadingButton
         loading={isLoading}

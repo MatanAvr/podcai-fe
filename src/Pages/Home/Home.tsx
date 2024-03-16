@@ -31,7 +31,6 @@ export const Home = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [allEpisodes, setAllEpisodes] = useState<Episode[]>();
   const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode>();
-  const [previousEpisodes, setPreviousEpisodes] = useState<Episode[]>();
   const [isLoadingEpisodes, setIsLoadingEpisodes] = useState<boolean>(false);
   const hasMounted = useRef(false);
 
@@ -47,7 +46,6 @@ export const Home = () => {
     const sortedEpisodes = [...res.episodes];
     setAllEpisodes(sortedEpisodes);
     setCurrentlyPlaying(sortedEpisodes[0]);
-    setPreviousEpisodes(sortedEpisodes.slice(1));
     setIsLoadingEpisodes(false);
   };
 
@@ -105,7 +103,7 @@ export const Home = () => {
           }}
         >
           <Typography key={"start-title"} component="div">
-            Currently playing
+            {currentlyPlaying ? "Currently playing" : "Choose an episode"}
           </Typography>
 
           <>
@@ -113,7 +111,7 @@ export const Home = () => {
               <LoadingSpinner />
             ) : (
               <>
-                {currentlyPlaying ? (
+                {currentlyPlaying && (
                   <>
                     <CustomAudioPlayer key="AP" episode={currentlyPlaying} />
                     <Typography>Sources</Typography>
@@ -141,8 +139,6 @@ export const Home = () => {
                       })}
                     </Card>
                   </>
-                ) : (
-                  <div>Choose an episode</div>
                 )}
               </>
             )}
