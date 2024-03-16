@@ -12,7 +12,13 @@ export interface INewUser {
 
 export type loggedInUser = Omit<INewUser, "num_of_articles" | "password">;
 
-export type Pages = "Login" | "Sign up" | "Home" | "Settings" | "LandingPage";
+export type Pages =
+  | "Login"
+  | "Sign up"
+  | "Home"
+  | "Settings"
+  | "LandingPage"
+  | "Unsubscribe";
 
 export type Categories =
   | "general"
@@ -179,5 +185,13 @@ export type unsubscribeRequest = {
   email: string;
 };
 export type unsubscribeResponse = {
+  is_success: boolean;
+};
+
+export const DELETE_USER_URL = "/user/delete_user/";
+export type deleteUserReqeust = {
+  password: string;
+};
+export type deleteUserResponse = {
   is_success: boolean;
 };

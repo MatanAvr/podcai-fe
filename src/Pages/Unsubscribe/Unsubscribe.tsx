@@ -1,11 +1,9 @@
-import "./Unsubscribe.scss";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
 import { useState } from "react";
 import { isValidEmail } from "../../Utils/Utils";
 import { ApiClient } from "../../Services/axios";
-import { Alert } from "@mui/material";
+import { Alert, Card } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import { deleteErrorTimeout } from "../../ConstAndTypes/consts";
@@ -58,7 +56,7 @@ export const Unsubscribe = () => {
 
   return (
     <div className="Unsubscribe-wrapper">
-      <Box
+      <Card
         component="form"
         sx={{
           "& .MuiTextField-root": { m: 2, p: 2 },
@@ -67,11 +65,12 @@ export const Unsubscribe = () => {
           maxWidth: "90%",
           flexDirection: "column",
           alignItems: "center",
-          gap: "15px",
+          p: 4,
+          gap: 1,
         }}
       >
         <Typography
-          variant="h3"
+          variant="h4"
           component="div"
           textAlign={"center"}
           width={"max-content"}
@@ -112,7 +111,7 @@ export const Unsubscribe = () => {
             You have successfully unsubscribe!
           </Alert>
         )}
-      </Box>
+      </Card>
     </div>
   );
 };
