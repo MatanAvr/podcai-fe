@@ -215,7 +215,7 @@ export const Settings = () => {
   );
 
   return (
-    <Card
+    <Box
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -247,6 +247,6 @@ export const Settings = () => {
           Back
         </LoadingButton>
       </Box>
-    </Card>
+    </Box>
   );
 };

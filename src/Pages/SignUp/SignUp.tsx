@@ -182,12 +182,14 @@ export const SignUp = () => {
         "& .MuiTextField-root": { m: 0.5, width: "auto" },
         display: "flex",
         flexDirection: "column",
+        gap: 1,
       }}
     >
       <TextField
         id="name"
         label="First name"
-        variant="standard"
+        variant="outlined"
+        size="small"
         onChange={onChange}
         value={newUser.name}
         required
@@ -196,7 +198,8 @@ export const SignUp = () => {
         id="email"
         label="Email"
         type="email"
-        variant="standard"
+        variant="outlined"
+        size="small"
         onChange={onChange}
         value={newUser.email}
         onBlur={validateEmail}
@@ -207,7 +210,8 @@ export const SignUp = () => {
       <PasswordTextField
         id="password"
         label="Password"
-        variant="standard"
+        variant="outlined"
+        size="small"
         onChange={onChange}
         value={newUser.password}
         helperText={`At least ${MIN_PASS_LENGTH} digits`}
@@ -221,11 +225,12 @@ export const SignUp = () => {
       <div>Enter the confirmation code</div>
       <TextField
         id="otp"
-        variant="standard"
-        label="Enter code"
+        variant="outlined"
+        size="small"
         onChange={(e) => changeOtpHandler(e)}
         value={otp}
-        helperText={`${OTP_LENGTH} digits`}
+        placeholder={`${OTP_LENGTH} digits`}
+        required
       />
     </Box>
   );
@@ -237,6 +242,7 @@ export const SignUp = () => {
         name: newUser.name,
         send_to: newUser.email,
         method: "EMAIL",
+        otp_reason: "SIGN_UP",
       };
       const sendOtpRes = await apiClientInstance.sendOtp(sendOtpReqObj);
       if (sendOtpRes.is_success) {
@@ -301,7 +307,7 @@ export const SignUp = () => {
     });
   }, [emailNotification]);
 
-  const settingsContainer = (
+  const settingsWrapper = (
     <div>
       <div>
         <u>Choose your {NUM_OF_CATEGORIES} categories</u>
@@ -407,9 +413,7 @@ export const SignUp = () => {
     });
   };
 
-  const DoneWrapper = <Box>Done</Box>;
-
-  const contentArr = [userDataWrapper, verifyOtpWrapper, settingsContainer];
+  const contentArr = [userDataWrapper, verifyOtpWrapper, settingsWrapper];
 
   const checkIfNextDisabled = () => {
     if (activeStep === 0) {
@@ -464,18 +468,18 @@ export const SignUp = () => {
   };
 
   return (
-    <Card
+    <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         maxWidth: "80%",
-        p: 3,
+        p: 2,
         gap: 1,
         overflowY: "auto",
       }}
     >
-      <Typography variant="h4">Sign up to podcai</Typography>
+      <Typography variant="h4">Sign up</Typography>
 
       <Stepper activeStep={activeStep} alternativeLabel sx={{ width: "100%" }}>
         {steps.map((label, index) => {
@@ -565,6 +569,6 @@ export const SignUp = () => {
           )}
         </>
       )}
-    </Card>
+    </Box>
   );
 };

@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { isValidEmail } from "../../Utils/Utils";
 import { ApiClient } from "../../Services/axios";
-import { Alert, Card } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import { deleteErrorTimeout } from "../../ConstAndTypes/consts";
@@ -55,63 +55,61 @@ export const Unsubscribe = () => {
   };
 
   return (
-    <div className="Unsubscribe-wrapper">
-      <Card
-        component="form"
-        sx={{
-          "& .MuiTextField-root": { m: 2, p: 2 },
-          display: "flex",
-          width: "90%",
-          maxWidth: "90%",
-          flexDirection: "column",
-          alignItems: "center",
-          p: 4,
-          gap: 1,
-        }}
+    <Box
+      component="form"
+      sx={{
+        display: "flex",
+        width: "auto",
+        maxWidth: "90%",
+        flexDirection: "column",
+        alignItems: "center",
+        p: 2,
+        gap: 1,
+      }}
+    >
+      <Typography
+        variant="h4"
+        component="div"
+        textAlign={"center"}
+        width={"max-content"}
       >
-        <Typography
-          variant="h4"
-          component="div"
-          textAlign={"center"}
-          width={"max-content"}
+        Unsubscribe
+      </Typography>
+      <Typography
+        variant="h5"
+        component="div"
+        textAlign={"center"}
+        width={"max-content"}
+      >
+        You will be missed!
+      </Typography>
+      <TextField
+        id="email"
+        label="Email"
+        variant="outlined"
+        size="small"
+        onChange={onChange}
+        onBlur={validateEmail}
+        value={emailToUnsubscribe}
+        error={emailErr.length > 0 ? true : false}
+        helperText={emailErr}
+        sx={{ my: 1, pb: 1 }}
+      />
+      <LoadingButton
+        variant="contained"
+        onClick={onClickUnsubscribeHandler}
+        loading={isLoading}
+      >
+        Unsubscribe
+      </LoadingButton>
+      {unsubscribedSuccessfully && (
+        <Alert
+          icon={<SentimentVeryDissatisfiedIcon fontSize="inherit" />}
+          severity="info"
         >
-          Unsubscribe
-        </Typography>
-        <Typography
-          variant="h5"
-          component="div"
-          textAlign={"center"}
-          width={"max-content"}
-        >
-          You will be missed!
-        </Typography>
-        <TextField
-          id="email"
-          label="Email"
-          variant="standard"
-          onChange={onChange}
-          onBlur={validateEmail}
-          value={emailToUnsubscribe}
-          error={emailErr.length > 0 ? true : false}
-          helperText={emailErr}
-          sx={{ my: 1 }}
-        />
-        <LoadingButton
-          variant="contained"
-          onClick={onClickUnsubscribeHandler}
-          loading={isLoading}
-        >
-          Unsubscribe
-        </LoadingButton>
-        {unsubscribedSuccessfully && (
-          <Alert
-            icon={<SentimentVeryDissatisfiedIcon fontSize="inherit" />}
-            severity="info"
-          >
-            You have successfully unsubscribe!
-          </Alert>
-        )}
-      </Card>
-    </div>
+          You have successfully unsubscribe!
+        </Alert>
+      )}
+    </Box>
   );
 };

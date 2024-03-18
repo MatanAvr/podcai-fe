@@ -14,6 +14,7 @@ import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { ApiClient } from "../../Services/axios";
 import { ToggleColorMode } from "../../Features/Theme/Theme";
 import { moveToPage } from "../../Features/Navigation/Navigation";
+import { ForgotPassword } from "../../Pages/ForgotPassword/ForgotPassword";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -58,7 +59,7 @@ export const Main = () => {
         height: "100%",
         width: "100%",
         overflowY: "auto",
-        pt: { xs: 14, sm: 15 },
+        pt: { xs: 11, sm: 12 },
         backgroundImage:
           theme.palette.mode === "light"
             ? "linear-gradient(180deg, #CEE5FD, #FFF)"
@@ -74,6 +75,7 @@ export const Main = () => {
           <Route path="/Login" element={<Login />} />
           <Route path="/Sign up" element={<SignUp />} />
           <Route path="/Unsubscribe" element={<Unsubscribe />} />
+          <Route path="/Forgot password" element={<ForgotPassword />} />
           {/* private routes */}
           <Route path="/Home" element={isAuth ? <Home /> : <LandingPage />} />
           <Route
