@@ -137,8 +137,9 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
       id="Custom-Audio-Player"
       sx={{
         p: 0.5,
-        background: "rgba(255,255,255,0.1)",
         overflow: "visible",
+        border: 1,
+        borderColor: "primary.main",
       }}
     >
       <Typography sx={{ my: 0.5 }}>{episode.name}</Typography>

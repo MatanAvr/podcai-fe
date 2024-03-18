@@ -4,7 +4,7 @@ import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import { Alert, Card, TextField, Typography } from "@mui/material";
+import { Alert, Box, Link, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { isValidEmail } from "../../Utils/Utils";
 import { isAxiosError } from "axios";
@@ -79,23 +79,26 @@ export const Login = () => {
   };
 
   return (
-    <Card
+    <Box
       component="form"
       sx={{
         "& .MuiTextField-root": { m: 1, width: "auto" },
         display: "flex",
         flexDirection: "column",
-        p: 4,
+        maxWidth: "80%",
+        p: 2,
         gap: 1,
       }}
       onSubmit={loginHandler}
     >
-      <Typography variant="h4">Log in to podcai</Typography>
-
+      <Typography variant="h4" sx={{ alignSelf: "center" }}>
+        Log in
+      </Typography>
       <TextField
         id="email"
         label="Email"
-        variant="standard"
+        variant="outlined"
+        size="small"
         onChange={onChange}
         onBlur={validateEmail}
         value={user.email}
@@ -106,11 +109,21 @@ export const Login = () => {
       <PasswordTextField
         id="password"
         label="Password"
-        variant="standard"
+        variant="outlined"
+        size="small"
         onChange={onChange}
         value={user.password}
         required
       />
+      <Link
+        sx={{ cursor: "pointer" }}
+        onClick={(e) => {
+          e.preventDefault();
+          dispatch(moveToPage("Forgot password"));
+        }}
+      >
+        Forgot your password?
+      </Link>
       <LoadingButton
         loading={isLoading}
         variant="contained"
@@ -125,6 +138,6 @@ export const Login = () => {
           {errorMsg}
         </Alert>
       )}
-    </Card>
+    </Box>
   );
 };
