@@ -27,6 +27,9 @@ import {
   deleteUserReqeust,
   deleteUserResponse,
   DELETE_USER_URL,
+  UPDATE_PASSWORD_URL,
+  updatePasswordRequest,
+  updatePasswordResponse,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -187,6 +190,18 @@ export class ApiClient {
       return response.data;
     } catch (error) {
       console.error(`deleteUser, error:${error}`);
+      throw error;
+    }
+  }
+  async updatePassword(
+    updatePasswordReq: updatePasswordRequest
+  ): Promise<updatePasswordResponse> {
+    try {
+      const response: AxiosResponse<updatePasswordResponse> =
+        await this.axiosInstance.post(UPDATE_PASSWORD_URL, updatePasswordReq);
+      return response.data;
+    } catch (error) {
+      console.error(`updatePassword, error:${error}`);
       throw error;
     }
   }

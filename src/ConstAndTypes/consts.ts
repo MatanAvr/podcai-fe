@@ -18,7 +18,8 @@ export type Pages =
   | "Home"
   | "Settings"
   | "LandingPage"
-  | "Unsubscribe";
+  | "Unsubscribe"
+  | "Forgot password";
 
 export type Categories =
   | "general"
@@ -150,13 +151,15 @@ export interface ArticleData {
   source_url: string;
 }
 
-type sendMethods = "EMAIL";
+type sendOtpMethods = "EMAIL";
+type sendOtpReason = "SIGN_UP" | "PASSWORD";
 
 export const SEND_OTP_URL = "/send_otp/";
 export type sendOtpRequest = {
   name: string;
   send_to: string;
-  method: sendMethods;
+  method: sendOtpMethods;
+  otp_reason: sendOtpReason;
 };
 export type sendOtpResponse = {
   is_success: boolean;
@@ -193,5 +196,14 @@ export type deleteUserReqeust = {
   password: string;
 };
 export type deleteUserResponse = {
+  is_success: boolean;
+};
+
+export const UPDATE_PASSWORD_URL = "/update_password/";
+export type updatePasswordRequest = {
+  email: string;
+  new_password: string;
+};
+export type updatePasswordResponse = {
   is_success: boolean;
 };

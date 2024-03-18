@@ -17,6 +17,8 @@ interface PasswordTextFieldProps {
   value: string;
   required: boolean;
   helperText?: string;
+  placeholder?: string;
+  size?: "medium" | "small";
 }
 
 export default function PasswordTextField({
@@ -27,6 +29,8 @@ export default function PasswordTextField({
   value,
   required,
   helperText,
+  placeholder,
+  size,
 }: PasswordTextFieldProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -43,6 +47,10 @@ export default function PasswordTextField({
       type={showPassword ? "text" : "password"}
       required={required}
       helperText={helperText}
+      placeholder={placeholder}
+      size={size}
+      spellCheck="false"
+      autoComplete="off"
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">

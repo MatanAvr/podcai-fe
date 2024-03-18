@@ -56,7 +56,7 @@ export const Home = () => {
   };
 
   return (
-    <div className={`home-wrapper ${mobile ? "mobile" : ""}`}>
+    <Box className={`home-wrapper ${mobile ? "mobile" : ""}`} gap={1}>
       <Typography
         variant="h5"
         component="div"
@@ -87,7 +87,7 @@ export const Home = () => {
         </Typography>
       )}
 
-      <div className={`home-container ${mobile ? "mobile" : ""}`}>
+      <Box className={`home-container ${mobile ? "mobile" : ""}`} gap={1}>
         <Card
           key={"start-card"}
           sx={{
@@ -99,7 +99,7 @@ export const Home = () => {
             display: "flex",
             flexDirection: "column",
             flex: 1,
-            gap: 1.2,
+            gap: 1.5,
           }}
         >
           <Typography key={"start-title"} component="div">
@@ -115,7 +115,12 @@ export const Home = () => {
                   <>
                     <CustomAudioPlayer key="AP" episode={currentlyPlaying} />
                     <Typography>Sources</Typography>
-                    <Card sx={{ overflow: "auto", flex: 1, maxHeight: "40%" }}>
+                    <Card
+                      sx={{
+                        overflow: "auto",
+                        flex: 1,
+                      }}
+                    >
                       {currentlyPlaying.articles_data.map((article, index) => {
                         return (
                           <Accordion key={"Accordion" + index}>
@@ -154,7 +159,7 @@ export const Home = () => {
             p: 1,
             display: "flex",
             flexDirection: "column",
-            flex: 0.5,
+            flex: 0.3,
             width: "100%",
             maxHeight: "100%",
             gap: 1,
@@ -167,21 +172,30 @@ export const Home = () => {
           {isLoadingEpisodes ? (
             <LoadingSpinner />
           ) : (
-            <Card sx={{ overflow: "auto" }}>
+            <Card sx={{ overflow: "auto", boxShadow: 0 }}>
               {allEpisodes ? (
                 allEpisodes.length > 0 &&
                 allEpisodes.map((episode, index) => {
                   const active = currentlyPlaying?.name === episode.name;
+                  const activeOutline = active
+                    ? {
+                        outline: 1,
+                        outlineColor: "primary.main",
+                      }
+                    : {};
                   return (
                     <Card
                       key={"EC-" + index}
                       elevation={2}
                       sx={{
-                        my: 0.5,
+                        width: "90%",
+                        my: 1,
+                        mx: "auto",
                         p: 0,
                         display: "flex",
                         alignContent: "center",
                         justifyContent: "space-between",
+                        ...activeOutline,
                       }}
                     >
                       <CardActions
@@ -189,6 +203,7 @@ export const Home = () => {
                           ":hover": {
                             cursor: "pointer",
                           },
+                          p: 0,
                           flex: 1,
                         }}
                         onClick={() => onClickEpisodeHandler(episode)}
@@ -220,7 +235,7 @@ export const Home = () => {
             </Card>
           )}
         </Card>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
