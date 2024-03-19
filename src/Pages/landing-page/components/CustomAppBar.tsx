@@ -184,7 +184,7 @@ const CustomAppBar = () => {
                 <>
                   <Button
                     color="primary"
-                    variant="text"
+                    variant="outlined"
                     size="small"
                     onClick={() => changePageHandler("Login")}
                   >

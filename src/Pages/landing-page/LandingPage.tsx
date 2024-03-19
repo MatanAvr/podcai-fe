@@ -58,7 +58,7 @@ export default function LandingPage() {
         {enabledSections.includes("Faq") && (
           <>
             <Faq />
-            <Divider />
+            {/* <Divider /> */}
           </>
         )}
         <Footer />

@@ -30,6 +30,9 @@ import {
   UPDATE_PASSWORD_URL,
   updatePasswordRequest,
   updatePasswordResponse,
+  sendSupportMessageRequest,
+  sendSupportMessageResponse,
+  SEND_SUPPORT_MESSAGE_URL,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -193,6 +196,7 @@ export class ApiClient {
       throw error;
     }
   }
+
   async updatePassword(
     updatePasswordReq: updatePasswordRequest
   ): Promise<updatePasswordResponse> {
@@ -202,6 +206,22 @@ export class ApiClient {
       return response.data;
     } catch (error) {
       console.error(`updatePassword, error:${error}`);
+      throw error;
+    }
+  }
+
+  async sendSupportMessage(
+    sendSupportMessageReq: sendSupportMessageRequest
+  ): Promise<sendSupportMessageResponse> {
+    try {
+      const response: AxiosResponse<sendSupportMessageResponse> =
+        await this.axiosInstance.post(
+          SEND_SUPPORT_MESSAGE_URL,
+          sendSupportMessageReq
+        );
+      return response.data;
+    } catch (error) {
+      console.error(`sendSupportMessage, error:${error}`);
       throw error;
     }
   }
