@@ -56,13 +56,13 @@ export default function Hero() {
               Podcai
             </Typography>
           </Typography>
-          <Typography variant="h4" textAlign="center" color="text.secondary">
+          <Typography variant="h4" textAlign="center">
             Personalized news podcasts
             <br />
             powered by AI
           </Typography>
 
-          <Typography variant="h5" textAlign="center" color="text.secondary">
+          <Typography variant="h5" textAlign="center">
             Stay curious, stay informed
           </Typography>
 
