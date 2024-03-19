@@ -15,6 +15,9 @@ import { ApiClient } from "../../Services/axios";
 import { ToggleColorMode } from "../../Features/Theme/Theme";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import { ForgotPassword } from "../../Pages/ForgotPassword/ForgotPassword";
+import { TermsOfService } from "../../Pages/TermsOfService/TermsOfService";
+import { PrivacyPolicy } from "../../Pages/PrivacyPolicy/PrivacyPolicy";
+import { ContactUs } from "../../Pages/ContactUs/ContactUs";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -76,6 +79,9 @@ export const Main = () => {
           <Route path="/Sign up" element={<SignUp />} />
           <Route path="/Unsubscribe" element={<Unsubscribe />} />
           <Route path="/Forgot password" element={<ForgotPassword />} />
+          <Route path="/Terms of service" element={<TermsOfService />} />
+          <Route path="/Privacy policy" element={<PrivacyPolicy />} />
+          <Route path="/Contact us" element={<ContactUs />} />
           {/* private routes */}
           <Route path="/Home" element={isAuth ? <Home /> : <LandingPage />} />
           <Route

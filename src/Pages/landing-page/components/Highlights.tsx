@@ -30,24 +30,24 @@ const highlights = [
     description:
       "Integrate our product into your routine with an intuitive and easy-to-use interface.",
   },
-  {
-    icon: <AutoFixHighRoundedIcon />,
-    title: "Innovative functionality",
-    description:
-      "Stay ahead with features that set new standards, addressing your evolving needs better than the rest.",
-  },
-  {
-    icon: <SupportAgentRoundedIcon />,
-    title: "Reliable support",
-    description:
-      "Count on our responsive customer support, offering assistance that goes beyond the purchase.",
-  },
-  {
-    icon: <QueryStatsRoundedIcon />,
-    title: "Precision in every detail",
-    description:
-      "Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.",
-  },
+  // {
+  //   icon: <AutoFixHighRoundedIcon />,
+  //   title: "Innovative functionality",
+  //   description:
+  //     "Stay ahead with features that set new standards, addressing your evolving needs better than the rest.",
+  // },
+  // {
+  //   icon: <SupportAgentRoundedIcon />,
+  //   title: "Reliable support",
+  //   description:
+  //     "Count on our responsive customer support, offering assistance that goes beyond the purchase.",
+  // },
+  // {
+  //   icon: <QueryStatsRoundedIcon />,
+  //   title: "Precision in every detail",
+  //   description:
+  //     "Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.",
+  // },
 ];
 
 export default function Highlights() {

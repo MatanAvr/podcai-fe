@@ -19,7 +19,10 @@ export type Pages =
   | "Settings"
   | "LandingPage"
   | "Unsubscribe"
-  | "Forgot password";
+  | "Forgot password"
+  | "Terms of service"
+  | "Privacy policy"
+  | "Contact us";
 
 export type Categories =
   | "general"
@@ -205,5 +208,15 @@ export type updatePasswordRequest = {
   new_password: string;
 };
 export type updatePasswordResponse = {
+  is_success: boolean;
+};
+
+export const SEND_SUPPORT_MESSAGE_URL = "/send_support_message/";
+export type sendSupportMessageRequest = {
+  email: string;
+  subject: string;
+  message: string;
+};
+export type sendSupportMessageResponse = {
   is_success: boolean;
 };

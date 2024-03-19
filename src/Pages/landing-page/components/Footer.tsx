@@ -15,6 +15,10 @@ import podcaiLogo from "../../../Assets/Images/Podcai logo.png";
 import podcaiLogoDark from "../../../Assets/Images/Podcai logo - dark.png";
 import { useAppSelector } from "../../../Hooks/Hooks";
 import { enabledSections } from "../LandingPage";
+import { useAppDispatch } from "../../../Hooks/Hooks";
+import { Pages } from "../../../ConstAndTypes/consts";
+import { moveToPage } from "../../../Features/Navigation/Navigation";
+import { Divider } from "@mui/material";
 
 const twitterLink = "https://twitter.com/podcai";
 const instagramLink = "https://instagram.com/podcai";
@@ -26,18 +30,8 @@ const logoStyle = {
   height: "auto",
 };
 
-const scrollToSection = (sectionId: string) => {
-  const sectionElement = document.getElementById(sectionId);
-  const offset = 128;
-  if (sectionElement) {
-    const targetScroll = sectionElement.offsetTop - offset;
-    sectionElement.scrollIntoView({ behavior: "smooth" });
-    window.scrollTo({
-      top: targetScroll,
-      behavior: "smooth",
-    });
-  }
-};
+const linkStyle = { cursor: "pointer" };
+const linkColor = undefined;
 
 const Copyright = () => {
   return (
@@ -51,6 +45,28 @@ const Copyright = () => {
 
 export default function Footer() {
   const currentTheme = useAppSelector((state) => state.theme.themeMode);
+  const currentPage = useAppSelector((state) => state.navigation.currentPage);
+  const dispatch = useAppDispatch();
+
+  const changePageHandler = (newPage: Pages) => {
+    dispatch(moveToPage(newPage));
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    if (currentPage !== "LandingPage") {
+      dispatch(moveToPage("LandingPage"));
+    }
+    const sectionElement = document.getElementById(sectionId);
+    const offset = 128;
+    if (sectionElement) {
+      const targetScroll = sectionElement.offsetTop - offset;
+      sectionElement.scrollIntoView({ behavior: "smooth" });
+      window.scrollTo({
+        top: targetScroll,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <Container
@@ -58,11 +74,12 @@ export default function Footer() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: { xs: 4, sm: 8 },
-        py: { xs: 8, sm: 5 },
+        gap: { xs: 4, sm: 6 },
+        py: { xs: 4, sm: 2 },
         textAlign: { sm: "center", md: "left" },
       }}
     >
+      <Divider sx={{ width: "100%" }} />
       <Box
         sx={{
           display: "flex",
@@ -71,7 +88,101 @@ export default function Footer() {
           justifyContent: "space-between",
         }}
       >
-        <Box
+        <Box sx={{ display: "flex", flex: 1, gap: 6 }}>
+          {/* Product -------------------------------------------------*/}
+          <Box
+            sx={{
+              display: { xs: "flex", sm: "flex" },
+              flexDirection: "column",
+              gap: 1,
+            }}
+          >
+            <Typography variant="body1" fontWeight={"bold"}>
+              Product
+            </Typography>
+
+            {enabledSections.map((section, index) => {
+              return (
+                <Link
+                  key={`link-${index}`}
+                  sx={linkStyle}
+                  color={linkColor}
+                  onClick={() => scrollToSection(section)}
+                >
+                  {section}
+                </Link>
+              );
+            })}
+          </Box>
+          {/* Company -------------------------------------------------*/}
+          {/* <Box
+            sx={{
+              display: { xs: "flex", sm: "flex" },
+              flexDirection: "column",
+              gap: 1,
+            }}
+          >
+            <Typography variant="body1" fontWeight={"bold"}>
+              Company
+            </Typography>
+            <Link
+              sx={linkStyle}
+              color={linkColor}
+              onClick={() => changePageHandler("Terms of service")}
+            >
+              About us
+            </Link>
+            <Link
+              sx={linkStyle}
+              color={linkColor}
+              onClick={() => changePageHandler("Terms of service")}
+            >
+              Careers
+            </Link>
+            <Link
+              sx={linkStyle}
+              color={linkColor}
+              onClick={() => changePageHandler("Terms of service")}
+            >
+              Press
+            </Link>
+          </Box> */}
+          {/* // Legal -------------------------------------------------*/}
+          <Box
+            sx={{
+              display: { xs: "flex", sm: "flex" },
+              flexDirection: "column",
+              gap: 1,
+            }}
+          >
+            <Typography variant="body1" fontWeight={"bold"}>
+              Legal
+            </Typography>
+            <Link
+              sx={linkStyle}
+              color={linkColor}
+              onClick={() => changePageHandler("Terms of service")}
+            >
+              Terms of Service
+            </Link>
+            <Link
+              sx={linkStyle}
+              color={linkColor}
+              onClick={() => changePageHandler("Privacy policy")}
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              sx={linkStyle}
+              color={linkColor}
+              onClick={() => changePageHandler("Contact us")}
+            >
+              Contact us
+            </Link>
+          </Box>
+        </Box>
+        {/* Newsletter related  ---------------------------------------------*/}
+        {/* <Box
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -88,8 +199,7 @@ export default function Footer() {
                 draggable="false"
               />
             </Box>
-            {/* Newsletter related  ---------------------------------------------*/}
-            {/* <Typography variant="body2" fontWeight={600} gutterBottom>
+            <Typography variant="body1" fontWeight={"bold"} gutterBottom>
               Newsletter
             </Typography>
             <Typography variant="body2" color="text.secondary" mb={2}>
@@ -116,98 +226,22 @@ export default function Footer() {
               >
                 Subscribe
               </Button>
-            </Stack> */}
+            </Stack>
           </Box>
-        </Box>
-        <Box
-          sx={{
-            display: { xs: "none", sm: "flex" },
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <Typography variant="body2" fontWeight={600}>
-            Product
-          </Typography>
-
-          {enabledSections.map((section, index) => {
-            return (
-              <Link
-                key={`link-${index}`}
-                color="text.secondary"
-                sx={{ cursor: "pointer" }}
-                onClick={() => scrollToSection(section)}
-              >
-                {section}
-              </Link>
-            );
-          })}
-        </Box>
-        {/* Company -------------------------------------------------*/}
-        {/* <Box
-          sx={{
-            display: { xs: "none", sm: "flex" },
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <Typography variant="body2" fontWeight={600}>
-            Company
-          </Typography>
-          <Link color="text.secondary" href="#">
-            About us
-          </Link>
-          <Link color="text.secondary" href="#">
-            Careers
-          </Link>
-          <Link color="text.secondary" href="#">
-            Press
-          </Link>
-        </Box> */}
-        {/* // Legal -------------------------------------------------*/}
-        {/* <Box
-          sx={{
-            display: { xs: "none", sm: "flex" },
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <Typography variant="body2" fontWeight={600}>
-            Legal
-          </Typography>
-          <Link color="text.secondary" href="#">
-            Terms of Service
-          </Link>
-          <Link color="text.secondary" href="#">
-            Privacy Policy
-          </Link>
-          <Link color="text.secondary" href="#">
-            Contact
-          </Link>
         </Box> */}
       </Box>
+
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          pt: { xs: 4, sm: 16 },
+          pt: { xs: 4, sm: 4 },
           width: "100%",
           borderTop: "1px solid",
           borderColor: "divider",
         }}
       >
-        <div>
-          <Link color="text.secondary" href="#">
-            Privacy Policy
-          </Link>
-          <Typography display="inline" sx={{ mx: 0.5, opacity: 0.5 }}>
-            &nbsp;•&nbsp;
-          </Typography>
-          <Link color="text.secondary" href="#">
-            Terms of Service
-          </Link>
-          <Copyright />
-        </div>
+        <Copyright />
         <Stack
           direction="row"
           justifyContent="left"
@@ -223,6 +257,7 @@ export default function Footer() {
             target="_blank"
             aria-label="X"
             sx={{ alignSelf: "center" }}
+            size="large"
           >
             <TwitterIcon />
           </IconButton>
@@ -232,6 +267,7 @@ export default function Footer() {
             target="_blank"
             aria-label="Instagram"
             sx={{ alignSelf: "center" }}
+            size="large"
           >
             <InstagramIcon />
           </IconButton>
@@ -242,6 +278,7 @@ export default function Footer() {
             target="_blank"
             aria-label="Facebook"
             sx={{ alignSelf: "center" }}
+            size="large"
           >
             <FacebookIcon />
           </IconButton>
@@ -252,6 +289,7 @@ export default function Footer() {
             target="_blank"
             aria-label="LinkedIn"
             sx={{ alignSelf: "center" }}
+            size="large"
           >
             <LinkedInIcon />
           </IconButton>
