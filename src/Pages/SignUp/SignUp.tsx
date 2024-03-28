@@ -5,30 +5,34 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import {
   Alert,
-  Card,
   Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
+  Link,
   Radio,
   RadioGroup,
+  Skeleton,
   TextField,
 } from "@mui/material";
 import {
   Categories,
   INewUser,
+  categoriesList,
+  MAX_NUM_OF_CATEGORIES,
   MIN_NAME_LENGTH,
+  MIN_NUM_OF_CATEGORIES,
   MIN_PASS_LENGTH,
-  NUM_OF_CATEGORIES,
   OTP_LENGTH,
   VoiceSample,
   Voices,
   deleteErrorTimeout,
   sendOtpRequest,
   verifyOtpRequest,
+  VOICE_SAMPLE_SKELETON_WIDTH,
+  VOICE_SAMPLE_SKELETON_HEIGHT,
 } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
 import { isValidEmail } from "../../Utils/Utils";
@@ -40,6 +44,7 @@ import { moveToPage } from "../../Features/Navigation/Navigation";
 import { setLoggedUser, setAuth } from "../../Features/User/User";
 import { isAxiosError } from "axios";
 import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
+import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -57,17 +62,6 @@ const newUserDefault: INewUser = {
 
 const steps = ["Details", "Verify email", "Personalization"];
 const onlyNumbersRegex = /^[0-9]+$/;
-const categories: Categories[] = [
-  "general",
-  "world",
-  "nation",
-  "business",
-  "health",
-  "technology",
-  "sports",
-  "science",
-  "entertainment",
-];
 
 export const SignUp = () => {
   const dispatch = useAppDispatch();
@@ -120,6 +114,10 @@ export const SignUp = () => {
       ...newUser,
       [key]: value,
     });
+  };
+
+  const changeCategoriesHandler = (newCategories: Categories[]) => {
+    setChosenCategories(() => newCategories);
   };
 
   const isStepOptional = (step: number) => {
@@ -222,7 +220,7 @@ export const SignUp = () => {
 
   const verifyOtpWrapper = (
     <Box sx={{ gap: 2 }}>
-      <div>Enter the confirmation code</div>
+      <div>Enter the verification code</div>
       <TextField
         id="otp"
         variant="outlined"
@@ -308,35 +306,16 @@ export const SignUp = () => {
   }, [emailNotification]);
 
   const settingsWrapper = (
-    <div>
+    <Box display={"flex"} flexDirection={"column"} gap={1} maxWidth={"90%"}>
       <div>
-        <u>Choose your {NUM_OF_CATEGORIES} categories</u>
+        <u>Choose up to {MAX_NUM_OF_CATEGORIES} categories</u>
       </div>
-      <Grid
-        container
-        spacing={{ xs: 1, md: 1 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
-        {categories.map((category, index) => {
-          const active = chosenCategories.includes(category);
-          const disabled =
-            !active && chosenCategories.length === NUM_OF_CATEGORIES;
-          return (
-            <Grid key={"category-grid-" + index} xs={2} sm={4} md={4}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={active}
-                    onChange={() => onClickCategoryHandler(category)}
-                    disabled={disabled}
-                  />
-                }
-                label={_.capitalize(category)}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
+
+      <MultiSelect
+        options={categoriesList}
+        values={chosenCategories}
+        changeValuesHandler={changeCategoriesHandler}
+      />
 
       <FormControl
         sx={{
@@ -354,7 +333,7 @@ export const SignUp = () => {
           value={chosenVoiceSample}
           onChange={handleVoiceChange}
         >
-          {voiceSamples &&
+          {voiceSamples ? (
             voiceSamples.length > 0 &&
             voiceSamples.map((voiceSample, index) => {
               return (
@@ -370,16 +349,38 @@ export const SignUp = () => {
                     value={voiceSample.name}
                     control={<Radio />}
                     label={voiceSample.name}
+                    sx={{ my: 0.5 }}
                   />
                   <audio
+                    style={{ maxWidth: "80%" }}
                     src={voiceSample.url}
                     controls
                     controlsList="nodownload"
-                    style={{ maxWidth: "80%" }}
                   />
                 </div>
               );
-            })}
+            })
+          ) : (
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              gap={1}
+              sx={{ maxWidth: "98%" }}
+            >
+              <Skeleton
+                variant="rounded"
+                sx={{ maxWidth: "90%" }}
+                width={VOICE_SAMPLE_SKELETON_WIDTH}
+                height={VOICE_SAMPLE_SKELETON_HEIGHT}
+              />
+              <Skeleton
+                variant="rounded"
+                sx={{ maxWidth: "90%" }}
+                width={VOICE_SAMPLE_SKELETON_WIDTH}
+                height={VOICE_SAMPLE_SKELETON_HEIGHT}
+              />
+            </Box>
+          )}
         </RadioGroup>
       </FormControl>
 
@@ -395,29 +396,13 @@ export const SignUp = () => {
           label="Send me emails when my podcai are ready!"
         />
       </Box>
-    </div>
+    </Box>
   );
-
-  const onClickCategoryHandler = (category: Categories) => {
-    const tempCatArr = [...chosenCategories];
-    const index = tempCatArr.indexOf(category);
-    if (index > -1) {
-      tempCatArr.splice(index, 1);
-    } else if (tempCatArr.length < NUM_OF_CATEGORIES) {
-      tempCatArr.push(category);
-    }
-    setChosenCategories(() => tempCatArr);
-    setNewUser({
-      ...newUser,
-      categories: tempCatArr,
-    });
-  };
 
   const contentArr = [userDataWrapper, verifyOtpWrapper, settingsWrapper];
 
   const checkIfNextDisabled = () => {
     if (activeStep === 0) {
-      // return false;
       return !(
         newUser.name.length > MIN_NAME_LENGTH &&
         isValidEmail(newUser.email) &&
@@ -426,7 +411,11 @@ export const SignUp = () => {
     } else if (activeStep === 1) {
       return !(otp?.length === OTP_LENGTH);
     } else if (activeStep === 2) {
-      return !(chosenCategories.length === 3 && chosenVoiceSample !== "");
+      return !(
+        chosenCategories.length >= MIN_NUM_OF_CATEGORIES &&
+        chosenCategories.length <= MAX_NUM_OF_CATEGORIES &&
+        chosenVoiceSample !== ""
+      );
     }
   };
 
@@ -443,7 +432,6 @@ export const SignUp = () => {
   const signupHandler = async () => {
     setErrorMsg("");
     setLoading(true);
-    // validate fields
     try {
       const signUpRes = await apiClientInstance.signUp(newUser);
       if (signUpRes.access_token) {
@@ -473,7 +461,7 @@ export const SignUp = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        maxWidth: "80%",
+        maxWidth: "90%",
         p: 2,
         gap: 1,
         overflowY: "auto",
@@ -518,8 +506,7 @@ export const SignUp = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              mt: 1,
-              mb: 1,
+              my: 1,
               width: "100%",
             }}
           >
@@ -562,6 +549,20 @@ export const SignUp = () => {
                 : "Next"}
             </LoadingButton>
           </Box>
+          {activeStep === 0 && (
+            <Box mt={1}>
+              Already have an account?&nbsp;
+              <Link
+                sx={{ cursor: "pointer" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(moveToPage("Login"));
+                }}
+              >
+                Log in
+              </Link>
+            </Box>
+          )}
           {errorMsg && (
             <Alert sx={{ my: 1 }} severity="error">
               {errorMsg}

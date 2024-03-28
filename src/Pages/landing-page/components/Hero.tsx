@@ -101,7 +101,11 @@ export default function Hero() {
             sx={{ opacity: 0.8 }}
           >
             By clicking &quot;Sign up now&quot; you agree to our&nbsp;
-            <Link href="#" color="primary">
+            <Link
+              sx={{ cursor: "pointer" }}
+              onClick={() => changePageHandler("Terms of service")}
+              color="primary"
+            >
               Terms of Service
             </Link>
             .
