@@ -1,21 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Categories,
-  NUM_OF_CATEGORIES,
+  categoriesList,
   VoiceSample,
   Voices,
+  MAX_NUM_OF_CATEGORIES,
+  VOICE_SAMPLE_SKELETON_WIDTH,
+  VOICE_SAMPLE_SKELETON_HEIGHT,
 } from "../../ConstAndTypes/consts";
 import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
 import {
   Box,
-  Card,
   Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
-  Grid,
   Radio,
   RadioGroup,
   Skeleton,
@@ -25,22 +26,9 @@ import { LoadingButton } from "@mui/lab";
 import _ from "lodash";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import DeleteUserModal from "../../Components/UI/DeleteUserModal/DeleteUserModal";
+import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 
-const skeletonWidth = 375;
-const skeletonHeight = 40;
 const apiClientInstance = ApiClient.getInstance();
-
-const categories: Categories[] = [
-  "general",
-  "world",
-  "nation",
-  "business",
-  "health",
-  "technology",
-  "sports",
-  "science",
-  "entertainment",
-];
 
 export const Settings = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
@@ -71,15 +59,8 @@ export const Settings = () => {
     }
   };
 
-  const onClickCategoryHandler = (category: Categories) => {
-    const tempCatArr = [...chosenCategories];
-    const index = tempCatArr.indexOf(category);
-    if (index > -1) {
-      tempCatArr.splice(index, 1);
-    } else if (tempCatArr.length < NUM_OF_CATEGORIES) {
-      tempCatArr.push(category);
-    }
-    setChosenCategories(() => tempCatArr);
+  const changeCategoriesHandler = (newCategories: Categories[]) => {
+    setChosenCategories(() => newCategories);
   };
 
   const onClickSaveHandler = async () => {
@@ -93,7 +74,7 @@ export const Settings = () => {
       num_of_articles: 2,
     });
     if (updateRes.is_success) {
-      console.log("user updated");
+      console.log("User updated");
       // reload page or update loggedUser data
     }
     setIsUpdading(false);
@@ -110,32 +91,13 @@ export const Settings = () => {
 
   const settingsContainer = (
     <Box display={"flex"} flexDirection={"column"} gap={1}>
-      <u>Choose your {NUM_OF_CATEGORIES} categories</u>
-      <Grid
-        container
-        spacing={{ xs: 1, md: 0 }}
-        columns={{ xs: 3, sm: 8, md: 12 }}
-      >
-        {categories.map((category, index) => {
-          const active = chosenCategories.includes(category);
-          const disabled =
-            !active && chosenCategories.length === NUM_OF_CATEGORIES;
-          return (
-            <Grid key={"category-grid-" + index} item xs={1} sm={1} md={4}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={active}
-                    onChange={() => onClickCategoryHandler(category)}
-                    disabled={disabled}
-                  />
-                }
-                label={_.capitalize(category)}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
+      <u>Choose up to {MAX_NUM_OF_CATEGORIES} categories</u>
+
+      <MultiSelect
+        options={categoriesList}
+        values={chosenCategories}
+        changeValuesHandler={changeCategoriesHandler}
+      />
       <FormControl
         sx={{
           display: "flex",
@@ -185,13 +147,13 @@ export const Settings = () => {
             <Box display={"flex"} flexDirection={"column"} gap={1}>
               <Skeleton
                 variant="rounded"
-                width={skeletonWidth}
-                height={skeletonHeight}
+                width={VOICE_SAMPLE_SKELETON_WIDTH}
+                height={VOICE_SAMPLE_SKELETON_HEIGHT}
               />
               <Skeleton
                 variant="rounded"
-                width={skeletonWidth}
-                height={skeletonHeight}
+                width={VOICE_SAMPLE_SKELETON_WIDTH}
+                height={VOICE_SAMPLE_SKELETON_HEIGHT}
               />
             </Box>
           )}
@@ -233,7 +195,12 @@ export const Settings = () => {
         <LoadingButton
           variant="contained"
           loading={isUpdading}
-          disabled={!(chosenCategories.length === 3)}
+          disabled={
+            !(
+              chosenCategories.length &&
+              chosenCategories.length <= MAX_NUM_OF_CATEGORIES
+            )
+          }
           onClick={onClickSaveHandler}
         >
           Save
