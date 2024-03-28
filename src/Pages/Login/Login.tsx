@@ -133,6 +133,20 @@ export const Login = () => {
       >
         Log in
       </LoadingButton>
+
+      <Box mt={1}>
+        Don't have an account yet?&nbsp;
+        <Link
+          sx={{ cursor: "pointer" }}
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch(moveToPage("Sign up"));
+          }}
+        >
+          Sign up
+        </Link>
+      </Box>
+
       {errorMsg && (
         <Alert sx={{ my: 1 }} severity="error">
           {errorMsg}

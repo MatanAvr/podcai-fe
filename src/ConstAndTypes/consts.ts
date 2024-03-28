@@ -35,6 +35,17 @@ export type Categories =
   | "science"
   | "health";
 
+export const categoriesList: Categories[] = [
+  "general",
+  "world",
+  "nation",
+  "business",
+  "health",
+  "technology",
+  "sports",
+  "science",
+  "entertainment",
+];
 type Countries =
   | "au"
   | "br"
@@ -180,7 +191,12 @@ export type verifyOtpResponse = {
 export const MIN_NAME_LENGTH = 2;
 export const OTP_LENGTH = 6;
 export const MIN_PASS_LENGTH = 4;
-export const NUM_OF_CATEGORIES = 3;
+export const MAX_NUM_OF_CATEGORIES = 3;
+export const MIN_NUM_OF_CATEGORIES = 1;
+
+// UI consts
+export const VOICE_SAMPLE_SKELETON_WIDTH = 375;
+export const VOICE_SAMPLE_SKELETON_HEIGHT = 40;
 
 export interface CustomAxiosError {
   detail: string;

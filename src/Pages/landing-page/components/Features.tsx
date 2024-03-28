@@ -18,13 +18,14 @@ import mobileLight from "../../../Assets/Images/Hero-images/mobile-light.png";
 import mobileDark from "../../../Assets/Images/Hero-images/mobile-dark.png";
 import devicesLight from "../../../Assets/Images/Hero-images/devices-light.png";
 import devicesDark from "../../../Assets/Images/Hero-images/devices-dark.png";
+import { MAX_NUM_OF_CATEGORIES } from "../../../ConstAndTypes/consts";
 
 const features = [
   {
     icon: <ViewQuiltRoundedIcon />,
     title: "Topic categories",
     description: `Podcai offers a selection of 9 topic categories for news podcasts. 
-      Choose 3 topics, and Podcai will generate a news podcast 
+      Choose up to ${MAX_NUM_OF_CATEGORIES} topics, and Podcai will generate a news podcast 
       on these topics. Topics for your personalized podcast can be 
       changed at any time on the settings page.`,
     imageLight: `url('${dashLight}')`,

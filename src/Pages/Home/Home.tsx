@@ -8,11 +8,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
 import RefreshIcon from "@mui/icons-material/Refresh";
-
+import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Avatar,
   Box,
   Card,
   CardActions,
@@ -125,10 +126,26 @@ export const Home = () => {
                         return (
                           <Accordion key={"Accordion" + index}>
                             <AccordionSummary
+                              id="accordion-summery"
                               expandIcon={<ExpandMoreIcon />}
                               aria-controls="summery-content"
                             >
-                              <Typography>{article.source_name}</Typography>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 2,
+                                }}
+                              >
+                                <Avatar
+                                  src={article.image}
+                                  alt="Article image"
+                                  variant="rounded"
+                                >
+                                  <ArticleRoundedIcon />
+                                </Avatar>
+                                <Typography>{article.source_name}</Typography>
+                              </Box>
                             </AccordionSummary>
                             <AccordionDetails>
                               <Link
