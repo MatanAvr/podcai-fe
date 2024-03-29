@@ -38,7 +38,6 @@ import { ApiClient } from "../../Services/axios";
 import { isValidEmail } from "../../Utils/Utils";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import _ from "lodash";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import { setLoggedUser, setAuth } from "../../Features/User/User";
@@ -220,7 +219,8 @@ export const SignUp = () => {
 
   const verifyOtpWrapper = (
     <Box sx={{ gap: 2 }}>
-      <div>Enter the verification code</div>
+      <Typography>{`Verificaion code was send to ${newUser.email}`}</Typography>
+      <Typography>Enter the code</Typography>
       <TextField
         id="otp"
         variant="outlined"
@@ -529,7 +529,6 @@ export const SignUp = () => {
               Back
             </Button>
 
-            <Box />
             {isStepOptional(activeStep) && (
               <Button onClick={handleSkip} sx={{ mr: 1 }} variant="contained">
                 Skip
