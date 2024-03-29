@@ -1,6 +1,12 @@
 {
+  "name": "podcai",
   "short_name": "podcai",
-  "name": "podcai App",
+  "description": "Personalized podcasts powered by AI.",
+  "display": "standalone",
+  "start_url": ".",
+  "lang": "en",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "favicon.ico",
@@ -17,9 +23,5 @@
       "type": "image/png",
       "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }

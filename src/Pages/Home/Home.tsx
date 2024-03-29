@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ApiClient } from "../../Services/axios";
 import "./Home.scss";
 import { Episode } from "../../ConstAndTypes/consts";
@@ -24,36 +24,49 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
 import { CustomAudioPlayer } from "../../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
+import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();
 
 export const Home = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
-  const [allEpisodes, setAllEpisodes] = useState<Episode[]>();
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode>();
-  const [isLoadingEpisodes, setIsLoadingEpisodes] = useState<boolean>(false);
-  const hasMounted = useRef(false);
-
-  useEffect(() => {
-    if (hasMounted.current) return;
-    getEpisodes();
-    hasMounted.current = true;
-  }, []);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode | undefined>(
+    undefined
+  );
+  const queryClient = useQueryClient();
 
   const getEpisodes = async () => {
-    setIsLoadingEpisodes(true);
     const res = await apiClientInstance.getEpisodes();
     const sortedEpisodes = [...res.episodes];
-    setAllEpisodes(sortedEpisodes);
-    setCurrentlyPlaying(sortedEpisodes[0]);
-    setIsLoadingEpisodes(false);
+    if (currentlyPlaying === undefined) {
+      setCurrentlyPlaying(sortedEpisodes[0]);
+    }
+    return sortedEpisodes;
   };
 
   const onClickEpisodeHandler = (newEpisode: Episode) => {
     if (newEpisode.name === currentlyPlaying?.name) {
       setCurrentlyPlaying(undefined);
     } else setCurrentlyPlaying(newEpisode);
+  };
+
+  const {
+    data: allEpisodes,
+    isLoading: isLoadingEpisodes,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["allEpisodesData"],
+    queryFn: getEpisodes,
+  });
+
+  const refetchEpisodes = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["allEpisodesData"],
+      refetchType: "all", // refetch both active and inactive queries
+    });
   };
 
   return (
@@ -72,7 +85,7 @@ export const Home = () => {
           sx={{
             borderRadius: "500px",
           }}
-          key={"get-episodes"}
+          key={"refresh-button"}
           variant="contained"
           onClick={getEpisodes}
           loading={isLoadingEpisodes}

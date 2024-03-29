@@ -20,10 +20,10 @@ export const VolumeInput = (props: VolumeInputProps) => {
       max={1}
       size="small"
       value={volume}
-      defaultValue={70}
       aria-label="Small"
       valueLabelDisplay="auto"
       onChange={handleSliderChange}
+      valueLabelFormat={Math.round(volume * 100).toString()}
     />
   );
 };

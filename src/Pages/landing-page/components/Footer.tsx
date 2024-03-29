@@ -88,7 +88,7 @@ export default function Footer() {
           justifyContent: "space-between",
         }}
       >
-        <Box sx={{ display: "flex", flex: 1, gap: 6 }}>
+        <Box sx={{ display: "flex", flex: 1, gap: 5 }}>
           {/* Product -------------------------------------------------*/}
           <Box
             sx={{
@@ -115,7 +115,7 @@ export default function Footer() {
             })}
           </Box>
           {/* Company -------------------------------------------------*/}
-          {/* <Box
+          <Box
             sx={{
               display: { xs: "flex", sm: "flex" },
               flexDirection: "column",
@@ -125,28 +125,35 @@ export default function Footer() {
             <Typography variant="body1" fontWeight={"bold"}>
               Company
             </Typography>
+            {/* <Link
+              sx={linkStyle}
+              color={linkColor}
+              onClick={() => changePageHandler("")}
+            >
+              About us
+            </Link> */}
             <Link
               sx={linkStyle}
               color={linkColor}
-              onClick={() => changePageHandler("Terms of service")}
+              onClick={() => changePageHandler("Contact us")}
             >
-              About us
+              Contact us
             </Link>
-            <Link
+            {/* <Link
               sx={linkStyle}
               color={linkColor}
               onClick={() => changePageHandler("Terms of service")}
             >
               Careers
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               sx={linkStyle}
               color={linkColor}
               onClick={() => changePageHandler("Terms of service")}
             >
               Press
-            </Link>
-          </Box> */}
+            </Link> */}
+          </Box>
           {/* // Legal -------------------------------------------------*/}
           <Box
             sx={{
@@ -171,13 +178,6 @@ export default function Footer() {
               onClick={() => changePageHandler("Privacy policy")}
             >
               Privacy Policy
-            </Link>
-            <Link
-              sx={linkStyle}
-              color={linkColor}
-              onClick={() => changePageHandler("Contact us")}
-            >
-              Contact us
             </Link>
           </Box>
         </Box>
@@ -242,15 +242,7 @@ export default function Footer() {
         }}
       >
         <Copyright />
-        <Stack
-          direction="row"
-          justifyContent="left"
-          spacing={1}
-          useFlexGap
-          sx={{
-            color: "text.secondary",
-          }}
-        >
+        <Stack direction="row" justifyContent="left" spacing={1} useFlexGap>
           <IconButton
             color="primary"
             href={twitterLink}

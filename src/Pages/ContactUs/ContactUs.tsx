@@ -117,7 +117,7 @@ export const ContactUs = () => {
         />
         <TextField
           type="text"
-          label="subject"
+          label="Subject"
           size="small"
           value={subject}
           onChange={(e) => {
