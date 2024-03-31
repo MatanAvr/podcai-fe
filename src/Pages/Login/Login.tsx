@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteErrorTimeout, loginRequest } from "../../ConstAndTypes/consts";
+import { DELETE_ERROR_TIMEOUT, loginRequest } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
@@ -68,7 +68,7 @@ export const Login = () => {
       setEmailErr(error);
       setTimeout(() => {
         setEmailErr("");
-      }, deleteErrorTimeout);
+      }, DELETE_ERROR_TIMEOUT);
     } else {
     }
     if (error !== "") {

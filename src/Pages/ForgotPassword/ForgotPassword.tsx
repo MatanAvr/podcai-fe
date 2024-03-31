@@ -9,7 +9,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import {
   MIN_PASS_LENGTH,
   OTP_LENGTH,
-  deleteErrorTimeout,
+  DELETE_ERROR_TIMEOUT,
   sendOtpRequest,
   verifyOtpRequest,
 } from "../../ConstAndTypes/consts";
@@ -46,7 +46,7 @@ export const ForgotPassword = () => {
       setEmailErr(error);
       setTimeout(() => {
         setEmailErr("");
-      }, deleteErrorTimeout);
+      }, DELETE_ERROR_TIMEOUT);
     } else {
     }
     if (error !== "") {

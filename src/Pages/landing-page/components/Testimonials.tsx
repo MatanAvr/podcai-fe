@@ -115,7 +115,7 @@ export default function Testimonials() {
         {userTestimonials.map((testimonial, index) => (
           <Card key={`testimonial-${index}`} sx={{ p: 1 }}>
             <CardContent>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body1" color="text.secondary">
                 {testimonial.testimonial}
               </Typography>
             </CardContent>

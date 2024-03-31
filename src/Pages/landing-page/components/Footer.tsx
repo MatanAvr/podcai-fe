@@ -13,10 +13,9 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import podcaiLogo from "../../../Assets/Images/Podcai logo.png";
 import podcaiLogoDark from "../../../Assets/Images/Podcai logo - dark.png";
-import { useAppSelector } from "../../../Hooks/Hooks";
 import { enabledSections } from "../LandingPage";
-import { useAppDispatch } from "../../../Hooks/Hooks";
-import { Pages } from "../../../ConstAndTypes/consts";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
+import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
 import { moveToPage } from "../../../Features/Navigation/Navigation";
 import { Divider } from "@mui/material";
 
@@ -35,7 +34,7 @@ const linkColor = undefined;
 
 const Copyright = () => {
   return (
-    <Typography variant="body2" color="text.secondary" mt={1}>
+    <Typography variant={FONT_SIZE} color="text.secondary" mt={1}>
       {"Copyright © "}
       Podcai&nbsp;
       {new Date().getFullYear()}
@@ -202,7 +201,7 @@ export default function Footer() {
             <Typography variant="body1" fontWeight={"bold"} gutterBottom>
               Newsletter
             </Typography>
-            <Typography variant="body2" color="text.secondary" mb={2}>
+            <Typography variant="body1" color="text.secondary" mb={2}>
               Subscribe to our newsletter for weekly updates and promotions.
             </Typography>
             <Stack direction="row" spacing={1} useFlexGap>

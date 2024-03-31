@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import WbSunnyRoundedIcon from "@mui/icons-material/WbSunnyRounded";
-import ModeNightRoundedIcon from "@mui/icons-material/ModeNightRounded";
+import NightlightRoundedIcon from "@mui/icons-material/NightlightRounded";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { ToggleColorMode } from "../../../Features/Theme/Theme";
 
@@ -23,7 +23,7 @@ const ToggleColorModeButton = () => {
         {themeMode === "dark" ? (
           <WbSunnyRoundedIcon fontSize="small" />
         ) : (
-          <ModeNightRoundedIcon fontSize="small" />
+          <NightlightRoundedIcon fontSize="small" />
         )}
       </Button>
     </Box>
