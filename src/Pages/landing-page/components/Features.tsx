@@ -8,7 +8,7 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
-import EdgesensorHighRoundedIcon from "@mui/icons-material/EdgesensorHighRounded";
+import GroupsIcon from "@mui/icons-material/Groups";
 import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
 import { useState } from "react";
 
@@ -16,36 +16,32 @@ import dashLight from "../../../Assets/Images/Hero-images/dash-light.png";
 import dashDark from "../../../Assets/Images/Hero-images/dash-dark.png";
 import mobileLight from "../../../Assets/Images/Hero-images/mobile-light.png";
 import mobileDark from "../../../Assets/Images/Hero-images/mobile-dark.png";
-import devicesLight from "../../../Assets/Images/Hero-images/devices-light.png";
-import devicesDark from "../../../Assets/Images/Hero-images/devices-dark.png";
-import { MAX_NUM_OF_CATEGORIES } from "../../../ConstAndTypes/consts";
+import podcaiPreviewDark from "../../../Assets/Images/Hero-images/podcai-playing-playing-dark.png";
+import podcaiPreviewLight from "../../../Assets/Images/Hero-images/podcai-playing-playing-light.png";
+import { FONT_SIZE, MAX_NUM_OF_TOPICS } from "../../../ConstAndTypes/consts";
 
 const features = [
   {
-    icon: <ViewQuiltRoundedIcon />,
-    title: "Topic categories",
-    description: `Podcai offers a selection of 9 topic categories for news podcasts. 
-      Choose up to ${MAX_NUM_OF_CATEGORIES} topics, and Podcai will generate a news podcast 
-      on these topics. Topics for your personalized podcast can be 
-      changed at any time on the settings page.`,
+    icon: <ViewQuiltRoundedIcon fontSize="large" />,
+    title: "Topics",
+    description: `Podcai offers a selection of 9 topics for podcasts. 
+    Choose up to ${MAX_NUM_OF_TOPICS}, and Podcai will generate your personalized daily podcasts.`,
     imageLight: `url('${dashLight}')`,
     imageDark: `url('${dashDark}')`,
   },
   {
-    icon: <EdgesensorHighRoundedIcon />,
+    icon: <GroupsIcon fontSize="large" />,
     title: "Podcaster voices",
-    description:
-      "Two featured podcaster voices are currently available: Aria and Guy.",
+    description: "6 featured podcaster voices are available to choose from.",
     imageLight: `url('${mobileLight}')`,
     imageDark: `url('${mobileDark}')`,
   },
   {
-    icon: <DevicesRoundedIcon />,
+    icon: <DevicesRoundedIcon fontSize="large" />,
     title: "Available on all platforms",
-    description:
-      "This item could let users know the product is available on all platforms, such as web, mobile, and desktop.",
-    imageLight: `url('${devicesLight}')`,
-    imageDark: `url('${devicesDark}')`,
+    description: `Podcai is a web-based app that is available on all platforms.`,
+    imageLight: `url('${podcaiPreviewLight}')`,
+    imageDark: `url('${podcaiPreviewDark}')`,
   },
 ];
 
@@ -65,15 +61,6 @@ export default function Features() {
           <div>
             <Typography component="h2" variant="h4" color="text.primary">
               Features
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{ mb: { xs: 2, sm: 4 } }}
-            >
-              Our mission at Podcai is to provide our listeners with a
-              convenient and enjoyable way to stay informed about the topics
-              that interest them.
             </Typography>
           </div>
           <Grid
@@ -132,24 +119,16 @@ export default function Features() {
                 minHeight: 280,
               }}
             />
-            <Box sx={{ px: 2, pb: 2 }}>
-              <Typography
-                color="text.primary"
-                variant="body2"
-                fontWeight="bold"
-              >
+            <Box sx={{ px: 1, pb: 1 }}>
+              <Typography variant={FONT_SIZE} fontWeight="bold">
                 {selectedFeature.title}
               </Typography>
-              <Typography
-                color="text.secondary"
-                variant="body2"
-                sx={{ my: 0.5 }}
-              >
+              <Typography variant={FONT_SIZE} sx={{ my: 0.5 }}>
                 {selectedFeature.description}
               </Typography>
               <Link
                 color="primary"
-                variant="body2"
+                variant={FONT_SIZE}
                 fontWeight="bold"
                 sx={{
                   display: "inline-flex",
@@ -157,13 +136,7 @@ export default function Features() {
                   "& > svg": { transition: "0.2s" },
                   "&:hover > svg": { transform: "translateX(2px)" },
                 }}
-              >
-                {/* <span>Learn more</span> */}
-                {/* <ChevronRightRoundedIcon
-                  fontSize="small"
-                  sx={{ mt: "1px", ml: "2px" }}
-                /> */}
-              </Link>
+              ></Link>
             </Box>
           </Box>
           <Stack
@@ -223,27 +196,28 @@ export default function Features() {
                           : "grey.700";
                       },
                     }}
+                    fontSize={"big"}
                   >
                     {icon}
                   </Box>
                   <div>
                     <Typography
                       color="text.primary"
-                      variant="body2"
+                      variant={FONT_SIZE}
                       fontWeight="bold"
                     >
                       {title}
                     </Typography>
                     <Typography
                       color="text.secondary"
-                      variant="body2"
+                      variant={FONT_SIZE}
                       sx={{ my: 0.5 }}
                     >
                       {description}
                     </Typography>
                     <Link
                       color="primary"
-                      variant="body2"
+                      variant={FONT_SIZE}
                       fontWeight="bold"
                       sx={{
                         display: "inline-flex",
@@ -254,13 +228,7 @@ export default function Features() {
                       onClick={(event) => {
                         event.stopPropagation();
                       }}
-                    >
-                      {/* <span>Learn more</span> */}
-                      {/* <ChevronRightRoundedIcon
-                        fontSize="small"
-                        sx={{ mt: "1px", ml: "2px" }}
-                      /> */}
-                    </Link>
+                    ></Link>
                   </div>
                 </Box>
               </Card>
@@ -284,10 +252,12 @@ export default function Features() {
           >
             <Box
               sx={{
-                m: "auto",
-                width: 420,
-                height: 500,
+                // m: "auto",
+                width: "100%",
+                height: "100%",
                 backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
                 backgroundImage: (theme) =>
                   theme.palette.mode === "light"
                     ? features[selectedFeatureIndex].imageLight

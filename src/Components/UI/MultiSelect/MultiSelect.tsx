@@ -8,16 +8,13 @@ import {
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
-import {
-  Categories,
-  MAX_NUM_OF_CATEGORIES,
-} from "../../../ConstAndTypes/consts";
+import { Topics, MAX_NUM_OF_TOPICS } from "../../../ConstAndTypes/consts";
 import _ from "lodash";
 
 interface MultiSelectProps {
-  values: Categories[];
-  options: Categories[];
-  changeValuesHandler: (arg: Categories[]) => void;
+  values: Topics[];
+  options: Topics[];
+  changeValuesHandler: (arg: Topics[]) => void;
 }
 
 export default function MultiSelect({
@@ -31,7 +28,7 @@ export default function MultiSelect({
         multiple
         value={values}
         onChange={(e) => {
-          const newValues = e.target.value as Categories[];
+          const newValues = e.target.value as Topics[];
           changeValuesHandler(newValues);
         }}
         input={<OutlinedInput />}
@@ -57,8 +54,7 @@ export default function MultiSelect({
       >
         {options.map((option) => {
           const isChosen = values.length && values.includes(option);
-          const isDisabled =
-            !isChosen && values.length === MAX_NUM_OF_CATEGORIES;
+          const isDisabled = !isChosen && values.length === MAX_NUM_OF_TOPICS;
           return (
             <MenuItem
               key={option}

@@ -4,7 +4,7 @@ export interface INewUser {
   password: string;
   voice: Voices;
   num_of_articles: number;
-  categories: Categories[];
+  categories: Topics[];
   country: Countries;
   language: Languages;
   should_send_episode_email: boolean;
@@ -24,7 +24,7 @@ export type Pages =
   | "Privacy policy"
   | "Contact us";
 
-export type Categories =
+export type Topics =
   | "general"
   | "world"
   | "nation"
@@ -35,7 +35,7 @@ export type Categories =
   | "science"
   | "health";
 
-export const categoriesList: Categories[] = [
+export const topicsList: Topics[] = [
   "general",
   "world",
   "nation",
@@ -46,6 +46,7 @@ export const categoriesList: Categories[] = [
   "science",
   "entertainment",
 ];
+
 type Countries =
   | "au"
   | "br"
@@ -104,8 +105,18 @@ type Languages =
 
 export type Voices = "Guy" | "Aria";
 
-export const deleteErrorTimeout = 2500;
+export const DELETE_ERROR_TIMEOUT = 2500;
+export const MIN_NAME_LENGTH = 2;
+export const OTP_LENGTH = 6;
+export const MIN_PASS_LENGTH = 4;
+export const MAX_NUM_OF_TOPICS = 3;
+export const MIN_NUM_OF_TOPICS = 1;
+export const SUPPORT_EMAIL = `admin@podcai.co`;
 
+// UI consts
+export const VOICE_SAMPLE_SKELETON_WIDTH = 375;
+export const VOICE_SAMPLE_SKELETON_HEIGHT = 40;
+export const FONT_SIZE = "body1";
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";
 export const USER_LOGIN_URL = "/user/login/";
@@ -115,7 +126,7 @@ export interface loginResponse {
   access_token: string;
   name: string;
   email: string;
-  categories: Categories[];
+  categories: Topics[];
   voice: Voices;
   country: Countries;
   language: Languages;
@@ -129,7 +140,7 @@ export const USER_UPDATE_URL = "/user/update_user/";
 export type updateUserRequest = {
   name: string;
   num_of_articles: number;
-  categories: Categories[];
+  categories: Topics[];
   country: Countries;
   language: Languages;
   voice: Voices;
@@ -151,7 +162,7 @@ export type VoiceSample = { name: Voices; url: string };
 export interface Episode {
   name: string;
   link: string;
-  categories: Categories[];
+  categories: Topics[];
   articles_data: ArticleData[];
 }
 
@@ -187,16 +198,6 @@ export type verifyOtpRequest = {
 export type verifyOtpResponse = {
   is_success: boolean;
 };
-
-export const MIN_NAME_LENGTH = 2;
-export const OTP_LENGTH = 6;
-export const MIN_PASS_LENGTH = 4;
-export const MAX_NUM_OF_CATEGORIES = 3;
-export const MIN_NUM_OF_CATEGORIES = 1;
-
-// UI consts
-export const VOICE_SAMPLE_SKELETON_WIDTH = 375;
-export const VOICE_SAMPLE_SKELETON_HEIGHT = 40;
 
 export interface CustomAxiosError {
   detail: string;
