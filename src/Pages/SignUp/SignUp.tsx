@@ -18,17 +18,17 @@ import {
   TextField,
 } from "@mui/material";
 import {
-  Categories,
+  Topics,
   INewUser,
-  categoriesList,
-  MAX_NUM_OF_CATEGORIES,
+  topicsList,
+  MAX_NUM_OF_TOPICS,
   MIN_NAME_LENGTH,
-  MIN_NUM_OF_CATEGORIES,
+  MIN_NUM_OF_TOPICS,
   MIN_PASS_LENGTH,
   OTP_LENGTH,
   VoiceSample,
   Voices,
-  deleteErrorTimeout,
+  DELETE_ERROR_TIMEOUT,
   sendOtpRequest,
   verifyOtpRequest,
   VOICE_SAMPLE_SKELETON_WIDTH,
@@ -72,7 +72,7 @@ export const SignUp = () => {
   const [emailErr, setEmailErr] = useState<string>("");
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
-  const [chosenCategories, setChosenCategories] = useState<Categories[]>([]);
+  const [chosenTopics, setChosenTopics] = useState<Topics[]>([]);
   const [emailNotification, setEmailNotification] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -97,7 +97,7 @@ export const SignUp = () => {
       setEmailErr(error);
       setTimeout(() => {
         setEmailErr("");
-      }, deleteErrorTimeout);
+      }, DELETE_ERROR_TIMEOUT);
     } else {
     }
     if (error !== "") {
@@ -115,8 +115,8 @@ export const SignUp = () => {
     });
   };
 
-  const changeCategoriesHandler = (newCategories: Categories[]) => {
-    setChosenCategories(() => newCategories);
+  const changeTopicsHandler = (newTopics: Topics[]) => {
+    setChosenTopics(() => newTopics);
   };
 
   const isStepOptional = (step: number) => {
@@ -308,13 +308,13 @@ export const SignUp = () => {
   const settingsWrapper = (
     <Box display={"flex"} flexDirection={"column"} gap={1} maxWidth={"90%"}>
       <div>
-        <u>Choose up to {MAX_NUM_OF_CATEGORIES} categories</u>
+        <u>Choose up to {MAX_NUM_OF_TOPICS} topics</u>
       </div>
 
       <MultiSelect
-        options={categoriesList}
-        values={chosenCategories}
-        changeValuesHandler={changeCategoriesHandler}
+        options={topicsList}
+        values={chosenTopics}
+        changeValuesHandler={changeTopicsHandler}
       />
 
       <FormControl
@@ -412,8 +412,8 @@ export const SignUp = () => {
       return !(otp?.length === OTP_LENGTH);
     } else if (activeStep === 2) {
       return !(
-        chosenCategories.length >= MIN_NUM_OF_CATEGORIES &&
-        chosenCategories.length <= MAX_NUM_OF_CATEGORIES &&
+        chosenTopics.length >= MIN_NUM_OF_TOPICS &&
+        chosenTopics.length <= MAX_NUM_OF_TOPICS &&
         chosenVoiceSample !== ""
       );
     }

@@ -8,6 +8,9 @@ import Highlights from "./components/Highlights";
 import Pricing from "./components/Pricing";
 import Footer from "./components/Footer";
 import Faq from "./components/Faq";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
+import { moveToPage } from "../../Features/Navigation/Navigation";
 
 type sectionOptions =
   | "Features"
@@ -25,6 +28,15 @@ export const enabledSections: sectionOptions[] = [
 ];
 
 export default function LandingPage() {
+  const isAuth = useAppSelector((state) => state.user.auth);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(moveToPage("Home"));
+    }
+  }, []);
+
   return (
     <>
       <Hero />

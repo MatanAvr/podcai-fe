@@ -6,7 +6,7 @@ import { ApiClient } from "../../Services/axios";
 import { Alert, Box } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import { deleteErrorTimeout } from "../../ConstAndTypes/consts";
+import { DELETE_ERROR_TIMEOUT } from "../../ConstAndTypes/consts";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -46,7 +46,7 @@ export const Unsubscribe = () => {
       setEmailErr("Invalid email");
       setTimeout(() => {
         setEmailErr("");
-      }, deleteErrorTimeout);
+      }, DELETE_ERROR_TIMEOUT);
       return false;
     } else {
       setEmailErr("");

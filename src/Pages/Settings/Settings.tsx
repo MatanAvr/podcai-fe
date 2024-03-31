@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  Categories,
-  categoriesList,
+  Topics,
+  topicsList,
   VoiceSample,
   Voices,
-  MAX_NUM_OF_CATEGORIES,
+  MAX_NUM_OF_TOPICS,
   VOICE_SAMPLE_SKELETON_WIDTH,
   VOICE_SAMPLE_SKELETON_HEIGHT,
 } from "../../ConstAndTypes/consts";
@@ -40,7 +40,7 @@ export const Settings = () => {
   const [shouldSendEpisodeEmail, setShouldSendEpisodeEmail] = useState<boolean>(
     loggedUser.should_send_episode_email
   );
-  const [chosenCategories, setChosenCategories] = useState<Categories[]>(
+  const [chosenTopics, setChosenTopics] = useState<Topics[]>(
     [...loggedUser.categories] || []
   );
   const hasMounted = useRef(false);
@@ -59,14 +59,14 @@ export const Settings = () => {
     }
   };
 
-  const changeCategoriesHandler = (newCategories: Categories[]) => {
-    setChosenCategories(() => newCategories);
+  const changeTopicsHandler = (newTopics: Topics[]) => {
+    setChosenTopics(() => newTopics);
   };
 
   const onClickSaveHandler = async () => {
     setIsUpdading(true);
     const userToUpdate = cloneDeep(loggedUser);
-    userToUpdate.categories = chosenCategories;
+    userToUpdate.categories = chosenTopics;
     userToUpdate.should_send_episode_email = shouldSendEpisodeEmail;
     userToUpdate.voice = chosenVoiceSample;
     const updateRes = await apiClientInstance.userUpdate({
@@ -91,12 +91,12 @@ export const Settings = () => {
 
   const settingsContainer = (
     <Box display={"flex"} flexDirection={"column"} gap={1}>
-      <u>Choose up to {MAX_NUM_OF_CATEGORIES} categories</u>
+      <u>Choose up to {MAX_NUM_OF_TOPICS} topics</u>
 
       <MultiSelect
-        options={categoriesList}
-        values={chosenCategories}
-        changeValuesHandler={changeCategoriesHandler}
+        options={topicsList}
+        values={chosenTopics}
+        changeValuesHandler={changeTopicsHandler}
       />
       <FormControl
         sx={{
@@ -196,10 +196,7 @@ export const Settings = () => {
           variant="contained"
           loading={isUpdading}
           disabled={
-            !(
-              chosenCategories.length &&
-              chosenCategories.length <= MAX_NUM_OF_CATEGORIES
-            )
+            !(chosenTopics.length && chosenTopics.length <= MAX_NUM_OF_TOPICS)
           }
           onClick={onClickSaveHandler}
         >

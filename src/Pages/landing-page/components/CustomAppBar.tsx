@@ -1,15 +1,13 @@
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorModeButton from "./ToggleColorModeButton";
-import { Pages } from "../../../ConstAndTypes/consts";
+import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
 import { moveToPage } from "../../../Features/Navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
@@ -19,10 +17,15 @@ import { setAuth } from "../../../Features/User/User";
 import { enabledSections } from "../LandingPage";
 
 const logoStyle = {
-  maxHeight: "30px",
+  maxHeight: "40px",
   height: "auto",
   cursor: "pointer",
   marginStart: "10px",
+};
+
+const menuItemStyle = {
+  py: "6px",
+  px: "12px",
 };
 
 const CustomAppBar = () => {
@@ -68,89 +71,192 @@ const CustomAppBar = () => {
 
   return (
     <AppBar
+      id="app-bar"
       position="fixed"
       sx={{
         boxShadow: 0,
         bgcolor: "transparent",
-        backgroundImage: "none",
-        mt: 2,
+        alignItems: "center",
       }}
     >
-      <Container maxWidth="lg">
-        <Toolbar
-          id="toolbar"
-          variant="dense"
-          sx={(theme) => ({
+      <Box
+        id="toolbar"
+        sx={(theme) => ({
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-around",
+          width: "100%",
+          py: 1.5,
+          bgcolor:
+            theme.palette.mode === "light"
+              ? "rgba(255, 255, 255, 0.4)"
+              : "rgba(0, 0, 0, 0.4)",
+          backdropFilter: "blur(24px)",
+          borderColor: "divider",
+          boxShadow:
+            theme.palette.mode === "light"
+              ? `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
+              : "0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)",
+        })}
+      >
+        <img
+          src={currentTheme === "light" ? podcaiLogo : podcaiLogoDark}
+          style={logoStyle}
+          alt="Podcai logo"
+          draggable="false"
+          onClick={() => {
+            if (isAuth) {
+              changePageHandler("Home");
+            } else {
+              changePageHandler("LandingPage");
+              scrollToSection("Hero");
+            }
+          }}
+        />
+
+        <Box
+          sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
-            flexShrink: 0,
-            borderRadius: "999px",
-            bgcolor:
-              theme.palette.mode === "light"
-                ? "rgba(255, 255, 255, 0.4)"
-                : "rgba(0, 0, 0, 0.4)",
-            backdropFilter: "blur(24px)",
-            maxHeight: 40,
-            border: "1px solid",
-            borderColor: "divider",
-            boxShadow:
-              theme.palette.mode === "light"
-                ? `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
-                : "0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)",
-          })}
+            justifyContent: "center",
+          }}
         >
-          <Box
-            id="toolbar-box"
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              alignItems: "center",
-              ml: "-6px",
-              px: 0.5,
-            }}
-          >
-            <img
-              src={currentTheme === "light" ? podcaiLogo : podcaiLogoDark}
-              style={logoStyle}
-              alt="Podcai logo"
-              draggable="false"
-              onClick={() => {
-                if (isAuth) {
-                  changePageHandler("Home");
-                } else {
-                  changePageHandler("LandingPage");
-                  scrollToSection("Hero");
-                }
-              }}
-            />
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            {isAuth ? (
+              <>
+                <MenuItem
+                  onClick={() => changePageHandler("Home")}
+                  sx={menuItemStyle}
+                >
+                  <Typography variant={FONT_SIZE} color="text.primary">
+                    Home
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => changePageHandler("Settings")}
+                  sx={menuItemStyle}
+                >
+                  <Typography variant={FONT_SIZE} color="text.primary">
+                    Settings
+                  </Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => changePageHandler("Contact us")}
+                  sx={menuItemStyle}
+                >
+                  <Typography variant={FONT_SIZE} color="text.primary">
+                    Contact us
+                  </Typography>
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                {enabledSections.map((section, index) => {
+                  return (
+                    <MenuItem
+                      key={`manu-item-${index}`}
+                      onClick={() => scrollToSection(section)}
+                      sx={menuItemStyle}
+                    >
+                      <Typography variant={FONT_SIZE} color="text.primary">
+                        {section}
+                      </Typography>
+                    </MenuItem>
+                  );
+                })}
+                <MenuItem
+                  onClick={() => changePageHandler("Contact us")}
+                  sx={menuItemStyle}
+                >
+                  <Typography variant={FONT_SIZE} color="text.primary">
+                    Contact us
+                  </Typography>
+                </MenuItem>
+              </>
+            )}
+          </Box>
+        </Box>
 
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            gap: 1,
+            alignItems: "center",
+          }}
+        >
+          <ToggleColorModeButton />
+          {isAuth ? (
+            <Button
+              color="primary"
+              variant="text"
+              size="small"
+              onClick={logoutHandler}
+            >
+              Log out
+            </Button>
+          ) : (
+            <>
+              <Button
+                color="primary"
+                variant="outlined"
+                size="small"
+                onClick={() => changePageHandler("Login")}
+              >
+                Log in
+              </Button>
+
+              <Button
+                color="primary"
+                variant="contained"
+                size="small"
+                onClick={() => changePageHandler("Sign up")}
+              >
+                Sign up
+              </Button>
+            </>
+          )}
+        </Box>
+
+        {/* // MOBILE VIEW *** */}
+        <Box sx={{ display: { sm: "", md: "none" } }}>
+          <Button
+            variant="text"
+            color="primary"
+            aria-label="menu"
+            onClick={toggleDrawer(true)}
+            sx={{ minWidth: "30px", p: "4px" }}
+          >
+            <MenuIcon />
+          </Button>
+          <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+            <Box
+              sx={{
+                minWidth: "60dvw",
+                p: 2,
+                backgroundColor: "background.paper",
+                flexGrow: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "end",
+                  flexGrow: 1,
+                }}
+              >
+                <ToggleColorModeButton />
+              </Box>
               {isAuth ? (
                 <>
-                  <MenuItem
-                    onClick={() => changePageHandler("Home")}
-                    sx={{ py: "6px", px: "12px" }}
-                  >
-                    <Typography variant="body2" color="text.primary">
-                      Home
-                    </Typography>
+                  <MenuItem onClick={() => changePageHandler("Home")}>
+                    Home
                   </MenuItem>
-                  <MenuItem
-                    onClick={() => changePageHandler("Settings")}
-                    sx={{ py: "6px", px: "12px" }}
-                  >
-                    <Typography variant="body2" color="text.primary">
-                      Settings
-                    </Typography>
+                  <MenuItem onClick={() => changePageHandler("Settings")}>
+                    Settings
                   </MenuItem>
-                  <MenuItem
-                    onClick={() => changePageHandler("Contact us")}
-                    sx={{ py: "6px", px: "12px" }}
-                  >
-                    <Typography variant="body2" color="text.primary">
-                      Contact us
-                    </Typography>
+                  <MenuItem onClick={() => changePageHandler("Contact us")}>
+                    Contact us
                   </MenuItem>
                 </>
               ) : (
@@ -160,168 +266,59 @@ const CustomAppBar = () => {
                       <MenuItem
                         key={`manu-item-${index}`}
                         onClick={() => scrollToSection(section)}
-                        sx={{ py: "6px", px: "12px" }}
                       >
-                        <Typography variant="body2" color="text.primary">
-                          {section}
-                        </Typography>
+                        {section}
                       </MenuItem>
                     );
                   })}
-                  <MenuItem
-                    onClick={() => changePageHandler("Contact us")}
-                    sx={{ py: "6px", px: "12px" }}
-                  >
-                    <Typography variant="body2" color="text.primary">
-                      Contact us
-                    </Typography>
+                  <MenuItem onClick={() => changePageHandler("Contact us")}>
+                    Contact us
+                  </MenuItem>
+                </>
+              )}
+
+              <Divider />
+              {isAuth ? (
+                <>
+                  <MenuItem>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={logoutHandler}
+                      sx={{ width: "100%" }}
+                    >
+                      Log out
+                    </Button>
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  <MenuItem>
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => changePageHandler("Login")}
+                      sx={{ width: "100%" }}
+                    >
+                      Log in
+                    </Button>
+                  </MenuItem>
+                  <MenuItem>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={() => changePageHandler("Sign up")}
+                      sx={{ width: "100%" }}
+                    >
+                      Sign up
+                    </Button>
                   </MenuItem>
                 </>
               )}
             </Box>
-          </Box>
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              gap: 0.5,
-              alignItems: "center",
-            }}
-          >
-            <ToggleColorModeButton />
-            {isAuth ? (
-              <Button
-                color="primary"
-                variant="text"
-                size="small"
-                onClick={logoutHandler}
-              >
-                Log out
-              </Button>
-            ) : (
-              <>
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  size="small"
-                  onClick={() => changePageHandler("Login")}
-                >
-                  Log in
-                </Button>
-
-                <Button
-                  color="primary"
-                  variant="contained"
-                  size="small"
-                  onClick={() => changePageHandler("Sign up")}
-                >
-                  Sign up
-                </Button>
-              </>
-            )}
-          </Box>
-          <Box sx={{ display: { sm: "", md: "none" } }}>
-            <Button
-              variant="text"
-              color="primary"
-              aria-label="menu"
-              onClick={toggleDrawer(true)}
-              sx={{ minWidth: "30px", p: "4px" }}
-            >
-              <MenuIcon />
-            </Button>
-            {/* // MOBILE VIEW *** */}
-            <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
-              <Box
-                sx={{
-                  minWidth: "60dvw",
-                  p: 2,
-                  backgroundColor: "background.paper",
-                  flexGrow: 1,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "end",
-                    flexGrow: 1,
-                  }}
-                >
-                  <ToggleColorModeButton />
-                </Box>
-                {isAuth ? (
-                  <>
-                    <MenuItem onClick={() => changePageHandler("Home")}>
-                      Home
-                    </MenuItem>
-                    <MenuItem onClick={() => changePageHandler("Settings")}>
-                      Settings
-                    </MenuItem>
-                    <MenuItem onClick={() => changePageHandler("Contact us")}>
-                      Contact us
-                    </MenuItem>
-                  </>
-                ) : (
-                  <>
-                    {enabledSections.map((section, index) => {
-                      return (
-                        <MenuItem
-                          key={`manu-item-${index}`}
-                          onClick={() => scrollToSection(section)}
-                        >
-                          {section}
-                        </MenuItem>
-                      );
-                    })}
-                    <MenuItem onClick={() => changePageHandler("Contact us")}>
-                      Contact us
-                    </MenuItem>
-                  </>
-                )}
-
-                <Divider />
-                {isAuth ? (
-                  <>
-                    <MenuItem>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={logoutHandler}
-                        sx={{ width: "100%" }}
-                      >
-                        Log out
-                      </Button>
-                    </MenuItem>
-                  </>
-                ) : (
-                  <>
-                    <MenuItem>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        onClick={() => changePageHandler("Login")}
-                        sx={{ width: "100%" }}
-                      >
-                        Log in
-                      </Button>
-                    </MenuItem>
-                    <MenuItem>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={() => changePageHandler("Sign up")}
-                        sx={{ width: "100%" }}
-                      >
-                        Sign up
-                      </Button>
-                    </MenuItem>
-                  </>
-                )}
-              </Box>
-            </Drawer>
-          </Box>
-        </Toolbar>
-      </Container>
+          </Drawer>
+        </Box>
+      </Box>
     </AppBar>
   );
 };
