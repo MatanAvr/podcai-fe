@@ -11,7 +11,6 @@ export const TermsOfService = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
-
         gap: 1,
       }}
     >

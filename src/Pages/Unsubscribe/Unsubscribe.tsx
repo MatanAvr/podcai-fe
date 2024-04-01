@@ -63,7 +63,6 @@ export const Unsubscribe = () => {
         maxWidth: "90%",
         flexDirection: "column",
         alignItems: "center",
-        p: 2,
         gap: 1,
       }}
     >
@@ -86,6 +85,7 @@ export const Unsubscribe = () => {
       <TextField
         id="email"
         label="Email"
+        inputMode="email"
         variant="outlined"
         size="small"
         onChange={onChange}

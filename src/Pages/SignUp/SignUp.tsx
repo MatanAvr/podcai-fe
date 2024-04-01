@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import {
   Alert,
-  Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -15,6 +14,7 @@ import {
   Radio,
   RadioGroup,
   Skeleton,
+  Switch,
   TextField,
 } from "@mui/material";
 import {
@@ -195,6 +195,7 @@ export const SignUp = () => {
         id="email"
         label="Email"
         type="email"
+        inputMode="email"
         variant="outlined"
         size="small"
         onChange={onChange}
@@ -384,16 +385,19 @@ export const SignUp = () => {
         </RadioGroup>
       </FormControl>
 
-      <Box>
-        <FormControlLabel
-          control={
-            <Checkbox
-              id="should_send_episode_email"
-              checked={emailNotification}
-              onClick={() => setEmailNotification((prev) => !prev)}
-            />
-          }
-          label="Send me emails when my podcai are ready!"
+      <Box
+        display={"flex"}
+        alignItems="center"
+        gap={1}
+        width={"100%"}
+        justifyContent={"space-between"}
+      >
+        <Typography variant="body1" component="div">
+          Send me emails when my podcai are ready
+        </Typography>
+        <Switch
+          checked={emailNotification}
+          onClick={() => setEmailNotification((prev) => !prev)}
         />
       </Box>
     </Box>
@@ -461,8 +465,7 @@ export const SignUp = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        maxWidth: "90%",
-        p: 2,
+        maxWidth: "95%",
         gap: 1,
         overflowY: "auto",
       }}

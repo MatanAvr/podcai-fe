@@ -1,18 +1,15 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import TwitterIcon from "@mui/icons-material/X";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import podcaiLogo from "../../../Assets/Images/Podcai logo.png";
-import podcaiLogoDark from "../../../Assets/Images/Podcai logo - dark.png";
+
 import { enabledSections } from "../LandingPage";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
@@ -23,11 +20,6 @@ const twitterLink = "https://twitter.com/podcai";
 const instagramLink = "https://instagram.com/podcai";
 const facebookLink = "https://www.facebook.com/podcai.co";
 const linkedinLink = "https://www.linkedin.com/company/podcai";
-
-const logoStyle = {
-  width: "140px",
-  height: "auto",
-};
 
 const linkStyle = { cursor: "pointer" };
 const linkColor = undefined;
@@ -154,7 +146,7 @@ export default function Footer() {
             </Link> */}
           </Box>
           {/* // Legal -------------------------------------------------*/}
-          <Box
+          {/* <Box
             sx={{
               display: { xs: "flex", sm: "flex" },
               flexDirection: "column",
@@ -178,7 +170,7 @@ export default function Footer() {
             >
               Privacy Policy
             </Link>
-          </Box>
+          </Box> */}
         </Box>
         {/* Newsletter related  ---------------------------------------------*/}
         {/* <Box

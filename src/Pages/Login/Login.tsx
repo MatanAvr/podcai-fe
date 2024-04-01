@@ -86,7 +86,6 @@ export const Login = () => {
         display: "flex",
         flexDirection: "column",
         maxWidth: "80%",
-        p: 2,
         gap: 1,
       }}
       onSubmit={loginHandler}
@@ -97,6 +96,7 @@ export const Login = () => {
       <TextField
         id="email"
         label="Email"
+        inputMode="email"
         variant="outlined"
         size="small"
         onChange={onChange}

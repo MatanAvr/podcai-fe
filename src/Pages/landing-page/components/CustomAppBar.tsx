@@ -11,8 +11,8 @@ import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
 import { moveToPage } from "../../../Features/Navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
-import podcaiLogo from "../../../Assets/Images/Podcai logo.png";
-import podcaiLogoDark from "../../../Assets/Images/Podcai logo - dark.png";
+import podcaiLogoWhite from "../../../Assets/Images/Podcai logo - white.png";
+import podcaiLogoBlack from "../../../Assets/Images/Podcai logo - black.png";
 import { setAuth } from "../../../Features/User/User";
 import { enabledSections } from "../LandingPage";
 
@@ -100,7 +100,7 @@ const CustomAppBar = () => {
         })}
       >
         <img
-          src={currentTheme === "light" ? podcaiLogo : podcaiLogoDark}
+          src={currentTheme === "light" ? podcaiLogoBlack : podcaiLogoWhite}
           style={logoStyle}
           alt="Podcai logo"
           draggable="false"
