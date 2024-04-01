@@ -45,7 +45,7 @@ export default function DeleteUserModal() {
       openModalButtonText="Delete account"
       openModalButtonVariant="contained"
       openModalButtonColor="error"
-      modalTitle="Delete account"
+      modalTitle="Delete your account"
       modalDescription="Please note that the deletion is irreversible, all episodes and
                         user-related data will be permanently deleted."
     >
@@ -67,7 +67,6 @@ export default function DeleteUserModal() {
           >
             Delete
           </LoadingButton>
-          {/* <Button variant="contained">Cancel</Button> */}
         </Box>
       </>
     </BasicModal>

@@ -85,6 +85,7 @@ export const ForgotPassword = () => {
       <TextField
         id="email"
         type="email"
+        inputMode="email"
         variant="outlined"
         size="small"
         onChange={(e) => setEmail(e.target.value)}

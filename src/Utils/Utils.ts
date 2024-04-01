@@ -6,24 +6,6 @@ export const isValidEmail2 = (email: string): boolean => {
   return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 };
 
-export const addErrorToId = (id: string) => {
-  const el = document.getElementById(id);
-  if (el) {
-    el.classList.add("error");
-  }
-};
-
-export const removeErrorFromId = (id: string) => {
-  const el = document.getElementById(id);
-  if (el) {
-    el.classList.remove("error");
-  }
-};
-
-export const openInNewWindow = (link: string) => {
-  window.open(link, "_blank");
-};
-
 export const isMobile = () => {
   let isMobile = false;
   if (
@@ -46,10 +28,5 @@ export const formatDurationDisplay = (duration: number) => {
   return formatted;
 };
 
-export const getFileType = (file: File): string => {
-  return file.type;
-};
-
-export const getFileSizeInBytes = (file: File): number => {
-  return file.size;
-};
+export const minutesInMilliseconds = (minutes: number): number =>
+  minutes * 60 * 1000;
