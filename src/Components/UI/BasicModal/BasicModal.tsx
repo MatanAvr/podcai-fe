@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useAppSelector } from "../../../Hooks/Hooks";
-import { Card } from "@mui/material";
+import { Box, Card } from "@mui/material";
 
 interface BasicModalProps {
   openModalButtonText: string;
@@ -31,8 +31,8 @@ export default function BasicModal({
   children,
 }: BasicModalProps) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const openHandler = () => setOpen(true);
+  const closeHandler = () => setOpen(false);
   const themeMode = useAppSelector((state) => state.theme.themeMode);
 
   const modalStyle = {
@@ -44,7 +44,7 @@ export default function BasicModal({
     bgcolor: "background.paper",
     color: themeMode === "light" ? "black" : "white",
     boxShadow: 24,
-    gap: 1.5,
+    gap: 1,
     p: 2,
   };
 
@@ -53,13 +53,14 @@ export default function BasicModal({
       <Button
         variant={openModalButtonVariant}
         color={openModalButtonColor}
-        onClick={handleOpen}
+        onClick={openHandler}
+        size="small"
       >
         {openModalButtonText}
       </Button>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={closeHandler}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -68,10 +69,23 @@ export default function BasicModal({
             ...modalStyle,
             display: "flex",
             flexDirection: "column",
-            maxWidth: "80%",
           }}
         >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Box>
+            <Button
+              onClick={closeHandler}
+              size="small"
+              sx={{ minWidth: "20px", m: 0, p: 0 }}
+            >
+              X
+            </Button>
+          </Box>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            align="center"
+          >
             {modalTitle}
           </Typography>
           <Typography id="modal-modal-description">

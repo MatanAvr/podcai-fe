@@ -109,6 +109,7 @@ export const ContactUs = () => {
         <TextField
           type="email"
           label="Email"
+          inputMode="email"
           size="small"
           placeholder="example@domain.com"
           value={email}

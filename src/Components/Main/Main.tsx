@@ -62,7 +62,7 @@ export const Main = () => {
         height: "100%",
         width: "100%",
         overflowY: "auto",
-        pt: { xs: 11, sm: 12 },
+        pt: { xs: 10, sm: 10 },
         backgroundImage:
           theme.palette.mode === "light"
             ? "linear-gradient(180deg, #CEE5FD, #FFF)"

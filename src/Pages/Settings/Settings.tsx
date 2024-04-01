@@ -13,13 +13,14 @@ import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
 import {
   Box,
-  Checkbox,
+  Card,
   FormControl,
   FormControlLabel,
   FormLabel,
   Radio,
   RadioGroup,
   Skeleton,
+  Switch,
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -89,90 +90,160 @@ export const Settings = () => {
     setChosenVoiceSample(newVoice as Voices);
   };
 
+  const accountDetailesContainer = (
+    <>
+      <Typography variant="h5" component="div">
+        Account details
+      </Typography>
+      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
+        <Typography variant="caption" color="text.secondary" component="div">
+          Name
+        </Typography>
+        <Typography variant="body1" component="div">
+          {loggedUser.name}
+        </Typography>
+        <Typography variant="caption" color="text.secondary" component="div">
+          Email address
+        </Typography>
+        <Typography variant="body1" component="div">
+          {loggedUser.email}
+        </Typography>
+      </Card>
+    </>
+  );
+  const membershipContainer = (
+    <>
+      <Typography variant="h5" component="div">
+        Membership
+      </Typography>
+      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
+        <Typography variant="caption" color="text.secondary" component="div">
+          Plan
+        </Typography>
+        <Typography variant="body1" component="div">
+          Podcai Basic Plan
+        </Typography>
+      </Card>
+    </>
+  );
+  const podcastsSettingsContainer = (
+    <>
+      <Typography variant="h5" component="div">
+        Podcasts settings
+      </Typography>
+      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 1 }}>
+        <Typography variant="caption" color="text.secondary" component="div">
+          Topics (up to {MAX_NUM_OF_TOPICS})
+        </Typography>
+        <MultiSelect
+          options={topicsList}
+          values={chosenTopics}
+          changeValuesHandler={changeTopicsHandler}
+        />
+        <FormControl
+          sx={{
+            display: "flex",
+            alignContent: "center",
+          }}
+        >
+          <Typography variant="caption" color="text.secondary" component="div">
+            Podcaster voice
+          </Typography>
+          <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue={chosenVoiceSample}
+            name="radio-buttons-group"
+            value={chosenVoiceSample}
+            onChange={handleVoiceChange}
+          >
+            {voiceSamples ? (
+              voiceSamples.length > 0 &&
+              voiceSamples.map((voiceSample, index) => {
+                return (
+                  <div
+                    key={"voice-sample-" + index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    <FormControlLabel
+                      value={voiceSample.name}
+                      control={<Radio />}
+                      label={voiceSample.name}
+                      sx={{ my: 0.5 }}
+                    />
+                    <audio
+                      style={{ maxWidth: "80%" }}
+                      src={voiceSample.url}
+                      controls
+                      controlsList="nodownload"
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <Box display={"flex"} flexDirection={"column"} gap={1}>
+                <Skeleton
+                  variant="rounded"
+                  width={VOICE_SAMPLE_SKELETON_WIDTH}
+                  height={VOICE_SAMPLE_SKELETON_HEIGHT}
+                />
+                <Skeleton
+                  variant="rounded"
+                  width={VOICE_SAMPLE_SKELETON_WIDTH}
+                  height={VOICE_SAMPLE_SKELETON_HEIGHT}
+                />
+              </Box>
+            )}
+          </RadioGroup>
+        </FormControl>
+      </Card>
+    </>
+  );
+  const accountSettingsContainer = (
+    <>
+      <Typography variant="h5" component="div">
+        Account details
+      </Typography>
+      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
+        <Box
+          display={"flex"}
+          alignItems="center"
+          gap={1}
+          width={"100%"}
+          justifyContent={"space-between"}
+        >
+          <Typography variant="body1" component="div">
+            Send me emails when my podcai are ready
+          </Typography>
+          <Switch
+            checked={shouldSendEpisodeEmail}
+            onClick={() => setShouldSendEpisodeEmail((prev) => !prev)}
+          />
+        </Box>
+        <Box
+          display={"flex"}
+          alignItems="center"
+          gap={1}
+          width={"100%"}
+          justifyContent={"space-between"}
+        >
+          Delete account
+          <DeleteUserModal />
+        </Box>
+      </Card>
+    </>
+  );
+
   const settingsContainer = (
     <Box display={"flex"} flexDirection={"column"} gap={1}>
-      <u>Choose up to {MAX_NUM_OF_TOPICS} topics</u>
-
-      <MultiSelect
-        options={topicsList}
-        values={chosenTopics}
-        changeValuesHandler={changeTopicsHandler}
-      />
-      <FormControl
-        sx={{
-          display: "flex",
-          alignContent: "center",
-          my: 0,
-          maxWidth: "100%",
-          gap: 0.5,
-        }}
-      >
-        <u>Choose your podcaster</u>
-        <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue={chosenVoiceSample}
-          name="radio-buttons-group"
-          value={chosenVoiceSample}
-          onChange={handleVoiceChange}
-        >
-          {voiceSamples ? (
-            voiceSamples.length > 0 &&
-            voiceSamples.map((voiceSample, index) => {
-              return (
-                <div
-                  key={"voice-sample-" + index}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    maxWidth: "100%",
-                  }}
-                >
-                  <FormControlLabel
-                    value={voiceSample.name}
-                    control={<Radio />}
-                    label={voiceSample.name}
-                    sx={{ my: 0.5 }}
-                  />
-                  <audio
-                    style={{ maxWidth: "80%" }}
-                    src={voiceSample.url}
-                    controls
-                    controlsList="nodownload"
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <Box display={"flex"} flexDirection={"column"} gap={1}>
-              <Skeleton
-                variant="rounded"
-                width={VOICE_SAMPLE_SKELETON_WIDTH}
-                height={VOICE_SAMPLE_SKELETON_HEIGHT}
-              />
-              <Skeleton
-                variant="rounded"
-                width={VOICE_SAMPLE_SKELETON_WIDTH}
-                height={VOICE_SAMPLE_SKELETON_HEIGHT}
-              />
-            </Box>
-          )}
-        </RadioGroup>
-      </FormControl>
-      <Box>
-        <FormControlLabel
-          control={
-            <Checkbox
-              id="should_send_episode_email"
-              checked={shouldSendEpisodeEmail}
-              onClick={() => setShouldSendEpisodeEmail((prev) => !prev)}
-            />
-          }
-          label="Send me emails when my podcai are ready!"
-        />
-      </Box>
-      <Box></Box>
-      <DeleteUserModal />
+      {accountDetailesContainer}
+      {membershipContainer}
+      {podcastsSettingsContainer}
+      {accountSettingsContainer}
     </Box>
   );
 
@@ -182,16 +253,12 @@ export const Settings = () => {
         display: "flex",
         flexDirection: "column",
         gap: 1,
-        p: 2,
-        maxWidth: "85%",
+        pb: 1,
+        maxWidth: "95%",
       }}
     >
-      <Typography variant="h4" component="div">
-        Settings
-      </Typography>
-
       {settingsContainer}
-      <Box>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <LoadingButton
           variant="contained"
           loading={isUpdading}
