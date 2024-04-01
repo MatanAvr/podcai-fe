@@ -14,16 +14,16 @@ const faqArr = [
     question: `How do I contact customer support if I have a question or issue?`,
     answer: (
       <>
-        You can reach our team by emailing&nbsp;
-        <Link href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</Link>&nbsp; or
-        you can use the <Link href={`/contact us`}>Contact us</Link>&nbsp; page.
+        You can reach our team by emailing{" "}
+        <Link href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</Link> or through
+        the <Link href={`/contact us`}>Contact us</Link> page.
       </>
     ),
   },
   {
-    question: `Can I see the articles sources of the podcast?`,
-    answer: `Absolutely! the title and description of the article are visible in the 'sources' section, 
-    you can also click on the description to accsses the full article.`,
+    question: `Can I see the articles featured in each podcast?`,
+    answer: ` Absolutely! Under the podcasts, you’ll find the sources and titles of the articles.
+    Click on the hyperlinks to access the articles.`,
   },
   {
     question: `Can I change the topics for my podcasts?`,
@@ -69,6 +69,7 @@ export default function Faq() {
           const faqId = `faq-${index}`;
           return (
             <Accordion
+              key={`faq-accordion-${index}`}
               expanded={expanded === faqId}
               onChange={handleChange(faqId)}
             >

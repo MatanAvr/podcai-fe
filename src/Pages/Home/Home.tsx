@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { ApiClient } from "../../Services/axios";
-import "./Home.scss";
 import { Episode } from "../../ConstAndTypes/consts";
-import { isMobile } from "../../Utils/Utils";
+import { isMobile, minutesInMilliseconds } from "../../Utils/Utils";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
@@ -56,47 +55,58 @@ export const Home = () => {
     queryKey: ["allEpisodesData"],
     queryFn: getEpisodes,
     refetchOnWindowFocus: false,
-    staleTime: Infinity,
+    staleTime: minutesInMilliseconds(10),
   });
 
   return (
-    <Box className={`home-wrapper ${mobile ? "mobile" : ""}`} gap={1}>
+    <Box
+      id="home-wrapper"
+      sx={{
+        display: "flex",
+        width: "90%",
+        maxHeight: "98%",
+      }}
+    >
       {allEpisodes && allEpisodes.length === 0 && (
         <Typography variant="h5" component="div">
           Your first podcai wiil be ready in a few short minutes!
         </Typography>
       )}
 
-      <Box className={`home-container ${mobile ? "mobile" : ""}`} gap={1}>
+      <Box
+        id="home-container"
+        sx={{
+          display: "flex",
+          flexDirection: mobile ? "column" : "row",
+          alignItems: "flex-start",
+          maxHeight: "100%",
+          flex: 1,
+          overflow: "hidden",
+        }}
+        gap={1}
+      >
         {isLoadingEpisodes ? (
           <LoadingSpinner />
         ) : (
           <>
-            {/* Currently playing card*/}
             <Box
-              key={"start-card"}
+              id="currently-playing-wrapper"
               sx={{
-                width: "100%",
-                height: "min-content",
-                maxHeight: "100%",
-                justifyContent: "flex-start",
-                p: 1,
                 display: "flex",
                 flexDirection: "column",
-                flex: 1,
-                gap: 1.5,
+                justifyContent: "flex-start",
+                flex: 6,
+                gap: 1,
+                maxHeight: "95%",
+                height: mobile ? "75%" : "95%",
               }}
             >
-              <Typography key={"start-title"} component="div">
-                {currentlyPlaying ? "Currently playing" : "Choose an episode"}
-              </Typography>
-
               <>
                 {currentlyPlaying && (
                   <>
-                    <CustomAudioPlayer key="AP" episode={currentlyPlaying} />
+                    <CustomAudioPlayer episode={currentlyPlaying} />
                     <Typography>Sources</Typography>
-                    <Card
+                    <Box
                       sx={{
                         overflow: "auto",
                         flex: 1,
@@ -139,28 +149,32 @@ export const Home = () => {
                           </Accordion>
                         );
                       })}
-                    </Card>
+                    </Box>
                   </>
                 )}
               </>
             </Box>
 
-            {/* All episodes card*/}
             <Box
-              key={"middle-card"}
+              id="all-episodes-wrapper"
               sx={{
-                p: 1,
                 display: "flex",
                 flexDirection: "column",
-                flex: 0.3,
-                width: "100%",
-                maxHeight: "100%",
+                flex: 2,
+                maxHeight: "95%",
                 gap: 1,
+                width: mobile ? "100%" : "auto",
               }}
             >
-              <Typography key={"middle-title"}>All episodes</Typography>
+              <Typography>All episodes</Typography>
 
-              <Box sx={{ overflow: "auto" }}>
+              <Box
+                id="all-episoeds-container"
+                sx={{
+                  overflow: "auto",
+                  px: 1,
+                }}
+              >
                 {allEpisodes ? (
                   allEpisodes.length > 0 &&
                   allEpisodes.map((episode, index) => {
@@ -170,16 +184,15 @@ export const Home = () => {
                           outline: 1,
                           outlineColor: "primary.main",
                         }
-                      : {};
+                      : "";
                     return (
                       <Card
                         key={"EC-" + index}
                         elevation={2}
                         sx={{
-                          width: "90%",
+                          width: "95%",
                           my: 1,
                           mx: "auto",
-                          p: 0,
                           display: "flex",
                           alignContent: "center",
                           justifyContent: "space-between",
