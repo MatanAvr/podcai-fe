@@ -33,7 +33,7 @@ export const Home = () => {
   const getEpisodes = async () => {
     const res = await apiClientInstance.getEpisodes();
     const sortedEpisodes = [...res.episodes];
-    if (currentlyPlaying === undefined) {
+    if (currentlyPlaying === undefined && sortedEpisodes.length > 0) {
       setCurrentlyPlaying(sortedEpisodes[0]);
     }
     return sortedEpisodes;
@@ -41,8 +41,10 @@ export const Home = () => {
 
   const onClickEpisodeHandler = (newEpisode: Episode) => {
     if (newEpisode.name === currentlyPlaying?.name) {
-      setCurrentlyPlaying(undefined);
-    } else setCurrentlyPlaying(newEpisode);
+      // setCurrentlyPlaying(undefined);
+    } else {
+      setCurrentlyPlaying(newEpisode);
+    }
   };
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export const Home = () => {
       id="home-wrapper"
       sx={{
         display: "flex",
-        width: "90%",
+        width: mobile ? "95%" : "75%",
         maxHeight: "98%",
       }}
     >

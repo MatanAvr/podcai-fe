@@ -18,6 +18,7 @@ export const Unsubscribe = () => {
     useState<boolean>(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     setEmailToUnsubscribe(e.target.value);
   };
 
@@ -93,7 +94,7 @@ export const Unsubscribe = () => {
         value={emailToUnsubscribe}
         error={emailErr.length > 0 ? true : false}
         helperText={emailErr}
-        sx={{ my: 1, pb: 1 }}
+        required
       />
       <LoadingButton
         variant="contained"

@@ -5,7 +5,7 @@ import { SignUp } from "../../Pages/SignUp/SignUp";
 import { Home } from "../../Pages/Home/Home";
 import { Settings } from "../../Pages/Settings/Settings";
 import { Unsubscribe } from "../../Pages/Unsubscribe/Unsubscribe";
-import { Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import LandingPage from "../../Pages/landing-page/LandingPage";
 import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
@@ -13,7 +13,6 @@ import { useEffect, useRef } from "react";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { ApiClient } from "../../Services/axios";
 import { ToggleColorMode } from "../../Features/Theme/Theme";
-import { moveToPage } from "../../Features/Navigation/Navigation";
 import { ForgotPassword } from "../../Pages/ForgotPassword/ForgotPassword";
 import { TermsOfService } from "../../Pages/TermsOfService/TermsOfService";
 import { PrivacyPolicy } from "../../Pages/PrivacyPolicy/PrivacyPolicy";
@@ -50,7 +49,6 @@ export const Main = () => {
       dispatch(setAuth({ newMode: true, token })); // attach token to apiClient
       const authUserRes = await apiClientInstance.userAuth();
       dispatch(setLoggedUser({ newLoggeduser: authUserRes }));
-      // dispatch(moveToPage("Home"));
     } catch (err) {
       dispatch(setAuth({ newMode: false, token: "" }));
     }
@@ -62,7 +60,7 @@ export const Main = () => {
         height: "100%",
         width: "100%",
         overflowY: "auto",
-        pt: { xs: 10, sm: 10 },
+        pt: { xs: 8, sm: 8 },
         backgroundImage:
           theme.palette.mode === "light"
             ? "linear-gradient(180deg, #CEE5FD, #FFF)"
@@ -73,6 +71,7 @@ export const Main = () => {
       })}
     >
       <div className="main-wrapper">
+        <Box sx={{ display: "flex", width: "100%", py: 1 }} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/Login" element={<Login />} />

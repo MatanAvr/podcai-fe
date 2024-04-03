@@ -11,14 +11,16 @@ import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
 import { useState } from "react";
-
-import dashLight from "../../../Assets/Images/Hero-images/dash-light.png";
-import dashDark from "../../../Assets/Images/Hero-images/dash-dark.png";
-import mobileLight from "../../../Assets/Images/Hero-images/mobile-light.png";
-import mobileDark from "../../../Assets/Images/Hero-images/mobile-dark.png";
+import topicsBlack from "../../../Assets/Images/Hero-images/Topics - black.png";
+import topicWhite from "../../../Assets/Images/Hero-images/Topics - white.png";
 import podcaiPreviewDark from "../../../Assets/Images/Hero-images/podcai-playing-playing-dark.png";
 import podcaiPreviewLight from "../../../Assets/Images/Hero-images/podcai-playing-playing-light.png";
-import { FONT_SIZE, MAX_NUM_OF_TOPICS } from "../../../ConstAndTypes/consts";
+import podcastersPhoto from "../../../Assets/Images/Hero-images/Podcasters photos.png";
+import {
+  FONT_SIZE,
+  LANDING_PAGE_PY,
+  MAX_NUM_OF_TOPICS,
+} from "../../../ConstAndTypes/consts";
 
 const features = [
   {
@@ -26,15 +28,15 @@ const features = [
     title: "Topics",
     description: `Podcai offers a selection of 9 topics for podcasts. 
     Choose up to ${MAX_NUM_OF_TOPICS}, and Podcai will generate your personalized daily podcasts.`,
-    imageLight: `url('${dashLight}')`,
-    imageDark: `url('${dashDark}')`,
+    imageLight: `url('${topicsBlack}')`,
+    imageDark: `url('${topicWhite}')`,
   },
   {
     icon: <GroupsIcon fontSize="large" />,
     title: "Podcaster voices",
     description: "6 featured podcaster voices are available to choose from.",
-    imageLight: `url('${mobileLight}')`,
-    imageDark: `url('${mobileDark}')`,
+    imageLight: `url('${podcastersPhoto}')`,
+    imageDark: `url('${podcastersPhoto}')`,
   },
   {
     icon: <DevicesRoundedIcon fontSize="large" />,
@@ -55,7 +57,7 @@ export default function Features() {
   const selectedFeature = features[selectedFeatureIndex];
 
   return (
-    <Container id="Features" sx={{ py: { xs: 8, sm: 16 } }}>
+    <Container id="Features" sx={{ py: LANDING_PAGE_PY }}>
       <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
           <div>
@@ -116,7 +118,6 @@ export default function Features() {
                     : features[selectedFeatureIndex].imageDark,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                minHeight: 280,
               }}
             />
             <Box sx={{ px: 1, pb: 1 }}>
@@ -252,10 +253,9 @@ export default function Features() {
           >
             <Box
               sx={{
-                // m: "auto",
                 width: "100%",
                 height: "100%",
-                backgroundSize: "contain",
+                backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 backgroundImage: (theme) =>

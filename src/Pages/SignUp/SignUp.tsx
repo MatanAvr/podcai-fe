@@ -14,6 +14,7 @@ import {
   Radio,
   RadioGroup,
   Skeleton,
+  Stack,
   Switch,
   TextField,
 } from "@mui/material";
@@ -44,6 +45,7 @@ import { setLoggedUser, setAuth } from "../../Features/User/User";
 import { isAxiosError } from "axios";
 import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
+import LockRoundedIcon from "@mui/icons-material/LockRounded";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -59,7 +61,7 @@ const newUserDefault: INewUser = {
   should_send_episode_email: true,
 };
 
-const steps = ["Details", "Verify email", "Personalization"];
+const steps = ["Details", "Verify", "Settings"];
 const onlyNumbersRegex = /^[0-9]+$/;
 
 export const SignUp = () => {
@@ -466,11 +468,19 @@ export const SignUp = () => {
         flexDirection: "column",
         alignItems: "center",
         maxWidth: "95%",
-        gap: 1,
+        gap: 2,
         overflowY: "auto",
       }}
     >
-      <Typography variant="h4">Sign up</Typography>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <LockRoundedIcon color="primary" fontSize="large" />
+        <Typography variant="h4">Sign up</Typography>
+      </Stack>
 
       <Stepper activeStep={activeStep} alternativeLabel sx={{ width: "100%" }}>
         {steps.map((label, index) => {
