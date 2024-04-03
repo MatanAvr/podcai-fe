@@ -3,13 +3,13 @@ import { DELETE_ERROR_TIMEOUT, loginRequest } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
-import { moveToPage } from "../../Features/Navigation/Navigation";
 import { Alert, Box, Link, Stack, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { isValidEmail } from "../../Utils/Utils";
 import { isAxiosError } from "axios";
 import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
+import { useMyNavigation } from "../../Hooks/useMyNavigation";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -24,6 +24,7 @@ export const Login = () => {
   const [emailErr, setEmailErr] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
   const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id: key, value } = e.target;
@@ -44,7 +45,7 @@ export const Login = () => {
         const userToLogIn = loginRes;
         dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
         dispatch(setAuth({ newMode: true, token }));
-        dispatch(moveToPage("Home"));
+        nav.push("Home");
       }
     } catch (error) {
       if (isAxiosError(error)) {
@@ -125,7 +126,7 @@ export const Login = () => {
         sx={{ cursor: "pointer" }}
         onClick={(e) => {
           e.preventDefault();
-          dispatch(moveToPage("Forgot password"));
+          nav.push("Forgot password");
         }}
       >
         Forgot your password?
@@ -146,7 +147,7 @@ export const Login = () => {
           sx={{ cursor: "pointer" }}
           onClick={(e) => {
             e.preventDefault();
-            dispatch(moveToPage("Sign up"));
+            nav.push("Sign up");
           }}
         >
           Sign up

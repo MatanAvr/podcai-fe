@@ -40,12 +40,12 @@ import { isValidEmail } from "../../Utils/Utils";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch } from "../../Hooks/Hooks";
-import { moveToPage } from "../../Features/Navigation/Navigation";
 import { setLoggedUser, setAuth } from "../../Features/User/User";
 import { isAxiosError } from "axios";
 import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
+import { useMyNavigation } from "../../Hooks/useMyNavigation";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -66,6 +66,7 @@ const onlyNumbersRegex = /^[0-9]+$/;
 
 export const SignUp = () => {
   const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
   const [newUser, setNewUser] = useState<INewUser>(newUserDefault);
   const [otp, setOtp] = useState<string>("");
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -445,7 +446,7 @@ export const SignUp = () => {
         const userToLogIn = signUpRes;
         dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
         dispatch(setAuth({ newMode: true, token }));
-        dispatch(moveToPage("Home"));
+        nav.push("Home");
       }
     } catch (error) {
       if (isAxiosError(error)) {
@@ -568,7 +569,7 @@ export const SignUp = () => {
                 sx={{ cursor: "pointer" }}
                 onClick={(e) => {
                   e.preventDefault();
-                  dispatch(moveToPage("Login"));
+                  nav.push("Login");
                 }}
               >
                 Log in

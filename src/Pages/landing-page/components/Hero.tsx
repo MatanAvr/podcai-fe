@@ -1,18 +1,16 @@
-import { Card, alpha } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Pages } from "../../../ConstAndTypes/consts";
-import { moveToPage } from "../../../Features/Navigation/Navigation";
-import { useAppDispatch } from "../../../Hooks/Hooks";
+import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 
 export default function Hero() {
-  const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
 
   const changePageHandler = (newPage: Pages) => {
-    dispatch(moveToPage(newPage));
+    nav.push(newPage);
   };
 
   return (
