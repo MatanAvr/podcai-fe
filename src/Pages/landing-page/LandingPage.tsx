@@ -8,9 +8,9 @@ import Pricing from "./components/Pricing";
 import Footer from "./components/Footer";
 import Faq from "./components/Faq";
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
-import { moveToPage } from "../../Features/Navigation/Navigation";
+import { useAppSelector } from "../../Hooks/Hooks";
 import BriefAndExample from "./components/BriefAndExample";
+import { useMyNavigation } from "../../Hooks/useMyNavigation";
 
 type sectionOptions =
   | "Features"
@@ -29,11 +29,11 @@ export const enabledSections: sectionOptions[] = [
 
 export default function LandingPage() {
   const isAuth = useAppSelector((state) => state.user.auth);
-  const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
 
   useEffect(() => {
     if (isAuth) {
-      dispatch(moveToPage("Home"));
+      nav.push("Home");
     }
   }, []);
 

@@ -11,10 +11,10 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import { enabledSections } from "../LandingPage";
-import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
+import { useAppSelector } from "../../../Hooks/Hooks";
 import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
-import { moveToPage } from "../../../Features/Navigation/Navigation";
 import { Divider } from "@mui/material";
+import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 
 const twitterLink = "https://twitter.com/podcai";
 const instagramLink = "https://instagram.com/podcai";
@@ -35,17 +35,16 @@ const Copyright = () => {
 };
 
 export default function Footer() {
-  const currentTheme = useAppSelector((state) => state.theme.themeMode);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
-  const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
 
   const changePageHandler = (newPage: Pages) => {
-    dispatch(moveToPage(newPage));
+    nav.push(newPage);
   };
 
   const scrollToSection = (sectionId: string) => {
     if (currentPage !== "LandingPage") {
-      dispatch(moveToPage("LandingPage"));
+      nav.push("LandingPage");
     }
     const sectionElement = document.getElementById(sectionId);
     const offset = 128;

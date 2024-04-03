@@ -8,17 +8,16 @@ import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorModeButton from "./ToggleColorModeButton";
 import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
-import { moveToPage } from "../../../Features/Navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
 import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
 import { setAuth } from "../../../Features/User/User";
 import { enabledSections } from "../LandingPage";
+import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 
 const logoStyle = {
   maxHeight: "40px",
   height: "auto",
-  cursor: "pointer",
   marginStart: "10px",
 };
 
@@ -33,6 +32,7 @@ const CustomAppBar = () => {
   const currentTheme = useAppSelector((state) => state.theme.themeMode);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -40,7 +40,7 @@ const CustomAppBar = () => {
 
   const scrollToSection = (sectionId: string) => {
     if (currentPage !== "LandingPage") {
-      dispatch(moveToPage("LandingPage"));
+      nav.push("LandingPage");
     }
     const sectionElement = document.getElementById(sectionId);
     let offset = 128;
@@ -58,7 +58,7 @@ const CustomAppBar = () => {
   };
 
   const changePageHandler = (newPage: Pages) => {
-    dispatch(moveToPage(newPage));
+    nav.push(newPage);
     setOpen(false);
   };
 
@@ -110,6 +110,15 @@ const CustomAppBar = () => {
               alignItems: "center",
               gap: 1,
               px: 3,
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              if (isAuth) {
+                changePageHandler("Home");
+              } else {
+                changePageHandler("LandingPage");
+                scrollToSection("Hero");
+              }
             }}
           >
             <img
@@ -117,14 +126,6 @@ const CustomAppBar = () => {
               style={logoStyle}
               alt="Podcai logo"
               draggable="false"
-              onClick={() => {
-                if (isAuth) {
-                  changePageHandler("Home");
-                } else {
-                  changePageHandler("LandingPage");
-                  scrollToSection("Hero");
-                }
-              }}
             />
             <Typography color="text.primary" variant="h6">
               Podcai

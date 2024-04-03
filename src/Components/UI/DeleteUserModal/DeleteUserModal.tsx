@@ -6,14 +6,15 @@ import BasicModal from "../BasicModal/BasicModal";
 import { ApiClient } from "../../../Services/axios";
 import { useAppDispatch } from "../../../Hooks/Hooks";
 import { isAxiosError } from "axios";
-import { moveToPage } from "../../../Features/Navigation/Navigation";
 import { setAuth } from "../../../Features/User/User";
+import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 
 export default function DeleteUserModal() {
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const apiClientInstance = ApiClient.getInstance();
   const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
 
   const deleteUserHandler = async () => {
     setIsLoading(true);
@@ -23,7 +24,7 @@ export default function DeleteUserModal() {
       });
       if (deleteRes.is_success) {
         dispatch(setAuth({ newMode: false, token: "" }));
-        dispatch(moveToPage("LandingPage"));
+        nav.push("LandingPage");
       }
     } catch (error) {
       if (isAxiosError(error)) {

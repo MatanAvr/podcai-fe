@@ -1,5 +1,5 @@
 import "./Main.scss";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Login } from "../../Pages/Login/Login";
 import { SignUp } from "../../Pages/SignUp/SignUp";
 import { Home } from "../../Pages/Home/Home";
@@ -8,7 +8,6 @@ import { Unsubscribe } from "../../Pages/Unsubscribe/Unsubscribe";
 import { Box, Paper } from "@mui/material";
 import LandingPage from "../../Pages/landing-page/LandingPage";
 import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
-import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 import { useEffect, useRef } from "react";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { ApiClient } from "../../Services/axios";
@@ -21,18 +20,12 @@ import { ContactUs } from "../../Pages/ContactUs/ContactUs";
 const apiClientInstance = ApiClient.getInstance();
 
 export const Main = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const isAuth = useAppSelector((state) => state.user.auth);
   const hasMounted = useRef(false);
 
-  useEnhancedEffect(() => {
-    navigate(`/${currentPage}`);
-  }, [currentPage]);
-
   useEffect(() => {
-    // checks theme mode and if there is a token in local storage
+    // Checks theme mode and if there is a token in local storage
     if (hasMounted.current) return;
     const tokenLocal = localStorage.getItem("token");
     const themeLocal = localStorage.getItem("theme");
@@ -45,8 +38,8 @@ export const Main = () => {
 
   const authAndLogin = async (token: string) => {
     try {
-      //try to login with the token from local storage
-      dispatch(setAuth({ newMode: true, token })); // attach token to apiClient
+      // Try to login with the token from local storage
+      dispatch(setAuth({ newMode: true, token })); // Attach token to apiClient
       const authUserRes = await apiClientInstance.userAuth();
       dispatch(setLoggedUser({ newLoggeduser: authUserRes }));
     } catch (err) {

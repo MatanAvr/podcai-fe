@@ -42,6 +42,7 @@ export default function BasicModal({
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 400,
+    maxWidth: "85%",
     bgcolor: "background.paper",
     color: themeMode === "light" ? "black" : "white",
     boxShadow: 24,
