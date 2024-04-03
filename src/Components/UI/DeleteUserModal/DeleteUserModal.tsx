@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import { LoadingButton } from "@mui/lab";
 import PasswordTextField from "../PasswordTextField/PasswordTextField";
 import BasicModal from "../BasicModal/BasicModal";

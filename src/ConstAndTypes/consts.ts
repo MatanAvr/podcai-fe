@@ -117,6 +117,7 @@ export const SUPPORT_EMAIL = `admin@podcai.co`;
 export const VOICE_SAMPLE_SKELETON_WIDTH = 375;
 export const VOICE_SAMPLE_SKELETON_HEIGHT = 40;
 export const FONT_SIZE = "body1";
+export const LANDING_PAGE_PY = { xs: 8, sm: 10 };
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";
 export const USER_LOGIN_URL = "/user/login/";

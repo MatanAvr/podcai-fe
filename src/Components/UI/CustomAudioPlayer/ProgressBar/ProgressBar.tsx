@@ -32,13 +32,12 @@ export const AudioProgressBar = (props: AudioProgressBarProps) => {
   return (
     <>
       <Slider
-        sx={{ marginInline: 1 }}
+        sx={{ marginInline: 2 }}
         min={0}
         step={0.05}
         max={duration}
-        size="small"
         value={currentProgress}
-        aria-label="Small"
+        aria-label="Slider"
         onChange={handleSliderChange}
         style={progressStyles}
       />

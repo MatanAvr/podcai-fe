@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
 import podcaiLogoWhite from "../../../Assets/Images/Podcai logo - white.png";
 import podcaiLogoBlack from "../../../Assets/Images/Podcai logo - black.png";
+import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
 import { setAuth } from "../../../Features/User/User";
 import { enabledSections } from "../LandingPage";
 
@@ -99,24 +100,44 @@ const CustomAppBar = () => {
               : "0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)",
         })}
       >
-        <img
-          src={currentTheme === "light" ? podcaiLogoBlack : podcaiLogoWhite}
-          style={logoStyle}
-          alt="Podcai logo"
-          draggable="false"
-          onClick={() => {
-            if (isAuth) {
-              changePageHandler("Home");
-            } else {
-              changePageHandler("LandingPage");
-              scrollToSection("Hero");
-            }
+        <Box
+          sx={{
+            display: "flex",
+            flex: 1,
           }}
-        />
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              px: 3,
+            }}
+          >
+            <img
+              src={currentTheme === "light" ? podcaiLogo : podcaiLogo}
+              style={logoStyle}
+              alt="Podcai logo"
+              draggable="false"
+              onClick={() => {
+                if (isAuth) {
+                  changePageHandler("Home");
+                } else {
+                  changePageHandler("LandingPage");
+                  scrollToSection("Hero");
+                }
+              }}
+            />
+            <Typography color="text.primary" variant="h6">
+              Podcai
+            </Typography>
+          </Box>
+        </Box>
 
         <Box
           sx={{
             display: "flex",
+            flex: 1,
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -180,8 +201,11 @@ const CustomAppBar = () => {
         <Box
           sx={{
             display: { xs: "none", md: "flex" },
+            flex: 1,
+            px: 3,
             gap: 1,
             alignItems: "center",
+            justifyContent: "flex-end",
           }}
         >
           <ToggleColorModeButton />

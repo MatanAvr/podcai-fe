@@ -4,11 +4,12 @@ import { ApiClient } from "../../Services/axios";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
 import { moveToPage } from "../../Features/Navigation/Navigation";
-import { Alert, Box, Link, TextField, Typography } from "@mui/material";
+import { Alert, Box, Link, Stack, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { isValidEmail } from "../../Utils/Utils";
 import { isAxiosError } from "axios";
 import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
+import LockRoundedIcon from "@mui/icons-material/LockRounded";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -34,7 +35,6 @@ export const Login = () => {
 
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    //validate fields
     setIsLoading(true);
     setErrorMsg("");
     try {
@@ -90,9 +90,15 @@ export const Login = () => {
       }}
       onSubmit={loginHandler}
     >
-      <Typography variant="h4" sx={{ alignSelf: "center" }}>
-        Log in
-      </Typography>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <LockRoundedIcon color="primary" fontSize="large" />
+        <Typography variant="h4">Log in</Typography>
+      </Stack>
       <TextField
         id="email"
         label="Email"

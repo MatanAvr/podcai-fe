@@ -7,7 +7,11 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { FONT_SIZE, SUPPORT_EMAIL } from "../../../ConstAndTypes/consts";
+import {
+  FONT_SIZE,
+  LANDING_PAGE_PY,
+  SUPPORT_EMAIL,
+} from "../../../ConstAndTypes/consts";
 
 const faqArr = [
   {
@@ -44,8 +48,7 @@ export default function Faq() {
     <Container
       id="Faq"
       sx={{
-        pt: { xs: 8, sm: 16 },
-        pb: { xs: 8, sm: 16 },
+        py: LANDING_PAGE_PY,
         position: "relative",
         display: "flex",
         flexDirection: "column",
