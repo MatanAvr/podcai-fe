@@ -17,10 +17,9 @@ import { ApiClient } from "../../Services/axios";
 import { isValidEmail } from "../../Utils/Utils";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { useAppDispatch } from "../../Hooks/Hooks";
-import { moveToPage } from "../../Features/Navigation/Navigation";
 import { isAxiosError } from "axios";
 import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
+import { useMyNavigation } from "../../Hooks/useMyNavigation";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -28,7 +27,7 @@ const steps = ["Enter email", "Verify OTP", "Change password"];
 const onlyNumbersRegex = /^[0-9]+$/;
 
 export const ForgotPassword = () => {
-  const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
   const [email, setEmail] = useState<string>("");
   const [otp, setOtp] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
@@ -75,7 +74,7 @@ export const ForgotPassword = () => {
   };
 
   const moveToLoginPage = () => {
-    dispatch(moveToPage("Login"));
+    nav.push("Login");
   };
 
   const userDataWrapper = (

@@ -8,7 +8,7 @@ import {
   VOICE_SAMPLE_SKELETON_WIDTH,
   VOICE_SAMPLE_SKELETON_HEIGHT,
 } from "../../ConstAndTypes/consts";
-import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
+import { useAppSelector } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
 import {
@@ -25,9 +25,9 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { moveToPage } from "../../Features/Navigation/Navigation";
 import DeleteUserModal from "../../Components/UI/DeleteUserModal/DeleteUserModal";
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
+import { useMyNavigation } from "../../Hooks/useMyNavigation";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -45,7 +45,7 @@ export const Settings = () => {
     [...loggedUser.categories] || []
   );
   const hasMounted = useRef(false);
-  const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
 
   useEffect(() => {
     if (hasMounted.current) return;
@@ -82,7 +82,7 @@ export const Settings = () => {
   };
 
   const onClickBackHandler = async () => {
-    dispatch(moveToPage("Home"));
+    nav.push("Home");
   };
 
   const handleVoiceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
