@@ -11,8 +11,6 @@ import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
 import { moveToPage } from "../../../Features/Navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
-import podcaiLogoWhite from "../../../Assets/Images/Podcai logo - white.png";
-import podcaiLogoBlack from "../../../Assets/Images/Podcai logo - black.png";
 import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
 import { setAuth } from "../../../Features/User/User";
 import { enabledSections } from "../LandingPage";
