@@ -35,7 +35,7 @@ export default function LandingPage() {
     if (isAuth) {
       nav.push("Home");
     }
-  }, []);
+  }, [isAuth]);
 
   return (
     <>
