@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
 import Hero from "./components/Hero";
 import LogoCollection from "./components/LogoCollection";
 import Features from "./components/Features";
@@ -11,6 +10,7 @@ import Faq from "./components/Faq";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
+import BriefAndExample from "./components/BriefAndExample";
 
 type sectionOptions =
   | "Features"
@@ -41,38 +41,13 @@ export default function LandingPage() {
     <>
       <Hero />
       <Box>
-        {/* <LogoCollection />
-        <Divider /> */}
-        {enabledSections.includes("Features") && (
-          <>
-            <Features />
-            <Divider />
-          </>
-        )}
-        {enabledSections.includes("Testimonials") && (
-          <>
-            <Testimonials />
-            <Divider />
-          </>
-        )}
-        {enabledSections.includes("Highlights") && (
-          <>
-            <Highlights />
-            <Divider />
-          </>
-        )}
-        {enabledSections.includes("Pricing") && (
-          <>
-            <Pricing />
-            <Divider />
-          </>
-        )}
-        {enabledSections.includes("Faq") && (
-          <>
-            <Faq />
-            {/* <Divider /> */}
-          </>
-        )}
+        {/* <LogoCollection /> */}
+        {/* <BriefAndExample /> */}
+        {enabledSections.includes("Features") && <Features />}
+        {enabledSections.includes("Testimonials") && <Testimonials />}
+        {enabledSections.includes("Highlights") && <Highlights />}
+        {enabledSections.includes("Pricing") && <Pricing />}
+        {enabledSections.includes("Faq") && <Faq />}
         <Footer />
       </Box>
     </>

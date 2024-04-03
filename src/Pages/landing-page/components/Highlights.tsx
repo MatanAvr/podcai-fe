@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import RecordVoiceOverRoundedIcon from "@mui/icons-material/RecordVoiceOverRounded";
 import FeedRoundedIcon from "@mui/icons-material/FeedRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
-import { FONT_SIZE } from "../../../ConstAndTypes/consts";
+import { FONT_SIZE, LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
 
 const highlights = [
   {
@@ -34,7 +34,7 @@ export default function Highlights() {
     <Box
       id="Highlights"
       sx={{
-        pt: { xs: 4, sm: 12 },
+        py: LANDING_PAGE_PY,
         pb: { xs: 8, sm: 16 },
         color: "white",
         bgcolor: "#06090a",

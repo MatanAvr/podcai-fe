@@ -10,6 +10,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
 
 const tiers = [
   {
@@ -58,8 +59,7 @@ export default function Pricing() {
     <Container
       id="Pricing"
       sx={{
-        pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 },
+        py: LANDING_PAGE_PY,
         position: "relative",
         display: "flex",
         flexDirection: "column",

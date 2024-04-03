@@ -12,6 +12,7 @@ import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
 import {
+  Avatar,
   Box,
   Card,
   FormControl,
@@ -24,7 +25,6 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import _ from "lodash";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import DeleteUserModal from "../../Components/UI/DeleteUserModal/DeleteUserModal";
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
@@ -95,19 +95,44 @@ export const Settings = () => {
       <Typography variant="h5" component="div">
         Account details
       </Typography>
-      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
-        <Typography variant="caption" color="text.secondary" component="div">
-          Name
-        </Typography>
-        <Typography variant="body1" component="div">
-          {loggedUser.name}
-        </Typography>
-        <Typography variant="caption" color="text.secondary" component="div">
-          Email address
-        </Typography>
-        <Typography variant="body1" component="div">
-          {loggedUser.email}
-        </Typography>
+      <Card
+        sx={{
+          display: "flex",
+          p: 2,
+          gap: 0.5,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            gap: 0.5,
+          }}
+        >
+          <Typography variant="caption" color="text.secondary" component="div">
+            Name
+          </Typography>
+          <Typography variant="body1" component="div">
+            {loggedUser.name}
+          </Typography>
+          <Typography variant="caption" color="text.secondary" component="div">
+            Email address
+          </Typography>
+          <Typography variant="body1" component="div">
+            {loggedUser.email}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ width: 100, height: 100 }} />
+        </Box>
       </Card>
     </>
   );
@@ -173,7 +198,6 @@ export const Settings = () => {
                       value={voiceSample.name}
                       control={<Radio />}
                       label={voiceSample.name}
-                      sx={{ my: 0.5 }}
                     />
                     <audio
                       style={{ maxWidth: "80%" }}
@@ -253,14 +277,15 @@ export const Settings = () => {
         display: "flex",
         flexDirection: "column",
         gap: 1,
-        pb: 1,
         maxWidth: "95%",
       }}
     >
       {settingsContainer}
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
+      <Box sx={{ display: "flex", justifyContent: "space-between", py: 1 }}>
         <LoadingButton
           variant="contained"
+          size="small"
           loading={isUpdading}
           disabled={
             !(chosenTopics.length && chosenTopics.length <= MAX_NUM_OF_TOPICS)
@@ -271,6 +296,7 @@ export const Settings = () => {
         </LoadingButton>
 
         <LoadingButton
+          size="small"
           sx={{ mx: 1 }}
           variant="contained"
           onClick={onClickBackHandler}

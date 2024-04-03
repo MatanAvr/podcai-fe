@@ -17,7 +17,6 @@ import { ApiClient } from "../../Services/axios";
 import { isValidEmail } from "../../Utils/Utils";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import _ from "lodash";
 import { useAppDispatch } from "../../Hooks/Hooks";
 import { moveToPage } from "../../Features/Navigation/Navigation";
 import { isAxiosError } from "axios";
@@ -242,7 +241,6 @@ export const ForgotPassword = () => {
         justifyContent: "flex-start",
         maxWidth: "80%",
         width: "auto",
-        p: 2,
         gap: 1,
         overflowY: "auto",
       }}

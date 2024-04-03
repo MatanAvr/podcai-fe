@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import Masonry from "@mui/lab/Masonry";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/system";
+import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
 
 const userTestimonials = [
   {
@@ -87,8 +88,7 @@ export default function Testimonials() {
     <Container
       id="Testimonials"
       sx={{
-        pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 },
+        py: LANDING_PAGE_PY,
         position: "relative",
         display: "flex",
         flexDirection: "column",

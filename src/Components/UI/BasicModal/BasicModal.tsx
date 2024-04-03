@@ -3,7 +3,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useAppSelector } from "../../../Hooks/Hooks";
-import { Box, Card } from "@mui/material";
+import { Card, IconButton } from "@mui/material";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 interface BasicModalProps {
   openModalButtonText: string;
@@ -49,7 +50,7 @@ export default function BasicModal({
   };
 
   return (
-    <div>
+    <>
       <Button
         variant={openModalButtonVariant}
         color={openModalButtonColor}
@@ -71,15 +72,13 @@ export default function BasicModal({
             flexDirection: "column",
           }}
         >
-          <Box>
-            <Button
-              onClick={closeHandler}
-              size="small"
-              sx={{ minWidth: "20px", m: 0, p: 0 }}
-            >
-              X
-            </Button>
-          </Box>
+          <IconButton
+            onClick={closeHandler}
+            size="small"
+            sx={{ alignSelf: "start", p: 0 }}
+          >
+            <CloseRoundedIcon fontSize="small" />
+          </IconButton>
           <Typography
             id="modal-modal-title"
             variant="h6"
@@ -94,6 +93,6 @@ export default function BasicModal({
           {children && <>{children}</>}
         </Card>
       </Modal>
-    </div>
+    </>
   );
 }
