@@ -9,7 +9,6 @@ import {
   Alert,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Link,
   Radio,
   RadioGroup,
@@ -27,7 +26,6 @@ import {
   MIN_NUM_OF_TOPICS,
   MIN_PASS_LENGTH,
   OTP_LENGTH,
-  VoiceSample,
   Voices,
   DELETE_ERROR_TIMEOUT,
   sendOtpRequest,
@@ -37,7 +35,7 @@ import {
   voicesArray,
 } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
-import { isValidEmail } from "../../Utils/Utils";
+import { isValidEmail, minutesInMilliseconds } from "../../Utils/Utils";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch } from "../../Hooks/Hooks";
@@ -47,6 +45,7 @@ import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTex
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
+import { useQuery } from "@tanstack/react-query";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -74,24 +73,24 @@ export const SignUp = () => {
   const [skipped, setSkipped] = useState(new Set<number>());
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [emailErr, setEmailErr] = useState<string>("");
-  const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
   const [chosenTopics, setChosenTopics] = useState<Topics[]>([]);
   const [emailNotification, setEmailNotification] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!voiceSamples) {
-      getVoiceSamepls();
-    }
-  }, [voiceSamples]);
-
   const getVoiceSamepls = async () => {
     const res = await apiClientInstance.getVoiceSamples();
     if (res) {
-      setVoiceSamples(res.voice_samples);
-    }
+      return res.voice_samples;
+    } else return [];
   };
+
+  const { data: voiceSamples, isLoading: isLoadingVoiceSamples } = useQuery({
+    queryKey: ["voices-samples-data"],
+    queryFn: getVoiceSamepls,
+    refetchOnWindowFocus: false,
+    staleTime: minutesInMilliseconds(10),
+  });
 
   const validateEmail = () => {
     let error = "";

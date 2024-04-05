@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Topics,
   topicsArray,
-  VoiceSample,
   Voices,
   MAX_NUM_OF_TOPICS,
   VOICE_SAMPLE_SKELETON_WIDTH,
@@ -31,6 +30,8 @@ import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 import { updateLoggedUser } from "../../Features/User/User";
 import CustomizedSnackbars from "../../Components/UI/CustomizedSnackbars/CustomizedSnackbars";
+import { useQuery } from "@tanstack/react-query";
+import { minutesInMilliseconds } from "../../Utils/Utils";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -39,7 +40,6 @@ export const Settings = () => {
   const [userUpdatedSuccessfully, setUserUpdatedSuccessfully] = useState(false);
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
-  const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoice, setChosenVoice] = useState<Voices>(loggedUser.voice);
   const [shouldSendEpisodeEmail, setShouldSendEpisodeEmail] = useState<boolean>(
     loggedUser.should_send_episode_email
@@ -47,14 +47,21 @@ export const Settings = () => {
   const [chosenTopics, setChosenTopics] = useState<Topics[]>(
     loggedUser.categories
   );
-  const hasMounted = useRef(false);
   const nav = useMyNavigation();
 
-  useEffect(() => {
-    if (hasMounted.current) return;
-    getVoiceSamepls();
-    hasMounted.current = true;
-  }, [voiceSamples]);
+  const getVoiceSamepls = async () => {
+    const res = await apiClientInstance.getVoiceSamples();
+    if (res) {
+      return res.voice_samples;
+    } else return [];
+  };
+
+  const { data: voiceSamples, isLoading: isLoadingVoiceSamples } = useQuery({
+    queryKey: ["voices-samples-data"],
+    queryFn: getVoiceSamepls,
+    refetchOnWindowFocus: false,
+    staleTime: minutesInMilliseconds(10),
+  });
 
   useEffect(() => {
     setChosenTopics(loggedUser.categories);
@@ -65,13 +72,6 @@ export const Settings = () => {
     loggedUser.should_send_episode_email,
     loggedUser.voice,
   ]);
-
-  const getVoiceSamepls = async () => {
-    const res = await apiClientInstance.getVoiceSamples();
-    if (res) {
-      setVoiceSamples(res.voice_samples);
-    }
-  };
 
   const changeTopicsHandler = (newTopics: Topics[]) => {
     setChosenTopics(() => newTopics);
@@ -101,7 +101,7 @@ export const Settings = () => {
     nav.push("Home");
   };
 
-  const handleVoiceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const voiceChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
     setChosenVoice(newVoice as Voices);
   };
@@ -195,7 +195,7 @@ export const Settings = () => {
             defaultValue={chosenVoice}
             name="radio-buttons-group"
             value={chosenVoice}
-            onChange={handleVoiceChange}
+            onChange={voiceChangeHandler}
             sx={{ gap: 0.1 }}
           >
             {voiceSamples ? (
