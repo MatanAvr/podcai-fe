@@ -21,7 +21,7 @@ import {
 import {
   Topics,
   INewUser,
-  topicsList,
+  topicsArray,
   MAX_NUM_OF_TOPICS,
   MIN_NAME_LENGTH,
   MIN_NUM_OF_TOPICS,
@@ -34,6 +34,7 @@ import {
   verifyOtpRequest,
   VOICE_SAMPLE_SKELETON_WIDTH,
   VOICE_SAMPLE_SKELETON_HEIGHT,
+  voicesArray,
 } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
 import { isValidEmail } from "../../Utils/Utils";
@@ -310,13 +311,19 @@ export const SignUp = () => {
   }, [emailNotification]);
 
   const settingsWrapper = (
-    <Box display={"flex"} flexDirection={"column"} gap={1} maxWidth={"90%"}>
+    <Box
+      id="settings-wrapper"
+      display={"flex"}
+      flexDirection={"column"}
+      gap={1}
+      maxWidth={"90%"}
+    >
       <div>
         <u>Choose up to {MAX_NUM_OF_TOPICS} topics</u>
       </div>
 
       <MultiSelect
-        options={topicsList}
+        options={topicsArray}
         values={chosenTopics}
         changeValuesHandler={changeTopicsHandler}
       />
@@ -329,62 +336,51 @@ export const SignUp = () => {
         }}
       >
         <u>Choose your podcaster</u>
-        <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue={chosenVoiceSample}
           name="radio-buttons-group"
           value={chosenVoiceSample}
           onChange={handleVoiceChange}
+          sx={{ gap: 0.1 }}
         >
-          {voiceSamples ? (
-            voiceSamples.length > 0 &&
-            voiceSamples.map((voiceSample, index) => {
-              return (
-                <div
-                  key={"voice-sample-" + index}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    maxWidth: "100%",
-                  }}
-                >
-                  <FormControlLabel
-                    value={voiceSample.name}
-                    control={<Radio />}
-                    label={voiceSample.name}
-                    sx={{ my: 0.5 }}
+          {voiceSamples
+            ? voiceSamples.length > 0 &&
+              voiceSamples.map((voiceSample, index) => {
+                return (
+                  <Box
+                    key={"voice-sample-" + index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    <FormControlLabel
+                      value={voiceSample.name}
+                      control={<Radio />}
+                      label={voiceSample.name}
+                    />
+                    <audio
+                      style={{ maxWidth: "60%" }}
+                      src={voiceSample.url}
+                      controls
+                      controlsList="nodownload"
+                    />
+                  </Box>
+                );
+              })
+            : voicesArray.map((voice, index) => {
+                return (
+                  <Skeleton
+                    key={`voice-skeleton-${index}`}
+                    variant="rounded"
+                    width={VOICE_SAMPLE_SKELETON_WIDTH}
+                    height={VOICE_SAMPLE_SKELETON_HEIGHT}
                   />
-                  <audio
-                    style={{ maxWidth: "80%" }}
-                    src={voiceSample.url}
-                    controls
-                    controlsList="nodownload"
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              gap={1}
-              sx={{ maxWidth: "98%" }}
-            >
-              <Skeleton
-                variant="rounded"
-                sx={{ maxWidth: "90%" }}
-                width={VOICE_SAMPLE_SKELETON_WIDTH}
-                height={VOICE_SAMPLE_SKELETON_HEIGHT}
-              />
-              <Skeleton
-                variant="rounded"
-                sx={{ maxWidth: "90%" }}
-                width={VOICE_SAMPLE_SKELETON_WIDTH}
-                height={VOICE_SAMPLE_SKELETON_HEIGHT}
-              />
-            </Box>
-          )}
+                );
+              })}
         </RadioGroup>
       </FormControl>
 
@@ -520,7 +516,6 @@ export const SignUp = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              my: 1,
               width: "100%",
             }}
           >
