@@ -59,8 +59,7 @@ export const voicesArray = [
   "Nancy",
   "Michelle",
 ];
-
-export const DELETE_ERROR_TIMEOUT = 2500;
+// User and system consts
 export const MIN_NAME_LENGTH = 2;
 export const OTP_LENGTH = 6;
 export const MIN_PASS_LENGTH = 4;
@@ -69,10 +68,13 @@ export const MIN_NUM_OF_TOPICS = 1;
 export const SUPPORT_EMAIL = `admin@podcai.co`;
 
 // UI consts
+export const DELETE_ERROR_TIMEOUT = 2.5 * 1000;
 export const VOICE_SAMPLE_SKELETON_WIDTH = "100%";
 export const VOICE_SAMPLE_SKELETON_HEIGHT = 42;
 export const FONT_SIZE = "body1";
 export const LANDING_PAGE_PY = { xs: 8, sm: 10 };
+export const DEFAULT_AUTO_HIDE_DURATION = 6 * 1000;
+
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";
 export const USER_LOGIN_URL = "/user/login/";
