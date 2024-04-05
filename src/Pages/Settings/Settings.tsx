@@ -8,8 +8,9 @@ import {
   VOICE_SAMPLE_SKELETON_WIDTH,
   VOICE_SAMPLE_SKELETON_HEIGHT,
   voicesArray,
+  DEFAULT_AUTO_HIDE_DURATION,
 } from "../../ConstAndTypes/consts";
-import { useAppSelector } from "../../Hooks/Hooks";
+import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
 import {
@@ -18,7 +19,6 @@ import {
   Card,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   RadioGroup,
   Skeleton,
@@ -29,21 +29,23 @@ import { LoadingButton } from "@mui/lab";
 import DeleteUserModal from "../../Components/UI/DeleteUserModal/DeleteUserModal";
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
+import { updateLoggedUser } from "../../Features/User/User";
+import CustomizedSnackbars from "../../Components/UI/CustomizedSnackbars/CustomizedSnackbars";
 
 const apiClientInstance = ApiClient.getInstance();
 
 export const Settings = () => {
+  const dispatch = useAppDispatch();
+  const [userUpdatedSuccessfully, setUserUpdatedSuccessfully] = useState(false);
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
   const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
-  const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices>(
-    loggedUser.voice
-  );
+  const [chosenVoice, setChosenVoice] = useState<Voices>(loggedUser.voice);
   const [shouldSendEpisodeEmail, setShouldSendEpisodeEmail] = useState<boolean>(
     loggedUser.should_send_episode_email
   );
   const [chosenTopics, setChosenTopics] = useState<Topics[]>(
-    [...loggedUser.categories] || []
+    loggedUser.categories
   );
   const hasMounted = useRef(false);
   const nav = useMyNavigation();
@@ -53,6 +55,16 @@ export const Settings = () => {
     getVoiceSamepls();
     hasMounted.current = true;
   }, [voiceSamples]);
+
+  useEffect(() => {
+    setChosenTopics(loggedUser.categories);
+    setShouldSendEpisodeEmail(loggedUser.should_send_episode_email);
+    setChosenVoice(loggedUser.voice);
+  }, [
+    loggedUser.categories,
+    loggedUser.should_send_episode_email,
+    loggedUser.voice,
+  ]);
 
   const getVoiceSamepls = async () => {
     const res = await apiClientInstance.getVoiceSamples();
@@ -70,14 +82,17 @@ export const Settings = () => {
     const userToUpdate = cloneDeep(loggedUser);
     userToUpdate.categories = chosenTopics;
     userToUpdate.should_send_episode_email = shouldSendEpisodeEmail;
-    userToUpdate.voice = chosenVoiceSample;
+    userToUpdate.voice = chosenVoice;
     const updateRes = await apiClientInstance.userUpdate({
       ...userToUpdate,
       num_of_articles: 2,
     });
     if (updateRes.is_success) {
-      console.log("User updated");
-      // reload page or update loggedUser data
+      dispatch(updateLoggedUser({ updatedUser: userToUpdate }));
+      setUserUpdatedSuccessfully(true);
+      setTimeout(() => {
+        setUserUpdatedSuccessfully(false);
+      }, DEFAULT_AUTO_HIDE_DURATION);
     }
     setIsUpdading(false);
   };
@@ -88,7 +103,7 @@ export const Settings = () => {
 
   const handleVoiceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
-    setChosenVoiceSample(newVoice as Voices);
+    setChosenVoice(newVoice as Voices);
   };
 
   const accountDetailesContainer = (
@@ -177,9 +192,9 @@ export const Settings = () => {
           </Typography>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue={chosenVoiceSample}
+            defaultValue={chosenVoice}
             name="radio-buttons-group"
-            value={chosenVoiceSample}
+            value={chosenVoice}
             onChange={handleVoiceChange}
             sx={{ gap: 0.1 }}
           >
@@ -306,6 +321,9 @@ export const Settings = () => {
           Back
         </LoadingButton>
       </Box>
+      {userUpdatedSuccessfully && (
+        <CustomizedSnackbars text={"Account updated successfully"} />
+      )}
     </Box>
   );
 };
