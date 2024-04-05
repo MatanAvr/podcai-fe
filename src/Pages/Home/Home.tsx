@@ -41,6 +41,13 @@ export const Home = () => {
     return sortedEpisodes;
   };
 
+  const { data: allEpisodes, isLoading: isLoadingEpisodes } = useQuery({
+    queryKey: ["allEpisodesData"],
+    queryFn: getEpisodes,
+    refetchOnWindowFocus: false,
+    staleTime: minutesInMilliseconds(10),
+  });
+
   const onClickEpisodeHandler = (newEpisode: Episode) => {
     if (newEpisode.name === currentlyPlaying?.name) {
       // setCurrentlyPlaying(undefined);
@@ -68,13 +75,6 @@ export const Home = () => {
       setExpendedArr((prev) => [...prev, panelId]);
     }
   };
-
-  const { data: allEpisodes, isLoading: isLoadingEpisodes } = useQuery({
-    queryKey: ["allEpisodesData"],
-    queryFn: getEpisodes,
-    refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(10),
-  });
 
   return (
     <Box
