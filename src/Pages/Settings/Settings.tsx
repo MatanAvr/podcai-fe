@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Topics,
-  topicsList,
+  topicsArray,
   VoiceSample,
   Voices,
   MAX_NUM_OF_TOPICS,
   VOICE_SAMPLE_SKELETON_WIDTH,
   VOICE_SAMPLE_SKELETON_HEIGHT,
+  voicesArray,
 } from "../../ConstAndTypes/consts";
 import { useAppSelector } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
@@ -161,7 +162,7 @@ export const Settings = () => {
           Topics (up to {MAX_NUM_OF_TOPICS})
         </Typography>
         <MultiSelect
-          options={topicsList}
+          options={topicsArray}
           values={chosenTopics}
           changeValuesHandler={changeTopicsHandler}
         />
@@ -174,23 +175,24 @@ export const Settings = () => {
           <Typography variant="caption" color="text.secondary" component="div">
             Podcaster voice
           </Typography>
-          <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue={chosenVoiceSample}
             name="radio-buttons-group"
             value={chosenVoiceSample}
             onChange={handleVoiceChange}
+            sx={{ gap: 0.1 }}
           >
             {voiceSamples ? (
               voiceSamples.length > 0 &&
               voiceSamples.map((voiceSample, index) => {
                 return (
-                  <div
+                  <Box
                     key={"voice-sample-" + index}
                     style={{
                       display: "flex",
                       alignItems: "center",
+                      justifyContent: "space-between",
                       maxWidth: "100%",
                     }}
                   >
@@ -200,26 +202,26 @@ export const Settings = () => {
                       label={voiceSample.name}
                     />
                     <audio
-                      style={{ maxWidth: "80%" }}
+                      style={{ maxWidth: "60%" }}
                       src={voiceSample.url}
                       controls
                       controlsList="nodownload"
                     />
-                  </div>
+                  </Box>
                 );
               })
             ) : (
-              <Box display={"flex"} flexDirection={"column"} gap={1}>
-                <Skeleton
-                  variant="rounded"
-                  width={VOICE_SAMPLE_SKELETON_WIDTH}
-                  height={VOICE_SAMPLE_SKELETON_HEIGHT}
-                />
-                <Skeleton
-                  variant="rounded"
-                  width={VOICE_SAMPLE_SKELETON_WIDTH}
-                  height={VOICE_SAMPLE_SKELETON_HEIGHT}
-                />
+              <Box display={"flex"} flexDirection={"column"} gap={0.1}>
+                {voicesArray.map((voice, index) => {
+                  return (
+                    <Skeleton
+                      key={`voice-skeleton-${index}`}
+                      variant="rounded"
+                      width={VOICE_SAMPLE_SKELETON_WIDTH}
+                      height={VOICE_SAMPLE_SKELETON_HEIGHT}
+                    />
+                  );
+                })}
               </Box>
             )}
           </RadioGroup>

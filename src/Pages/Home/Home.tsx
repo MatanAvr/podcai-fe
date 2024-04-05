@@ -16,6 +16,7 @@ import {
   CardActions,
   Checkbox,
   Link,
+  Stack,
   Typography,
 } from "@mui/material";
 import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
@@ -26,6 +27,7 @@ const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();
 
 export const Home = () => {
+  const [expendedArr, setExpendedArr] = useState<string[]>([]);
   const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode | undefined>(
     undefined
   );
@@ -44,6 +46,7 @@ export const Home = () => {
       // setCurrentlyPlaying(undefined);
     } else {
       setCurrentlyPlaying(newEpisode);
+      setExpendedArr(() => []);
     }
   };
 
@@ -52,6 +55,19 @@ export const Home = () => {
       setCurrentlyPlaying(() => allEpisodes[0]);
     }
   }, []);
+
+  const expendHandler = (panelId: string) => {
+    if (expendedArr.includes(panelId)) {
+      const index = expendedArr.findIndex((el) => el === panelId);
+      if (index !== -1) {
+        const newExpendedArr = [...expendedArr];
+        newExpendedArr.splice(index, 1);
+        setExpendedArr(() => newExpendedArr);
+      }
+    } else {
+      setExpendedArr((prev) => [...prev, panelId]);
+    }
+  };
 
   const { data: allEpisodes, isLoading: isLoadingEpisodes } = useQuery({
     queryKey: ["allEpisodesData"],
@@ -111,12 +127,16 @@ export const Home = () => {
                     <Box
                       sx={{
                         overflow: "auto",
-                        flex: 1,
                       }}
                     >
                       {currentlyPlaying.articles_data.map((article, index) => {
+                        const panelId = `panel-${index}`;
                         return (
-                          <Accordion key={"Accordion" + index}>
+                          <Accordion
+                            key={"Accordion" + index}
+                            expanded={expendedArr.includes(panelId)}
+                            onChange={() => expendHandler(panelId)}
+                          >
                             <AccordionSummary
                               id="accordion-summery"
                               expandIcon={<ExpandMoreIcon />}
@@ -211,23 +231,26 @@ export const Home = () => {
                           }}
                           onClick={() => onClickEpisodeHandler(episode)}
                         >
-                          <div>
+                          <Stack
+                            direction={"row"}
+                            alignItems={"center"}
+                            width={"100%"}
+                          >
                             <Checkbox
                               checked={active}
                               icon={<PlayArrowOutlinedIcon />}
                               checkedIcon={<PlayCircleFilledOutlinedIcon />}
                             />
-                            {episode.name}
-                          </div>
-
-                          <Box
-                            sx={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignContent: "center",
-                              justifyContent: "center",
-                            }}
-                          ></Box>
+                            <Typography
+                              sx={{
+                                display: "flex",
+                                flex: 1,
+                                textAlign: "center",
+                              }}
+                            >
+                              {episode.name}
+                            </Typography>
+                          </Stack>
                         </CardActions>
                       </Card>
                     );

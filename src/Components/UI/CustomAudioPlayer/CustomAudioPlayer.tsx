@@ -169,7 +169,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
         borderColor: "primary.main",
       }}
     >
-      <Typography variant="h6" sx={{ my: 0.5 }}>
+      <Typography variant="h6" sx={{ my: 0.5, marginInlineStart: 1 }}>
         {episode.name}
       </Typography>
       <audio
