@@ -24,18 +24,21 @@ export type Pages =
   | "Privacy policy"
   | "Contact us";
 
+type Countries = "us";
+type Languages = "en";
+
 export type Topics =
   | "general"
   | "world"
   | "nation"
   | "business"
+  | "health"
   | "technology"
-  | "entertainment"
   | "sports"
   | "science"
-  | "health";
+  | "entertainment";
 
-export const topicsList: Topics[] = [
+export const topicsArray: Topics[] = [
   "general",
   "world",
   "nation",
@@ -47,65 +50,16 @@ export const topicsList: Topics[] = [
   "entertainment",
 ];
 
-type Countries =
-  | "au"
-  | "br"
-  | "ca"
-  | "cn"
-  | "eg"
-  | "fr"
-  | "de"
-  | "gr"
-  | "hk"
-  | "in"
-  | "ie"
-  | "il"
-  | "it"
-  | "jp"
-  | "nl"
-  | "no"
-  | "pk"
-  | "pe"
-  | "ph"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "sg"
-  | "es"
-  | "se"
-  | "ch"
-  | "tw"
-  | "ua"
-  | "gb"
-  | "us";
-
-type Languages =
-  | "ar"
-  | "zh"
-  | "nl"
-  | "en"
-  | "fr"
-  | "de"
-  | "el"
-  | "he"
-  | "hi"
-  | "it"
-  | "ja"
-  | "ml"
-  | "mr"
-  | "no"
-  | "pt"
-  | "ro"
-  | "ru"
-  | "es"
-  | "sv"
-  | "ta"
-  | "te"
-  | "uk";
-
-export type Voices = "Guy" | "Aria";
-
-export const DELETE_ERROR_TIMEOUT = 2500;
+export type Voices = "Guy" | "Aria" | "Andrew" | "Jason" | "Nancy" | "Michelle";
+export const voicesArray = [
+  "Guy",
+  "Aria",
+  "Andrew",
+  "Jason",
+  "Nancy",
+  "Michelle",
+];
+// User and system consts
 export const MIN_NAME_LENGTH = 2;
 export const OTP_LENGTH = 6;
 export const MIN_PASS_LENGTH = 4;
@@ -114,10 +68,13 @@ export const MIN_NUM_OF_TOPICS = 1;
 export const SUPPORT_EMAIL = `admin@podcai.co`;
 
 // UI consts
-export const VOICE_SAMPLE_SKELETON_WIDTH = 375;
-export const VOICE_SAMPLE_SKELETON_HEIGHT = 40;
+export const DELETE_ERROR_TIMEOUT = 2.5 * 1000;
+export const VOICE_SAMPLE_SKELETON_WIDTH = "100%";
+export const VOICE_SAMPLE_SKELETON_HEIGHT = 42;
 export const FONT_SIZE = "body1";
 export const LANDING_PAGE_PY = { xs: 8, sm: 10 };
+export const DEFAULT_AUTO_HIDE_DURATION = 6 * 1000;
+
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";
 export const USER_LOGIN_URL = "/user/login/";

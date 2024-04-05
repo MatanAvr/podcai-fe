@@ -9,7 +9,6 @@ import {
   Alert,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Link,
   Radio,
   RadioGroup,
@@ -21,22 +20,22 @@ import {
 import {
   Topics,
   INewUser,
-  topicsList,
+  topicsArray,
   MAX_NUM_OF_TOPICS,
   MIN_NAME_LENGTH,
   MIN_NUM_OF_TOPICS,
   MIN_PASS_LENGTH,
   OTP_LENGTH,
-  VoiceSample,
   Voices,
   DELETE_ERROR_TIMEOUT,
   sendOtpRequest,
   verifyOtpRequest,
   VOICE_SAMPLE_SKELETON_WIDTH,
   VOICE_SAMPLE_SKELETON_HEIGHT,
+  voicesArray,
 } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
-import { isValidEmail } from "../../Utils/Utils";
+import { isValidEmail, minutesInMilliseconds } from "../../Utils/Utils";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch } from "../../Hooks/Hooks";
@@ -46,6 +45,7 @@ import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTex
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
+import { useQuery } from "@tanstack/react-query";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -73,24 +73,24 @@ export const SignUp = () => {
   const [skipped, setSkipped] = useState(new Set<number>());
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [emailErr, setEmailErr] = useState<string>("");
-  const [voiceSamples, setVoiceSamples] = useState<VoiceSample[]>();
   const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
   const [chosenTopics, setChosenTopics] = useState<Topics[]>([]);
   const [emailNotification, setEmailNotification] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!voiceSamples) {
-      getVoiceSamepls();
-    }
-  }, [voiceSamples]);
-
   const getVoiceSamepls = async () => {
     const res = await apiClientInstance.getVoiceSamples();
     if (res) {
-      setVoiceSamples(res.voice_samples);
-    }
+      return res.voice_samples;
+    } else return [];
   };
+
+  const { data: voiceSamples, isLoading: isLoadingVoiceSamples } = useQuery({
+    queryKey: ["voices-samples-data"],
+    queryFn: getVoiceSamepls,
+    refetchOnWindowFocus: false,
+    staleTime: minutesInMilliseconds(10),
+  });
 
   const validateEmail = () => {
     let error = "";
@@ -310,13 +310,19 @@ export const SignUp = () => {
   }, [emailNotification]);
 
   const settingsWrapper = (
-    <Box display={"flex"} flexDirection={"column"} gap={1} maxWidth={"90%"}>
+    <Box
+      id="settings-wrapper"
+      display={"flex"}
+      flexDirection={"column"}
+      gap={1}
+      maxWidth={"90%"}
+    >
       <div>
         <u>Choose up to {MAX_NUM_OF_TOPICS} topics</u>
       </div>
 
       <MultiSelect
-        options={topicsList}
+        options={topicsArray}
         values={chosenTopics}
         changeValuesHandler={changeTopicsHandler}
       />
@@ -329,62 +335,51 @@ export const SignUp = () => {
         }}
       >
         <u>Choose your podcaster</u>
-        <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue={chosenVoiceSample}
           name="radio-buttons-group"
           value={chosenVoiceSample}
           onChange={handleVoiceChange}
+          sx={{ gap: 0.1 }}
         >
-          {voiceSamples ? (
-            voiceSamples.length > 0 &&
-            voiceSamples.map((voiceSample, index) => {
-              return (
-                <div
-                  key={"voice-sample-" + index}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    maxWidth: "100%",
-                  }}
-                >
-                  <FormControlLabel
-                    value={voiceSample.name}
-                    control={<Radio />}
-                    label={voiceSample.name}
-                    sx={{ my: 0.5 }}
+          {voiceSamples
+            ? voiceSamples.length > 0 &&
+              voiceSamples.map((voiceSample, index) => {
+                return (
+                  <Box
+                    key={"voice-sample-" + index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    <FormControlLabel
+                      value={voiceSample.name}
+                      control={<Radio />}
+                      label={voiceSample.name}
+                    />
+                    <audio
+                      style={{ maxWidth: "60%" }}
+                      src={voiceSample.url}
+                      controls
+                      controlsList="nodownload"
+                    />
+                  </Box>
+                );
+              })
+            : voicesArray.map((voice, index) => {
+                return (
+                  <Skeleton
+                    key={`voice-skeleton-${index}`}
+                    variant="rounded"
+                    width={VOICE_SAMPLE_SKELETON_WIDTH}
+                    height={VOICE_SAMPLE_SKELETON_HEIGHT}
                   />
-                  <audio
-                    style={{ maxWidth: "80%" }}
-                    src={voiceSample.url}
-                    controls
-                    controlsList="nodownload"
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              gap={1}
-              sx={{ maxWidth: "98%" }}
-            >
-              <Skeleton
-                variant="rounded"
-                sx={{ maxWidth: "90%" }}
-                width={VOICE_SAMPLE_SKELETON_WIDTH}
-                height={VOICE_SAMPLE_SKELETON_HEIGHT}
-              />
-              <Skeleton
-                variant="rounded"
-                sx={{ maxWidth: "90%" }}
-                width={VOICE_SAMPLE_SKELETON_WIDTH}
-                height={VOICE_SAMPLE_SKELETON_HEIGHT}
-              />
-            </Box>
-          )}
+                );
+              })}
         </RadioGroup>
       </FormControl>
 
@@ -520,7 +515,6 @@ export const SignUp = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              my: 1,
               width: "100%",
             }}
           >
