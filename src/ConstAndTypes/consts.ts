@@ -107,9 +107,6 @@ export type updateUserResponse = {
   is_success: boolean;
 };
 
-export const GET_PODCASTS_URL = "/user/get_podcasts/";
-export type getPodcastsResponse = { urls: string[] };
-
 export const GET_EPISODES_URL = "/user/get_episodes/";
 export type getEpisodesResponse = { episodes: Episode[] };
 
@@ -194,4 +191,10 @@ export type sendSupportMessageRequest = {
 };
 export type sendSupportMessageResponse = {
   is_success: boolean;
+};
+
+export const GET_EPISODE_EXAMPLE = "/get_episode_example/";
+
+export type GetEpisodeExampleResponse = {
+  url: string;
 };

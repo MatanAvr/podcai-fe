@@ -3,7 +3,6 @@ import {
   USER_AUTH_URL,
   BASE_URL,
   GET_EPISODES_URL,
-  GET_PODCASTS_URL,
   GET_VOICE_SAMPLES_URL,
   USER_LOGIN_URL,
   SIGNUP_URL,
@@ -11,7 +10,6 @@ import {
   VERIFY_OTP_URL,
   SEND_OTP_URL,
   getEpisodesResponse,
-  getPodcastsResponse,
   getVoiceSamplesResponse,
   signUpRequest,
   signUpResponse,
@@ -33,6 +31,8 @@ import {
   sendSupportMessageRequest,
   sendSupportMessageResponse,
   SEND_SUPPORT_MESSAGE_URL,
+  GetEpisodeExampleResponse,
+  GET_EPISODE_EXAMPLE,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -113,17 +113,6 @@ export class ApiClient {
     } catch (error) {
       console.error(`signUp, error:${error}`);
       throw error;
-    }
-  }
-
-  async getPodcasts(): Promise<getPodcastsResponse> {
-    try {
-      const response: AxiosResponse<getPodcastsResponse> =
-        await this.axiosInstance.get(GET_PODCASTS_URL);
-      return response.data;
-    } catch (error) {
-      console.error(`getPodcasts, error:${error}`);
-      return { urls: [] };
     }
   }
 
@@ -222,6 +211,17 @@ export class ApiClient {
       return response.data;
     } catch (error) {
       console.error(`sendSupportMessage, error:${error}`);
+      throw error;
+    }
+  }
+
+  async getEpisodeExample(): Promise<GetEpisodeExampleResponse> {
+    try {
+      const response: AxiosResponse<GetEpisodeExampleResponse> =
+        await this.axiosInstance.get(GET_EPISODE_EXAMPLE);
+      return response.data;
+    } catch (error) {
+      console.error(`getEpisodeExample, error:${error}`);
       throw error;
     }
   }

@@ -32,6 +32,7 @@ import { updateLoggedUser } from "../../Features/User/User";
 import CustomizedSnackbars from "../../Components/UI/CustomizedSnackbars/CustomizedSnackbars";
 import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../../Utils/Utils";
+import { OneLineAudioPlayer } from "../../Components/UI/CustomAudioPlayer - Copy/OneLineAudioPlayer";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -216,12 +217,7 @@ export const Settings = () => {
                       control={<Radio />}
                       label={voiceSample.name}
                     />
-                    <audio
-                      style={{ maxWidth: "60%" }}
-                      src={voiceSample.url}
-                      controls
-                      controlsList="nodownload"
-                    />
+                    <OneLineAudioPlayer audioUrl={voiceSample.url} />
                   </Box>
                 );
               })

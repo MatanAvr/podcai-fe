@@ -42,7 +42,7 @@ export default function LandingPage() {
       <Hero />
       <Box>
         {/* <LogoCollection /> */}
-        {/* <BriefAndExample /> */}
+        <BriefAndExample />
         {enabledSections.includes("Features") && <Features />}
         {enabledSections.includes("Testimonials") && <Testimonials />}
         {enabledSections.includes("Highlights") && <Highlights />}

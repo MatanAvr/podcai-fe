@@ -1,4 +1,3 @@
-import "./CustomAudioPlayer.scss";
 import { Card, Box, IconButton, Typography } from "@mui/material";
 import { Episode } from "../../../ConstAndTypes/consts";
 import { useRef, useState } from "react";
@@ -12,7 +11,7 @@ import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import VolumeDownRoundedIcon from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUp";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
-import { AudioProgressBar } from "./ProgressBar/ProgressBar";
+import { AudioProgressBar } from "./AudioProgressBar/AudioProgressBar";
 import { formatDurationDisplay, isMobile } from "../../../Utils/Utils";
 
 const mobile = isMobile();
@@ -29,6 +28,7 @@ const timelineStyle = {
   display: "flex",
   justifyContent: "center",
 };
+
 const dynamicVolumeIconButton = (
   volume: number,
   muteUnmuteHandler: any,
@@ -174,7 +174,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
       </Typography>
       <audio
         ref={audioRef}
-        className="audio-track"
+        style={{ display: "none" }}
         src={episode.link}
         controls
         controlsList="nodownload"
@@ -204,7 +204,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
         <Box
           sx={{ display: "flex", flex: 1, alignItems: "center", width: "100%" }}
         >
-          <Box sx={timelineStyle}>{`${elapsedDisplay}`}</Box>
+          <Typography sx={timelineStyle}>{`${elapsedDisplay}`}</Typography>
 
           <AudioProgressBar
             duration={duration}
@@ -216,7 +216,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
               setCurrrentProgress(newValue);
             }}
           />
-          <Box sx={timelineStyle}>{`${durationDisplay}`}</Box>
+          <Typography sx={timelineStyle}>{`${durationDisplay}`}</Typography>
         </Box>
       </Box>
 
