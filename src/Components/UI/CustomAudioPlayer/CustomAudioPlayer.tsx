@@ -1,5 +1,5 @@
 import { Card, Box, IconButton, Typography } from "@mui/material";
-import { Episode } from "../../../ConstAndTypes/consts";
+import { ALL_EPISODES_QUERY_KEY, Episode } from "../../../ConstAndTypes/consts";
 import { useRef, useState } from "react";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 import { VolumeInput } from "./VolumeInput/VolumeInput";
@@ -13,7 +13,10 @@ import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUp";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import { AudioProgressBar } from "./AudioProgressBar/AudioProgressBar";
 import { formatDurationDisplay, isMobile } from "../../../Utils/Utils";
+import { useQueryClient } from "@tanstack/react-query";
+import { ApiClient } from "../../../Services/axios";
 
+const apiClientInstance = ApiClient.getInstance();
 const mobile = isMobile();
 
 interface audioPlayerProps {
@@ -55,18 +58,21 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
   const [duration, setDuration] = useState<number>(0);
   const [playSpeed, setPlaySpeed] = useState<playSpeedOptions>(1);
   const [isReady, setIsReady] = useState<boolean>(false);
+  const [sentIsCompleted, setSentIsCompleted] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [volume, setVolume] = useState(1); // 0-1
   const [volumeBeforeUnmute, setVolumeBeforeUnmute] = useState(1); // 0-1
   const [currrentProgress, setCurrrentProgress] = useState(0);
   const [buffered, setBuffered] = useState(0);
-  const durationDisplay = formatDurationDisplay(duration);
-  const elapsedDisplay = formatDurationDisplay(currrentProgress);
+  const episodeDuration = formatDurationDisplay(duration);
+  const elapsedTime = formatDurationDisplay(currrentProgress);
+  const queryClient = useQueryClient();
 
   useEnhancedEffect(() => {
     setIsReady(false);
     setIsPlaying(false);
+    setSentIsCompleted(false);
   }, [episode]);
 
   useEnhancedEffect(() => {
@@ -76,6 +82,24 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
       setIsReady(false);
     }
   }, [isReady]);
+
+  useEnhancedEffect(() => {
+    if (!episode.is_completed && !sentIsCompleted) {
+      checkIfEpisodeCompleted();
+    }
+  }, [elapsedTime]);
+
+  const checkIfEpisodeCompleted = async () => {
+    if (Math.ceil((currrentProgress / duration) * 100) > 90) {
+      setSentIsCompleted(() => true);
+      const markEpisodeAsCompleted = await apiClientInstance.episodeCompleted({
+        episode_name: episode.name,
+      });
+      if (markEpisodeAsCompleted) {
+        queryClient.invalidateQueries({ queryKey: [ALL_EPISODES_QUERY_KEY] });
+      }
+    }
+  };
 
   const bufferProgressHandler: React.ReactEventHandler<HTMLAudioElement> = (
     e
@@ -204,7 +228,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
         <Box
           sx={{ display: "flex", flex: 1, alignItems: "center", width: "100%" }}
         >
-          <Typography sx={timelineStyle}>{`${elapsedDisplay}`}</Typography>
+          <Typography sx={timelineStyle}>{`${elapsedTime}`}</Typography>
 
           <AudioProgressBar
             duration={duration}
@@ -216,7 +240,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
               setCurrrentProgress(newValue);
             }}
           />
-          <Typography sx={timelineStyle}>{`${durationDisplay}`}</Typography>
+          <Typography sx={timelineStyle}>{`${episodeDuration}`}</Typography>
         </Box>
       </Box>
 
