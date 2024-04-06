@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 import GroupsIcon from "@mui/icons-material/Groups";
-import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
+import NewspaperRoundedIcon from "@mui/icons-material/NewspaperRounded";
 import { useState } from "react";
 import topicsBlack from "../../../Assets/Images/Hero-images/Topics - black.png";
 import topicWhite from "../../../Assets/Images/Hero-images/Topics - white.png";
@@ -17,14 +17,13 @@ import podcaiPreviewDark from "../../../Assets/Images/Hero-images/podcai-playing
 import podcaiPreviewLight from "../../../Assets/Images/Hero-images/podcai-playing-playing-light.png";
 import podcastersPhoto from "../../../Assets/Images/Hero-images/Podcasters photos.png";
 import {
-  FONT_SIZE,
   LANDING_PAGE_PY,
   MAX_NUM_OF_TOPICS,
 } from "../../../ConstAndTypes/consts";
 
 const features = [
   {
-    icon: <ViewQuiltRoundedIcon fontSize="large" />,
+    icon: <NewspaperRoundedIcon fontSize="large" />,
     title: "Topics",
     description: `Podcai offers a selection of 9 topics for podcasts. 
     Choose up to ${MAX_NUM_OF_TOPICS}, and Podcai will generate your personalized daily podcasts.`,
@@ -121,15 +120,12 @@ export default function Features() {
               }}
             />
             <Box sx={{ px: 1, pb: 1 }}>
-              <Typography variant={FONT_SIZE} fontWeight="bold">
-                {selectedFeature.title}
-              </Typography>
-              <Typography variant={FONT_SIZE} sx={{ my: 0.5 }}>
+              <Typography fontWeight="bold">{selectedFeature.title}</Typography>
+              <Typography sx={{ my: 0.5 }}>
                 {selectedFeature.description}
               </Typography>
               <Link
                 color="primary"
-                variant={FONT_SIZE}
                 fontWeight="bold"
                 sx={{
                   display: "inline-flex",
@@ -202,23 +198,14 @@ export default function Features() {
                     {icon}
                   </Box>
                   <div>
-                    <Typography
-                      color="text.primary"
-                      variant={FONT_SIZE}
-                      fontWeight="bold"
-                    >
+                    <Typography color="text.primary" fontWeight="bold">
                       {title}
                     </Typography>
-                    <Typography
-                      color="text.secondary"
-                      variant={FONT_SIZE}
-                      sx={{ my: 0.5 }}
-                    >
+                    <Typography color="text.secondary" sx={{ my: 0.5 }}>
                       {description}
                     </Typography>
                     <Link
                       color="primary"
-                      variant={FONT_SIZE}
                       fontWeight="bold"
                       sx={{
                         display: "inline-flex",

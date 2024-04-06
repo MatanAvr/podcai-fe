@@ -32,7 +32,10 @@ import {
   sendSupportMessageResponse,
   SEND_SUPPORT_MESSAGE_URL,
   GetEpisodeExampleResponse,
-  GET_EPISODE_EXAMPLE,
+  GET_EPISODE_EXAMPLE_URL,
+  EpisodeCompletedRequest,
+  EpisodeCompletedResponse,
+  EPISODE_COMPLETED_URL,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -218,10 +221,26 @@ export class ApiClient {
   async getEpisodeExample(): Promise<GetEpisodeExampleResponse> {
     try {
       const response: AxiosResponse<GetEpisodeExampleResponse> =
-        await this.axiosInstance.get(GET_EPISODE_EXAMPLE);
+        await this.axiosInstance.get(GET_EPISODE_EXAMPLE_URL);
       return response.data;
     } catch (error) {
       console.error(`getEpisodeExample, error:${error}`);
+      throw error;
+    }
+  }
+
+  async episodeCompleted(
+    episodeCompletedReq: EpisodeCompletedRequest
+  ): Promise<EpisodeCompletedResponse> {
+    try {
+      const response: AxiosResponse<EpisodeCompletedResponse> =
+        await this.axiosInstance.post(
+          EPISODE_COMPLETED_URL,
+          episodeCompletedReq
+        );
+      return response.data;
+    } catch (error) {
+      console.error(`episodeCompleted, error:${error}`);
       throw error;
     }
   }

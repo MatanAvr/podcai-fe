@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import RecordVoiceOverRoundedIcon from "@mui/icons-material/RecordVoiceOverRounded";
 import FeedRoundedIcon from "@mui/icons-material/FeedRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
-import { FONT_SIZE, LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
+import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
 
 const highlights = [
   {
@@ -87,7 +87,7 @@ export default function Highlights() {
                   <Typography fontWeight="bold" gutterBottom>
                     {highlight.title}
                   </Typography>
-                  <Typography variant={FONT_SIZE} sx={{ color: "grey.400" }}>
+                  <Typography sx={{ color: "grey.400" }}>
                     {highlight.description}
                   </Typography>
                 </div>

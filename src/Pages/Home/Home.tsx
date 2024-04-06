@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ApiClient } from "../../Services/axios";
-import { Episode } from "../../ConstAndTypes/consts";
+import { ALL_EPISODES_QUERY_KEY, Episode } from "../../ConstAndTypes/consts";
 import { isMobile, minutesInMilliseconds } from "../../Utils/Utils";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
@@ -22,6 +22,7 @@ import {
 import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
 import { CustomAudioPlayer } from "../../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
 import { useQuery } from "@tanstack/react-query";
+import { DoneRounded } from "@mui/icons-material";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();
@@ -42,7 +43,7 @@ export const Home = () => {
   };
 
   const { data: allEpisodes, isLoading: isLoadingEpisodes } = useQuery({
-    queryKey: ["allEpisodesData"],
+    queryKey: [ALL_EPISODES_QUERY_KEY],
     queryFn: getEpisodes,
     refetchOnWindowFocus: false,
     staleTime: minutesInMilliseconds(10),
@@ -50,7 +51,7 @@ export const Home = () => {
 
   const onClickEpisodeHandler = (newEpisode: Episode) => {
     if (newEpisode.name === currentlyPlaying?.name) {
-      // setCurrentlyPlaying(undefined);
+      return;
     } else {
       setCurrentlyPlaying(newEpisode);
       setExpendedArr(() => []);
@@ -234,11 +235,11 @@ export const Home = () => {
                           <Stack
                             direction={"row"}
                             alignItems={"center"}
-                            width={"100%"}
+                            width={"90%"}
                           >
                             <Checkbox
                               checked={active}
-                              icon={<PlayArrowOutlinedIcon />}
+                              icon={<PlayArrowOutlinedIcon fontSize="small" />}
                               checkedIcon={<PlayCircleFilledOutlinedIcon />}
                             />
                             <Typography
@@ -250,6 +251,9 @@ export const Home = () => {
                             >
                               {episode.name}
                             </Typography>
+                            {episode.is_completed && (
+                              <DoneRounded color="success" fontSize="small" />
+                            )}
                           </Stack>
                         </CardActions>
                       </Card>

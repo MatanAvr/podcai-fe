@@ -8,6 +8,7 @@ import {
   VOICE_SAMPLE_SKELETON_HEIGHT,
   voicesArray,
   DEFAULT_AUTO_HIDE_DURATION,
+  VOICES_SAMPLES_QUERY_KEY,
 } from "../../ConstAndTypes/consts";
 import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
@@ -57,8 +58,8 @@ export const Settings = () => {
     } else return [];
   };
 
-  const { data: voiceSamples, isLoading: isLoadingVoiceSamples } = useQuery({
-    queryKey: ["voices-samples-data"],
+  const { data: voiceSamples } = useQuery({
+    queryKey: [VOICES_SAMPLES_QUERY_KEY],
     queryFn: getVoiceSamepls,
     refetchOnWindowFocus: false,
     staleTime: minutesInMilliseconds(10),
