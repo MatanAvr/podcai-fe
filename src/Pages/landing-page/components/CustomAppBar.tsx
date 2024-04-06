@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorModeButton from "./ToggleColorModeButton";
-import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
+import { Pages } from "../../../ConstAndTypes/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
 import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
@@ -148,25 +148,19 @@ const CustomAppBar = () => {
                   onClick={() => changePageHandler("Home")}
                   sx={menuItemStyle}
                 >
-                  <Typography variant={FONT_SIZE} color="text.primary">
-                    Home
-                  </Typography>
+                  <Typography color="text.primary">Home</Typography>
                 </MenuItem>
                 <MenuItem
                   onClick={() => changePageHandler("Settings")}
                   sx={menuItemStyle}
                 >
-                  <Typography variant={FONT_SIZE} color="text.primary">
-                    Settings
-                  </Typography>
+                  <Typography color="text.primary">Settings</Typography>
                 </MenuItem>
                 <MenuItem
                   onClick={() => changePageHandler("Contact us")}
                   sx={menuItemStyle}
                 >
-                  <Typography variant={FONT_SIZE} color="text.primary">
-                    Contact us
-                  </Typography>
+                  <Typography color="text.primary">Contact us</Typography>
                 </MenuItem>
               </>
             ) : (
@@ -178,9 +172,7 @@ const CustomAppBar = () => {
                       onClick={() => scrollToSection(section)}
                       sx={menuItemStyle}
                     >
-                      <Typography variant={FONT_SIZE} color="text.primary">
-                        {section}
-                      </Typography>
+                      <Typography color="text.primary">{section}</Typography>
                     </MenuItem>
                   );
                 })}
@@ -188,9 +180,7 @@ const CustomAppBar = () => {
                   onClick={() => changePageHandler("Contact us")}
                   sx={menuItemStyle}
                 >
-                  <Typography variant={FONT_SIZE} color="text.primary">
-                    Contact us
-                  </Typography>
+                  <Typography color="text.primary">Contact us</Typography>
                 </MenuItem>
               </>
             )}

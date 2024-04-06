@@ -65,15 +65,20 @@ export const OTP_LENGTH = 6;
 export const MIN_PASS_LENGTH = 4;
 export const MAX_NUM_OF_TOPICS = 3;
 export const MIN_NUM_OF_TOPICS = 1;
-export const SUPPORT_EMAIL = `admin@podcai.co`;
+export const SUPPORT_EMAIL = "support@podcai.co";
+export type Subscription = "Basic" | "Standard" | "Premium";
 
 // UI consts
 export const DELETE_ERROR_TIMEOUT = 2.5 * 1000;
 export const VOICE_SAMPLE_SKELETON_WIDTH = "100%";
 export const VOICE_SAMPLE_SKELETON_HEIGHT = 42;
-export const FONT_SIZE = "body1";
 export const LANDING_PAGE_PY = { xs: 8, sm: 10 };
 export const DEFAULT_AUTO_HIDE_DURATION = 6 * 1000;
+
+// React query consts
+export const EPISODE_EXAMPLE_QUERY_KEY = "episode-example-url";
+export const ALL_EPISODES_QUERY_KEY = "all-episodes";
+export const VOICES_SAMPLES_QUERY_KEY = "voices-samples";
 
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";
@@ -119,6 +124,7 @@ export interface Episode {
   link: string;
   categories: Topics[];
   articles_data: ArticleData[];
+  is_completed: boolean;
 }
 
 export interface ArticleData {
@@ -193,8 +199,17 @@ export type sendSupportMessageResponse = {
   is_success: boolean;
 };
 
-export const GET_EPISODE_EXAMPLE = "/get_episode_example/";
+export const GET_EPISODE_EXAMPLE_URL = "/get_episode_example/";
 
 export type GetEpisodeExampleResponse = {
   url: string;
+};
+
+export const EPISODE_COMPLETED_URL = "/user/episode_completed/";
+
+export type EpisodeCompletedRequest = {
+  episode_name: string;
+};
+export type EpisodeCompletedResponse = {
+  is_success: boolean;
 };

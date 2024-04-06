@@ -11,16 +11,17 @@ import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
+import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 
 const tiers = [
   {
     title: "Basic",
-    price: "5",
+    price: "4.99",
     description: [
-      "10 users included",
-      "2 GB of storage",
-      "Help center access",
-      "Email support",
+      "Short episodes (3-4 minutes)",
+      "2 podcaster voices",
+      "30 days before episdoes deletion",
+      "14 days no login => stop generate episodes (you will be notice)",
     ],
     buttonText: "Start now",
     buttonVariant: "outlined",
@@ -28,33 +29,34 @@ const tiers = [
   {
     title: "Standart",
     subheader: "Recommended",
-    price: "10",
+    price: "9.99",
     description: [
-      "20 users included",
-      "10 GB of storage",
-      "Help center access",
-      "Priority email support",
-      "Dedicated team",
-      "Best deals",
+      "Medium length episodes (7-8 minutes)",
+      "6 podcaster voices",
+      "60 days before episdoes deletion",
+      "30 days no login => stop generate episodes (you will be notice)",
+      "Mark episodes as favorite",
     ],
     buttonText: "Start now",
     buttonVariant: "contained",
   },
   {
-    title: "Pro",
-    price: "15",
+    title: "Premium",
+    price: "14.99",
     description: [
-      "50 users included",
-      "30 GB of storage",
-      "Help center access",
-      "Phone & email support",
+      "Medium length episodes (7-8 minutes)",
+      "6 podcaster voices",
+      "90 days before episdoes deletion",
+      "60 days no login => stop generate episodes (you will be notice)",
+      "Mark episodes as favorite",
     ],
-    buttonText: "Contact us",
+    buttonText: "Start now",
     buttonVariant: "outlined",
   },
 ];
 
 export default function Pricing() {
+  const nav = useMyNavigation();
   return (
     <Container
       id="Pricing"
@@ -75,12 +77,6 @@ export default function Pricing() {
       >
         <Typography component="h2" variant="h4" color="text.primary">
           Pricing
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Quickly build an effective pricing table for your potential customers
-          with this layout. <br />
-          It&apos;s built with default Material UI components with little
-          customization.
         </Typography>
       </Box>
       <Grid container spacing={3} alignItems="center" justifyContent="center">
@@ -114,11 +110,10 @@ export default function Pricing() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    color:
-                      tier.title === "Standart" ? "primary.contrastText" : "",
+                    color: tier.title === "Standart" ? "white" : "",
                   }}
                 >
-                  <Typography component="h3" variant="h6">
+                  <Typography component="h3" variant="h5">
                     {tier.title}
                   </Typography>
                   {tier.title === "Standart" && (
@@ -144,17 +139,14 @@ export default function Pricing() {
                   sx={{
                     display: "flex",
                     alignItems: "baseline",
-                    color:
-                      tier.title === "Standart"
-                        ? "primary.contrastText"
-                        : undefined,
+                    color: tier.title === "Standart" ? "white" : undefined,
                   }}
                 >
                   <Typography component="h3" variant="h2">
                     ${tier.price}
                   </Typography>
                   <Typography component="h3" variant="h6">
-                    &nbsp; per month
+                    &nbsp; / month
                   </Typography>
                 </Box>
                 <Divider
@@ -187,10 +179,7 @@ export default function Pricing() {
                       component="text"
                       variant="subtitle2"
                       sx={{
-                        color:
-                          tier.title === "Standart"
-                            ? "primary.contrastText"
-                            : undefined,
+                        color: tier.title === "Standart" ? "white" : undefined,
                       }}
                     >
                       {line}
@@ -202,9 +191,10 @@ export default function Pricing() {
                 <Button
                   fullWidth
                   variant={tier.buttonVariant as "outlined" | "contained"}
-                  component="a"
-                  href="/material-ui/getting-started/templates/checkout/"
-                  target="_blank"
+                  // component="a"
+                  // href="/"
+                  // target="_blank"
+                  onClick={() => nav.push("Sign up")}
                 >
                   {tier.buttonText}
                 </Button>

@@ -1,7 +1,10 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
+import {
+  EPISODE_EXAMPLE_QUERY_KEY,
+  LANDING_PAGE_PY,
+} from "../../../ConstAndTypes/consts";
 import { ApiClient } from "../../../Services/axios";
 import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../../../Utils/Utils";
@@ -17,8 +20,8 @@ export default function BriefAndExample() {
     } else return "";
   };
 
-  const { data: episodeExampleUrl, isLoading } = useQuery({
-    queryKey: ["episode-example-url"],
+  const { data: episodeExampleUrl } = useQuery({
+    queryKey: [EPISODE_EXAMPLE_QUERY_KEY],
     queryFn: getEpisodeExample,
     refetchOnWindowFocus: false,
     staleTime: minutesInMilliseconds(10),

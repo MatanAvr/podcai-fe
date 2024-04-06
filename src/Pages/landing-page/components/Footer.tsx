@@ -12,7 +12,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import { enabledSections } from "../LandingPage";
 import { useAppSelector } from "../../../Hooks/Hooks";
-import { Pages, FONT_SIZE } from "../../../ConstAndTypes/consts";
+import { Pages } from "../../../ConstAndTypes/consts";
 import { Divider } from "@mui/material";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 
@@ -26,7 +26,7 @@ const linkColor = undefined;
 
 const Copyright = () => {
   return (
-    <Typography variant={FONT_SIZE} color="text.secondary" mt={1}>
+    <Typography color="text.secondary" mt={1}>
       {"Copyright © "}
       Podcai&nbsp;
       {new Date().getFullYear()}
