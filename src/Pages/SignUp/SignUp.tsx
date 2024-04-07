@@ -34,6 +34,7 @@ import {
   VOICE_SAMPLE_SKELETON_HEIGHT,
   voicesArray,
   VOICES_SAMPLES_QUERY_KEY,
+  DEFAULT_STALE_TIME_MINUTES,
 } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
 import { isValidEmail, minutesInMilliseconds } from "../../Utils/Utils";
@@ -90,7 +91,7 @@ export const SignUp = () => {
     queryKey: [VOICES_SAMPLES_QUERY_KEY],
     queryFn: getVoiceSamepls,
     refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(10),
+    staleTime: minutesInMilliseconds(DEFAULT_STALE_TIME_MINUTES),
   });
 
   const validateEmail = () => {

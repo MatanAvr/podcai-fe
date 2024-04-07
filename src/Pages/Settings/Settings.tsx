@@ -9,6 +9,7 @@ import {
   voicesArray,
   DEFAULT_AUTO_HIDE_DURATION,
   VOICES_SAMPLES_QUERY_KEY,
+  DEFAULT_STALE_TIME_MINUTES,
 } from "../../ConstAndTypes/consts";
 import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
@@ -33,7 +34,7 @@ import { updateLoggedUser } from "../../Features/User/User";
 import CustomizedSnackbars from "../../Components/UI/CustomizedSnackbars/CustomizedSnackbars";
 import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../../Utils/Utils";
-import { OneLineAudioPlayer } from "../../Components/UI/CustomAudioPlayer - Copy/OneLineAudioPlayer";
+import { OneLineAudioPlayer } from "../../Components/UI/OneLineAudioPlayer/OneLineAudioPlayer";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -62,7 +63,7 @@ export const Settings = () => {
     queryKey: [VOICES_SAMPLES_QUERY_KEY],
     queryFn: getVoiceSamepls,
     refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(10),
+    staleTime: minutesInMilliseconds(DEFAULT_STALE_TIME_MINUTES),
   });
 
   useEffect(() => {
