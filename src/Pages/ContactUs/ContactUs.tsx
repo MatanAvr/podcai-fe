@@ -3,7 +3,7 @@ import { Alert, Box, TextField } from "@mui/material";
 import Footer from "../landing-page/components/Footer";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { isValidEmail2 } from "../../Utils/Utils";
+import { isValidEmail } from "../../Utils/Utils";
 import { ApiClient } from "../../Services/axios";
 import { isAxiosError } from "axios";
 import CheckIcon from "@mui/icons-material/Check";
@@ -31,7 +31,7 @@ export const ContactUs = () => {
   const sendMessageHanlder = async () => {
     setIsLoading(true);
     setErrors(defaultErrorsObj);
-    const isEmailValid = isValidEmail2(email);
+    const isEmailValid = isValidEmail(email);
     const isSubjectValid =
       subject.length > 0 && subject.length < MAX_SUBJECT_LENGTH;
     const isMessageValid =
