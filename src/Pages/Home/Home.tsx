@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { ApiClient } from "../../Services/axios";
-import { ALL_EPISODES_QUERY_KEY, Episode } from "../../ConstAndTypes/consts";
+import {
+  ALL_EPISODES_QUERY_KEY,
+  DEFAULT_STALE_TIME_MINUTES,
+  Episode,
+} from "../../ConstAndTypes/consts";
 import { isMobile, minutesInMilliseconds } from "../../Utils/Utils";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
@@ -46,7 +50,7 @@ export const Home = () => {
     queryKey: [ALL_EPISODES_QUERY_KEY],
     queryFn: getEpisodes,
     refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(10),
+    staleTime: minutesInMilliseconds(DEFAULT_STALE_TIME_MINUTES),
   });
 
   const onClickEpisodeHandler = (newEpisode: Episode) => {
