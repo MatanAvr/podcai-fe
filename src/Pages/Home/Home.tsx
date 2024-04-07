@@ -7,8 +7,7 @@ import {
 } from "../../ConstAndTypes/consts";
 import { isMobile, minutesInMilliseconds } from "../../Utils/Utils";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
-import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import {
   Accordion,
@@ -16,6 +15,7 @@ import {
   AccordionSummary,
   Avatar,
   Box,
+  Button,
   Card,
   CardActions,
   Checkbox,
@@ -32,7 +32,7 @@ const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();
 
 export const Home = () => {
-  const [expendedArr, setExpendedArr] = useState<string[]>([]);
+  const [expandedArr, setExpandedArr] = useState<string[]>([]);
   const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode | undefined>(
     undefined
   );
@@ -58,7 +58,7 @@ export const Home = () => {
       return;
     } else {
       setCurrentlyPlaying(newEpisode);
-      setExpendedArr(() => []);
+      collapseAllHandler();
     }
   };
 
@@ -69,25 +69,40 @@ export const Home = () => {
   }, []);
 
   const expendHandler = (panelId: string) => {
-    if (expendedArr.includes(panelId)) {
-      const index = expendedArr.findIndex((el) => el === panelId);
+    if (expandedArr.includes(panelId)) {
+      const index = expandedArr.findIndex((el) => el === panelId);
       if (index !== -1) {
-        const newExpendedArr = [...expendedArr];
+        const newExpendedArr = [...expandedArr];
         newExpendedArr.splice(index, 1);
-        setExpendedArr(() => newExpendedArr);
+        setExpandedArr(() => newExpendedArr);
       }
     } else {
-      setExpendedArr((prev) => [...prev, panelId]);
+      setExpandedArr((prev) => [...prev, panelId]);
     }
   };
+
+  const collapseAllHandler = () => {
+    setExpandedArr(() => []);
+  };
+
+  const expandAllHandler = () => {
+    if (!currentlyPlaying) return;
+    const tempArr = [];
+    for (let i = 0; i <= currentlyPlaying.articles_data.length; i++) {
+      tempArr.push(generatePanelId(i));
+    }
+    setExpandedArr(tempArr);
+  };
+
+  const generatePanelId = (index: number): string => `panel-${index}`;
 
   return (
     <Box
       id="home-wrapper"
       sx={{
         display: "flex",
-        width: mobile ? "95%" : "75%",
-        maxHeight: "98%",
+        width: mobile ? "95%" : "80%",
+        maxHeight: "96%",
       }}
     >
       {allEpisodes && allEpisodes.length === 0 && (
@@ -105,6 +120,7 @@ export const Home = () => {
           maxHeight: "100%",
           flex: 1,
           overflow: "hidden",
+          // border: "1px solid red",
         }}
         gap={1}
       >
@@ -120,26 +136,49 @@ export const Home = () => {
                 justifyContent: "flex-start",
                 flex: 6,
                 gap: 1,
-                maxHeight: "95%",
-                height: mobile ? "75%" : "95%",
+                maxHeight: "100%",
+                height: mobile ? "75%" : "100%",
+                // border: "1px solid blue",
               }}
             >
               <>
                 {currentlyPlaying && (
                   <>
                     <CustomAudioPlayer episode={currentlyPlaying} />
-                    <Typography>Sources</Typography>
+                    <Box
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                    >
+                      <Typography>Sources</Typography>
+                      <Box display={"flex"} gap={1}>
+                        <Button
+                          size="small"
+                          onClick={expandAllHandler}
+                          variant="outlined"
+                        >
+                          Expand-all
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={collapseAllHandler}
+                          variant="outlined"
+                        >
+                          Collapse-all
+                        </Button>
+                      </Box>
+                    </Box>
                     <Box
                       sx={{
                         overflow: "auto",
                       }}
                     >
                       {currentlyPlaying.articles_data.map((article, index) => {
-                        const panelId = `panel-${index}`;
+                        const panelId = generatePanelId(index);
                         return (
                           <Accordion
                             key={"Accordion" + index}
-                            expanded={expendedArr.includes(panelId)}
+                            expanded={expandedArr.includes(panelId)}
                             onChange={() => expendHandler(panelId)}
                           >
                             <AccordionSummary
@@ -151,13 +190,14 @@ export const Home = () => {
                                 sx={{
                                   display: "flex",
                                   alignItems: "center",
-                                  gap: 2,
+                                  gap: 1,
                                 }}
                               >
                                 <Avatar
                                   src={article.image}
                                   alt="Article image"
                                   variant="rounded"
+                                  sx={{ width: 30, height: 30 }}
                                 >
                                   <ArticleRoundedIcon />
                                 </Avatar>
@@ -188,13 +228,13 @@ export const Home = () => {
                 display: "flex",
                 flexDirection: "column",
                 flex: 2,
-                maxHeight: "95%",
+                maxHeight: "100%",
                 gap: 1,
                 width: mobile ? "100%" : "auto",
+                // border: "1px solid green",
               }}
             >
               <Typography>All episodes</Typography>
-
               <Box
                 id="all-episoeds-container"
                 sx={{
@@ -243,8 +283,13 @@ export const Home = () => {
                           >
                             <Checkbox
                               checked={active}
-                              icon={<PlayArrowOutlinedIcon fontSize="small" />}
-                              checkedIcon={<PlayCircleFilledOutlinedIcon />}
+                              icon={<PlayArrowRoundedIcon fontSize="small" />}
+                              checkedIcon={
+                                <PlayArrowRoundedIcon
+                                  color="primary"
+                                  fontSize="small"
+                                />
+                              }
                             />
                             <Typography
                               sx={{
