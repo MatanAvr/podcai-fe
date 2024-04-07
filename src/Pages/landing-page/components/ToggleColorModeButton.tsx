@@ -5,7 +5,7 @@ import NightlightRoundedIcon from "@mui/icons-material/NightlightRounded";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { ToggleColorMode } from "../../../Features/Theme/Theme";
 
-const ToggleColorModeButton = () => {
+export const ToggleColorModeButton = () => {
   const themeMode = useAppSelector((state) => state.theme.themeMode);
   const dispatch = useAppDispatch();
 
@@ -29,5 +29,3 @@ const ToggleColorModeButton = () => {
     </Box>
   );
 };
-
-export default ToggleColorModeButton;
