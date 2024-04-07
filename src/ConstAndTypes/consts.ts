@@ -79,6 +79,7 @@ export const DEFAULT_AUTO_HIDE_DURATION = 6 * 1000;
 export const EPISODE_EXAMPLE_QUERY_KEY = "episode-example-url";
 export const ALL_EPISODES_QUERY_KEY = "all-episodes";
 export const VOICES_SAMPLES_QUERY_KEY = "voices-samples";
+export const DEFAULT_STALE_TIME_MINUTES = 10;
 
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";

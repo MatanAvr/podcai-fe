@@ -2,13 +2,14 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import {
+  DEFAULT_STALE_TIME_MINUTES,
   EPISODE_EXAMPLE_QUERY_KEY,
   LANDING_PAGE_PY,
 } from "../../../ConstAndTypes/consts";
 import { ApiClient } from "../../../Services/axios";
 import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../../../Utils/Utils";
-import { OneLineAudioPlayer } from "../../../Components/UI/CustomAudioPlayer - Copy/OneLineAudioPlayer";
+import { OneLineAudioPlayer } from "../../../Components/UI/OneLineAudioPlayer/OneLineAudioPlayer";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -24,7 +25,7 @@ export default function BriefAndExample() {
     queryKey: [EPISODE_EXAMPLE_QUERY_KEY],
     queryFn: getEpisodeExample,
     refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(10),
+    staleTime: minutesInMilliseconds(DEFAULT_STALE_TIME_MINUTES),
   });
 
   return (

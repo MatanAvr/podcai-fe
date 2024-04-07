@@ -7,13 +7,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorModeButton from "./ToggleColorModeButton";
-import { Pages } from "../../../ConstAndTypes/consts";
+import { ALL_EPISODES_QUERY_KEY, Pages } from "../../../ConstAndTypes/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
 import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
 import { setAuth } from "../../../Features/User/User";
 import { enabledSections } from "../LandingPage";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 const logoStyle = {
   maxHeight: "40px",
@@ -33,6 +34,7 @@ const CustomAppBar = () => {
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const dispatch = useAppDispatch();
   const nav = useMyNavigation();
+  const queryClient = useQueryClient();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -63,6 +65,7 @@ const CustomAppBar = () => {
   };
 
   const logoutHandler = () => {
+    queryClient.removeQueries({ queryKey: [ALL_EPISODES_QUERY_KEY] });
     dispatch(setAuth({ newMode: false, token: "" }));
     changePageHandler("LandingPage");
     setOpen(false);
