@@ -208,7 +208,7 @@ export const Home = () => {
                               <Link
                                 href={article.url}
                                 target="_blank"
-                                rel="noreferrer"
+                                rel="noopener"
                               >
                                 {article.title}
                               </Link>
