@@ -122,36 +122,41 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
     }
   };
 
-  const volumeChangeHandler = (volumeValue: number) => {
+  const changeVolumeHandler = (newVolume: number) => {
     if (!audioRef.current) return;
-    audioRef.current.volume = volumeValue;
-    setVolume(volumeValue);
-    setVolumeBeforeUnmute(volumeValue);
+    if (newVolume < 0) newVolume = 0;
+    else if (newVolume > 1) newVolume = 1;
+    audioRef.current.volume = newVolume;
+    setVolume(newVolume);
+    setVolumeBeforeUnmute(newVolume);
   };
 
   const togglePlayPause = () => {
+    if (!audioRef.current) return;
     if (isPlaying) {
-      audioRef.current?.pause();
-      setIsPlaying(false);
+      audioRef.current.pause();
+      setIsPlaying(() => false);
     } else {
-      audioRef.current?.play();
-      setIsPlaying(true);
+      audioRef.current.play();
+      setIsPlaying(() => true);
     }
   };
 
-  const muteUnmuteHandler = () => {
+  const toggleMuteUnmute = () => {
     if (!audioRef.current) return;
-
     if (audioRef.current.volume !== 0) {
       audioRef.current.volume = 0;
     } else {
-      volumeChangeHandler(volumeBeforeUnmute);
+      changeVolumeHandler(volumeBeforeUnmute);
     }
   };
 
-  const durationChangeHandler = (durationChange: -10 | 10) => {
+  const changeProgressHandler = (progressChange: "back" | "forward") => {
+    const change = progressChange === "back" ? -10 : 10;
     if (!audioRef.current) return;
-    const newProgress = audioRef.current.currentTime + durationChange;
+    let newProgress = audioRef.current.currentTime + change;
+    if (newProgress < 0) newProgress = 0;
+    else if (newProgress > duration) newProgress = duration;
     audioRef.current.currentTime = newProgress;
     setCurrrentProgress(newProgress);
   };
@@ -275,7 +280,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
             <ClearRoundedIcon fontSize="small" />
           </IconButton>
 
-          <IconButton onClick={() => durationChangeHandler(-10)}>
+          <IconButton onClick={() => changeProgressHandler("back")}>
             <Replay10RoundedIcon fontSize="large" color={buttonsColor} />
           </IconButton>
 
@@ -296,11 +301,11 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
             )}
           </IconButton>
 
-          <IconButton onClick={() => durationChangeHandler(10)}>
+          <IconButton onClick={() => changeProgressHandler("forward")}>
             <Forward10RoundedIcon fontSize="large" color={buttonsColor} />
           </IconButton>
 
-          {dynamicVolumeIconButton(volume, muteUnmuteHandler, "medium")}
+          {dynamicVolumeIconButton(volume, toggleMuteUnmute, "medium")}
         </Box>
         {!mobile && (
           <>
@@ -320,7 +325,7 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
               >
                 <VolumeInput
                   volume={volume}
-                  onVolumeChange={volumeChangeHandler}
+                  onVolumeChange={changeVolumeHandler}
                 />
               </Box>
             </Box>

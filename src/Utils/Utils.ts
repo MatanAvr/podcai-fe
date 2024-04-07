@@ -1,9 +1,7 @@
 export const isValidEmail = (email: string): boolean => {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
-
-export const isValidEmail2 = (email: string): boolean => {
-  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
 };
 
 export const isMobile = () => {
@@ -22,10 +20,20 @@ export const isMobile = () => {
 };
 
 export const formatDurationDisplay = (duration: number) => {
-  const min = Math.floor(duration / 60);
-  const sec = Math.floor(duration - min * 60);
-  const formatted = [min, sec].map((n) => (n < 10 ? "0" + n : n)).join(":"); // format - mm:ss
-  return formatted;
+  const hours = Math.floor(duration / 3600);
+  const minutes = Math.floor((duration % 3600) / 60);
+  const seconds = Math.floor(duration % 60);
+
+  if (hours === 0) {
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+    return `${formattedMinutes}:${formattedSeconds}`;
+  } else {
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
 };
 
 export const minutesInMilliseconds = (minutes: number): number =>

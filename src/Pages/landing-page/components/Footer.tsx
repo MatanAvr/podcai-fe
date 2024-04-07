@@ -21,8 +21,15 @@ const instagramLink = "https://instagram.com/podcai";
 const facebookLink = "https://www.facebook.com/podcai.co";
 const linkedinLink = "https://www.linkedin.com/company/podcai";
 
+const socialMediaButtons = [
+  { name: "X", link: twitterLink, icon: <TwitterIcon /> },
+  { name: "Instagram", link: instagramLink, icon: <InstagramIcon /> },
+  { name: "Facebook", link: facebookLink, icon: <FacebookIcon /> },
+  { name: "Linkedin", link: linkedinLink, icon: <LinkedInIcon /> },
+];
+
 const linkStyle = { cursor: "pointer" };
-const linkColor = undefined;
+const linkColor = "text.primary";
 
 const Copyright = () => {
   return (
@@ -97,7 +104,9 @@ export default function Footer() {
                   key={`link-${index}`}
                   sx={linkStyle}
                   color={linkColor}
+                  // color="text.primary"
                   onClick={() => scrollToSection(section)}
+                  underline="hover"
                 >
                   {section}
                 </Link>
@@ -126,6 +135,7 @@ export default function Footer() {
               sx={linkStyle}
               color={linkColor}
               onClick={() => changePageHandler("Contact us")}
+              underline="hover"
             >
               Contact us
             </Link>
@@ -233,48 +243,22 @@ export default function Footer() {
       >
         <Copyright />
         <Stack direction="row" justifyContent="left" spacing={1} useFlexGap>
-          <IconButton
-            color="primary"
-            href={twitterLink}
-            target="_blank"
-            aria-label="X"
-            sx={{ alignSelf: "center" }}
-            size="large"
-          >
-            <TwitterIcon />
-          </IconButton>
-          <IconButton
-            color="primary"
-            href={instagramLink}
-            target="_blank"
-            aria-label="Instagram"
-            sx={{ alignSelf: "center" }}
-            size="large"
-          >
-            <InstagramIcon />
-          </IconButton>
-
-          <IconButton
-            color="primary"
-            href={facebookLink}
-            target="_blank"
-            aria-label="Facebook"
-            sx={{ alignSelf: "center" }}
-            size="large"
-          >
-            <FacebookIcon />
-          </IconButton>
-
-          <IconButton
-            color="primary"
-            href={linkedinLink}
-            target="_blank"
-            aria-label="LinkedIn"
-            sx={{ alignSelf: "center" }}
-            size="large"
-          >
-            <LinkedInIcon />
-          </IconButton>
+          {socialMediaButtons.map((socialMedia, index) => {
+            return (
+              <IconButton
+                key={`social-medie-button-${index}`}
+                color="primary"
+                href={socialMedia.link}
+                target="_blank"
+                rel="noopener"
+                aria-label={socialMedia.name}
+                sx={{ alignSelf: "center" }}
+                size="large"
+              >
+                {socialMedia.icon}
+              </IconButton>
+            );
+          })}
         </Stack>
       </Box>
     </Container>
