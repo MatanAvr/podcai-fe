@@ -5,8 +5,7 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
-import MenuIcon from "@mui/icons-material/Menu";
-import ToggleColorModeButton from "./ToggleColorModeButton";
+import { ToggleColorModeSwitch } from "./ToggleColorModeSwitch";
 import { ALL_EPISODES_QUERY_KEY, Pages } from "../../../ConstAndTypes/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
@@ -15,6 +14,11 @@ import { setAuth } from "../../../Features/User/User";
 import { enabledSections } from "../LandingPage";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { IconButton, Avatar, Menu, ListItemIcon } from "@mui/material";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 const logoStyle = {
   maxHeight: "40px",
@@ -22,19 +26,24 @@ const logoStyle = {
   marginStart: "10px",
 };
 
-const menuItemStyle = {
-  py: "6px",
-  px: "12px",
-};
-
 const CustomAppBar = () => {
   const [open, setOpen] = useState(false);
   const isAuth = useAppSelector((state) => state.user.auth);
+  const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const currentTheme = useAppSelector((state) => state.theme.themeMode);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const dispatch = useAppDispatch();
   const nav = useMyNavigation();
   const queryClient = useQueryClient();
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const openMenuHandler = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const closeMenuHandler = () => {
+    setAnchorElUser(null);
+  };
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -70,6 +79,24 @@ const CustomAppBar = () => {
     changePageHandler("LandingPage");
     setOpen(false);
   };
+
+  const manuItemsArr = [
+    {
+      name: "Home",
+      icon: <HomeRoundedIcon fontSize="small" />,
+      function: () => changePageHandler("Home"),
+    },
+    {
+      name: "Settings",
+      icon: <SettingsRoundedIcon fontSize="small" />,
+      function: () => changePageHandler("Settings"),
+    },
+    {
+      name: "Contact us",
+      icon: <EmailRoundedIcon fontSize="small" />,
+      function: () => changePageHandler("Contact us"),
+    },
+  ];
 
   return (
     <AppBar
@@ -146,26 +173,7 @@ const CustomAppBar = () => {
         >
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {isAuth ? (
-              <>
-                <MenuItem
-                  onClick={() => changePageHandler("Home")}
-                  sx={menuItemStyle}
-                >
-                  <Typography color="text.primary">Home</Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => changePageHandler("Settings")}
-                  sx={menuItemStyle}
-                >
-                  <Typography color="text.primary">Settings</Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => changePageHandler("Contact us")}
-                  sx={menuItemStyle}
-                >
-                  <Typography color="text.primary">Contact us</Typography>
-                </MenuItem>
-              </>
+              <></>
             ) : (
               <>
                 {enabledSections.map((section, index) => {
@@ -173,16 +181,12 @@ const CustomAppBar = () => {
                     <MenuItem
                       key={`manu-item-${index}`}
                       onClick={() => scrollToSection(section)}
-                      sx={menuItemStyle}
                     >
                       <Typography color="text.primary">{section}</Typography>
                     </MenuItem>
                   );
                 })}
-                <MenuItem
-                  onClick={() => changePageHandler("Contact us")}
-                  sx={menuItemStyle}
-                >
+                <MenuItem onClick={() => changePageHandler("Contact us")}>
                   <Typography color="text.primary">Contact us</Typography>
                 </MenuItem>
               </>
@@ -200,16 +204,54 @@ const CustomAppBar = () => {
             justifyContent: "flex-end",
           }}
         >
-          <ToggleColorModeButton />
           {isAuth ? (
-            <Button
-              color="primary"
-              variant="text"
-              size="small"
-              onClick={logoutHandler}
-            >
-              Log out
-            </Button>
+            <>
+              <Box sx={{ flexGrow: 0 }}>
+                <IconButton onClick={openMenuHandler} sx={{ p: 0 }}>
+                  <Avatar alt={loggedUser.name} src={""} />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorElUser}
+                  id="account-menu"
+                  onClose={closeMenuHandler}
+                  onClick={closeMenuHandler}
+                  transformOrigin={{ horizontal: "right", vertical: "top" }}
+                  anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+                  open={Boolean(anchorElUser)}
+                >
+                  <MenuItem
+                    sx={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  >
+                    <ToggleColorModeSwitch />
+                  </MenuItem>
+                  {manuItemsArr.map((menuItem, index) => {
+                    return (
+                      <MenuItem
+                        key={`menu-item-${index}`}
+                        onClick={menuItem.function}
+                      >
+                        <ListItemIcon>{menuItem.icon}</ListItemIcon>
+                        <Typography>{menuItem.name}</Typography>
+                      </MenuItem>
+                    );
+                  })}
+                  <Divider />
+                  <MenuItem onClick={logoutHandler}>
+                    <ListItemIcon>
+                      <LogoutRoundedIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography>Log out</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            </>
           ) : (
             <>
               <Button
@@ -235,15 +277,9 @@ const CustomAppBar = () => {
 
         {/* // MOBILE VIEW *** */}
         <Box sx={{ display: { sm: "", md: "none" } }}>
-          <Button
-            variant="text"
-            color="primary"
-            aria-label="menu"
-            onClick={toggleDrawer(true)}
-            sx={{ minWidth: "30px", p: "4px" }}
-          >
-            <MenuIcon />
-          </Button>
+          <IconButton onClick={toggleDrawer(true)} sx={{ p: 0, px: 0.5 }}>
+            <Avatar alt={loggedUser.name} src={""} />
+          </IconButton>
           <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
             <Box
               sx={{
@@ -257,23 +293,32 @@ const CustomAppBar = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: "end",
+                  alignItems: "start",
                   flexGrow: 1,
                 }}
               >
-                <ToggleColorModeButton />
+                <MenuItem
+                  sx={{
+                    width: "100%",
+                    justifyContent: "center",
+                  }}
+                >
+                  <ToggleColorModeSwitch />
+                </MenuItem>
               </Box>
               {isAuth ? (
                 <>
-                  <MenuItem onClick={() => changePageHandler("Home")}>
-                    Home
-                  </MenuItem>
-                  <MenuItem onClick={() => changePageHandler("Settings")}>
-                    Settings
-                  </MenuItem>
-                  <MenuItem onClick={() => changePageHandler("Contact us")}>
-                    Contact us
-                  </MenuItem>
+                  {manuItemsArr.map((menuItem, index) => {
+                    return (
+                      <MenuItem
+                        key={`menu-item-${index}`}
+                        onClick={menuItem.function}
+                      >
+                        <ListItemIcon>{menuItem.icon}</ListItemIcon>
+                        <Typography>{menuItem.name}</Typography>
+                      </MenuItem>
+                    );
+                  })}
                 </>
               ) : (
                 <>
