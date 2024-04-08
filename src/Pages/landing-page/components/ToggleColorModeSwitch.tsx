@@ -18,7 +18,7 @@ export const ToggleColorModeSwitch = () => {
     >
       <NightlightRoundedIcon
         fontSize="small"
-        color={themeMode === "dark" ? "primary" : "inherit"}
+        color={themeMode === "dark" ? "primary" : "disabled"}
       />
       <Switch
         size="small"
@@ -30,7 +30,7 @@ export const ToggleColorModeSwitch = () => {
       />
       <WbSunnyRoundedIcon
         fontSize="small"
-        color={themeMode === "light" ? "primary" : "inherit"}
+        color={themeMode === "light" ? "primary" : "disabled"}
       />
     </Box>
   );

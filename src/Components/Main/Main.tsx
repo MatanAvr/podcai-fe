@@ -1,5 +1,5 @@
 import "./Main.scss";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { Login } from "../../Pages/Login/Login";
 import { SignUp } from "../../Pages/SignUp/SignUp";
 import { Home } from "../../Pages/Home/Home";
@@ -16,12 +16,29 @@ import { ForgotPassword } from "../../Pages/ForgotPassword/ForgotPassword";
 import { TermsOfService } from "../../Pages/TermsOfService/TermsOfService";
 import { PrivacyPolicy } from "../../Pages/PrivacyPolicy/PrivacyPolicy";
 import { ContactUs } from "../../Pages/ContactUs/ContactUs";
+import { Updates } from "../../Pages/Updates/Updates";
+import { Pages } from "../../ConstAndTypes/consts";
 
 const apiClientInstance = ApiClient.getInstance();
 
+// export const enabledPages:
+type TEnabledPages = { [page in Pages]: boolean };
+
+export const enabledPages: TEnabledPages = {
+  Login: true,
+  "Sign up": true,
+  Home: true,
+  Settings: true,
+  LandingPage: true,
+  Unsubscribe: true,
+  "Forgot password": true,
+  "Terms of service": true,
+  "Privacy policy": true,
+  "Contact us": true,
+  Updates: false,
+};
 export const Main = () => {
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector((state) => state.user.auth);
   const hasMounted = useRef(false);
 
   useEffect(() => {
@@ -66,7 +83,7 @@ export const Main = () => {
       <div className="main-wrapper">
         <Box sx={{ display: "flex", width: "100%", py: 1 }} />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<LandingPage />}></Route>
           <Route path="/Login" element={<Login />} />
           <Route path="/Sign up" element={<SignUp />} />
           <Route path="/Unsubscribe" element={<Unsubscribe />} />
@@ -74,15 +91,24 @@ export const Main = () => {
           <Route path="/Terms of service" element={<TermsOfService />} />
           <Route path="/Privacy policy" element={<PrivacyPolicy />} />
           <Route path="/Contact us" element={<ContactUs />} />
-          {/* private routes */}
-          <Route path="/Home" element={isAuth ? <Home /> : <LandingPage />} />
-          <Route
-            path="/Settings"
-            element={isAuth ? <Settings /> : <LandingPage />}
-          />
-          <Route path="*" element={<LandingPage />} />
+          {/* <Route path="/Updates" element={<Updates />} /> */}
+          {/* Private route using PrivateRoute component */}
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/Home" element={<Home />} />
+          </Route>
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/Settings" element={<Settings />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </Paper>
   );
 };
+
+const PrivateRoute = () => {
+  const isAuthenticated = useAppSelector((state) => state.user.auth);
+  return isAuthenticated ? <Outlet /> : <Navigate to="/Login" replace />;
+};
+
+export default PrivateRoute;

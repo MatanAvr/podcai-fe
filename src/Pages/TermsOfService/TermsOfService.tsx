@@ -4,6 +4,7 @@ import Footer from "../landing-page/components/Footer";
 export const TermsOfService = () => {
   return (
     <Box
+      id="terms-of-service-page-wrapper"
       sx={{
         display: "flex",
         width: "100%",
@@ -14,7 +15,7 @@ export const TermsOfService = () => {
         gap: 1,
       }}
     >
-      <Typography variant="h4" component="div" textAlign={"center"} autoFocus>
+      <Typography variant="h4" component="div" textAlign={"center"}>
         Terms Of Service
       </Typography>
       {/* <Typography variant="body1" component="div" maxWidth={"60%"}>

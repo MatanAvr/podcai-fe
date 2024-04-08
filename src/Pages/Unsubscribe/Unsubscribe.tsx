@@ -57,6 +57,7 @@ export const Unsubscribe = () => {
 
   return (
     <Box
+      id="unsubscribe-page-wrapper"
       component="form"
       sx={{
         display: "flex",

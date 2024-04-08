@@ -4,6 +4,7 @@ import Footer from "../landing-page/components/Footer";
 export const PrivacyPolicy = () => {
   return (
     <Box
+      id="privacy-policy-page-wrapper"
       sx={{
         display: "flex",
         width: "100%",
@@ -14,7 +15,7 @@ export const PrivacyPolicy = () => {
         gap: 1,
       }}
     >
-      <Typography variant="h4" component="div" textAlign={"center"} autoFocus>
+      <Typography variant="h4" component="div" textAlign={"center"}>
         Privacy Policy
       </Typography>
       {/* <Typography variant="body1" component="div" maxWidth={"60%"}>

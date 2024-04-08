@@ -288,6 +288,7 @@ export const Settings = () => {
 
   return (
     <Box
+      id="settings-page-wrapper"
       sx={{
         display: "flex",
         flexDirection: "column",

@@ -81,6 +81,7 @@ export const ContactUs = () => {
 
   return (
     <Box
+      id="contact-us-wrapper"
       sx={{
         display: "flex",
         width: "100%",
@@ -91,7 +92,7 @@ export const ContactUs = () => {
         gap: 1.5,
       }}
     >
-      <Typography variant="h4" component="div" textAlign={"center"} autoFocus>
+      <Typography variant="h4" component="div" textAlign={"center"}>
         Contact Us
       </Typography>
       <Box
@@ -103,7 +104,7 @@ export const ContactUs = () => {
           gap: 1,
         }}
       >
-        <Typography variant="h6" component="div" textAlign={"center"} autoFocus>
+        <Typography variant="h6" component="div" textAlign={"center"}>
           What subject can we help you with?
         </Typography>
         <TextField
