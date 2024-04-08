@@ -21,6 +21,7 @@ export const ToggleColorModeSwitch = () => {
         color={themeMode === "dark" ? "primary" : "disabled"}
       />
       <Switch
+        id="theme-color-mode-switch"
         size="small"
         color="primary"
         checked={themeMode === "light"}

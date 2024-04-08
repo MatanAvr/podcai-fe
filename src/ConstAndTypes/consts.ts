@@ -23,7 +23,8 @@ export type Pages =
   | "Terms of service"
   | "Privacy policy"
   | "Contact us"
-  | "Updates";
+  | "Updates"
+  | "";
 
 type Countries = "us";
 type Languages = "en";
