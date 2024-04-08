@@ -10,7 +10,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
-import { enabledSections } from "../LandingPage";
+import { enabledLandingPageSections } from "../LandingPage";
 import { useAppSelector } from "../../../Hooks/Hooks";
 import { Pages } from "../../../ConstAndTypes/consts";
 import { Divider } from "@mui/material";
@@ -98,7 +98,7 @@ export default function Footer() {
               Product
             </Typography>
 
-            {enabledSections.map((section, index) => {
+            {enabledLandingPageSections.map((section, index) => {
               return (
                 <Link
                   key={`link-${index}`}
@@ -139,6 +139,14 @@ export default function Footer() {
             >
               Contact us
             </Link>
+            {/* <Link
+              sx={linkStyle}
+              color={linkColor}
+              onClick={() => changePageHandler("Updates")}
+              underline="hover"
+            >
+              Updates
+            </Link> */}
             {/* <Link
               sx={linkStyle}
               color={linkColor}

@@ -233,6 +233,7 @@ export const ForgotPassword = () => {
 
   return (
     <Box
+      id="forgot-password-wrapper"
       sx={{
         display: "flex",
         flexDirection: "column",

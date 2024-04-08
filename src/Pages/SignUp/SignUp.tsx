@@ -461,6 +461,7 @@ export const SignUp = () => {
 
   return (
     <Box
+      id="sign-up-page-wrapper"
       sx={{
         display: "flex",
         flexDirection: "column",

@@ -11,11 +11,11 @@ import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 import GroupsIcon from "@mui/icons-material/Groups";
 import NewspaperRoundedIcon from "@mui/icons-material/NewspaperRounded";
 import { useState } from "react";
-import topicsBlack from "../../../Assets/Images/Hero-images/Topics - black.png";
-import topicWhite from "../../../Assets/Images/Hero-images/Topics - white.png";
-import podcaiPreviewDark from "../../../Assets/Images/Hero-images/podcai-playing-playing-dark.png";
-import podcaiPreviewLight from "../../../Assets/Images/Hero-images/podcai-playing-playing-light.png";
-import podcastersPhoto from "../../../Assets/Images/Hero-images/Podcasters photos.png";
+import topicsDark from "../../../Assets/Images/Hero-images/topics-dark.png";
+import topicsLight from "../../../Assets/Images/Hero-images/topics-light.png";
+import podcaiPreviewDark from "../../../Assets/Images/Hero-images/podcai-dark.png";
+import podcaiPreviewLight from "../../../Assets/Images/Hero-images/podcai-light.png";
+import podcastersPhoto from "../../../Assets/Images/Hero-images/podcasters.png";
 import {
   LANDING_PAGE_PY,
   MAX_NUM_OF_TOPICS,
@@ -27,8 +27,8 @@ const features = [
     title: "Topics",
     description: `Podcai offers a selection of 9 topics for podcasts. 
     Choose up to ${MAX_NUM_OF_TOPICS}, and Podcai will generate your personalized daily podcasts.`,
-    imageLight: `url('${topicsBlack}')`,
-    imageDark: `url('${topicWhite}')`,
+    imageLight: `url('${topicsDark}')`,
+    imageDark: `url('${topicsLight}')`,
   },
   {
     icon: <GroupsIcon fontSize="large" />,

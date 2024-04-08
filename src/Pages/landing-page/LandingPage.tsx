@@ -12,14 +12,23 @@ import { useAppSelector } from "../../Hooks/Hooks";
 import BriefAndExample from "./components/BriefAndExample";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 
-type sectionOptions =
+type LandingPageSectionsOptions =
   | "Features"
   | "Testimonials"
   | "Highlights"
   | "Pricing"
   | "Faq";
 
-export const enabledSections: sectionOptions[] = [
+// type EnabledSectionObj = { [name in LandingPageSectionsOptions]: boolean };
+
+// export const enabledLandingPageSectionsObj: EnabledSectionObj = {
+//   Features: true,
+//   Testimonials: false,
+//   Highlights: true,
+//   Pricing: false,
+//   Faq: true,
+// };
+export const enabledLandingPageSections: LandingPageSectionsOptions[] = [
   "Features",
   // "Testimonials",
   "Highlights",
@@ -43,11 +52,13 @@ export default function LandingPage() {
       <Box>
         {/* <LogoCollection /> */}
         <BriefAndExample />
-        {enabledSections.includes("Features") && <Features />}
-        {enabledSections.includes("Testimonials") && <Testimonials />}
-        {enabledSections.includes("Highlights") && <Highlights />}
-        {enabledSections.includes("Pricing") && <Pricing />}
-        {enabledSections.includes("Faq") && <Faq />}
+        {enabledLandingPageSections.includes("Features") && <Features />}
+        {enabledLandingPageSections.includes("Testimonials") && (
+          <Testimonials />
+        )}
+        {enabledLandingPageSections.includes("Highlights") && <Highlights />}
+        {enabledLandingPageSections.includes("Pricing") && <Pricing />}
+        {enabledLandingPageSections.includes("Faq") && <Faq />}
         <Footer />
       </Box>
     </>

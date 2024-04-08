@@ -22,7 +22,8 @@ export type Pages =
   | "Forgot password"
   | "Terms of service"
   | "Privacy policy"
-  | "Contact us";
+  | "Contact us"
+  | "Updates";
 
 type Countries = "us";
 type Languages = "en";
