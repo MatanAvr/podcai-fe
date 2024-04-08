@@ -98,7 +98,7 @@ export const Home = () => {
 
   return (
     <Box
-      id="home-wrapper"
+      id="home-page-wrapper"
       sx={{
         display: "flex",
         width: mobile ? "95%" : "80%",

@@ -81,6 +81,7 @@ export const Login = () => {
 
   return (
     <Box
+      id="login-page-wrapper"
       component="form"
       sx={{
         "& .MuiTextField-root": { m: 1, width: "auto" },

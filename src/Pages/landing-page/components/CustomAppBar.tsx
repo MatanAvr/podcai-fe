@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
 import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
 import { setAuth } from "../../../Features/User/User";
-import { enabledSections } from "../LandingPage";
+import { enabledLandingPageSections } from "../LandingPage";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { IconButton, Avatar, Menu, ListItemIcon } from "@mui/material";
@@ -19,6 +19,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import ListRoundedIcon from "@mui/icons-material/ListRounded";
 
 const logoStyle = {
   maxHeight: "40px",
@@ -116,6 +117,7 @@ const CustomAppBar = () => {
           justifyContent: "space-around",
           width: "100%",
           py: 1.5,
+
           bgcolor:
             theme.palette.mode === "light"
               ? "rgba(255, 255, 255, 0.4)"
@@ -135,6 +137,7 @@ const CustomAppBar = () => {
           }}
         >
           <Box
+            id="logo"
             sx={{
               display: "flex",
               alignItems: "center",
@@ -176,7 +179,7 @@ const CustomAppBar = () => {
               <></>
             ) : (
               <>
-                {enabledSections.map((section, index) => {
+                {enabledLandingPageSections.map((section, index) => {
                   return (
                     <MenuItem
                       key={`manu-item-${index}`}
@@ -219,8 +222,9 @@ const CustomAppBar = () => {
                   anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
                   open={Boolean(anchorElUser)}
                 >
-                  <MenuItem
+                  <Box
                     sx={{
+                      display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
@@ -230,7 +234,7 @@ const CustomAppBar = () => {
                     }}
                   >
                     <ToggleColorModeSwitch />
-                  </MenuItem>
+                  </Box>
                   {manuItemsArr.map((menuItem, index) => {
                     return (
                       <MenuItem
@@ -254,6 +258,7 @@ const CustomAppBar = () => {
             </>
           ) : (
             <>
+              <ToggleColorModeSwitch />
               <Button
                 color="primary"
                 variant="outlined"
@@ -262,7 +267,6 @@ const CustomAppBar = () => {
               >
                 Log in
               </Button>
-
               <Button
                 color="primary"
                 variant="contained"
@@ -277,9 +281,21 @@ const CustomAppBar = () => {
 
         {/* // MOBILE VIEW *** */}
         <Box sx={{ display: { sm: "", md: "none" } }}>
-          <IconButton onClick={toggleDrawer(true)} sx={{ p: 0, px: 0.5 }}>
-            <Avatar alt={loggedUser.name} src={""} />
-          </IconButton>
+          {isAuth ? (
+            <IconButton onClick={toggleDrawer(true)} sx={{ p: 0, px: 0.5 }}>
+              <Avatar alt={loggedUser.name} src={""} />
+            </IconButton>
+          ) : (
+            <Button
+              variant="text"
+              color="primary"
+              aria-label="menu"
+              onClick={toggleDrawer(true)}
+              sx={{ p: 0, px: 0.5 }}
+            >
+              <ListRoundedIcon />
+            </Button>
+          )}
           <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
             <Box
               sx={{
@@ -297,14 +313,16 @@ const CustomAppBar = () => {
                   flexGrow: 1,
                 }}
               >
-                <MenuItem
+                <Box
                   sx={{
+                    display: "flex",
+                    alignItems: "center",
                     width: "100%",
                     justifyContent: "center",
                   }}
                 >
                   <ToggleColorModeSwitch />
-                </MenuItem>
+                </Box>
               </Box>
               {isAuth ? (
                 <>
@@ -322,7 +340,7 @@ const CustomAppBar = () => {
                 </>
               ) : (
                 <>
-                  {enabledSections.map((section, index) => {
+                  {enabledLandingPageSections.map((section, index) => {
                     return (
                       <MenuItem
                         key={`manu-item-${index}`}
