@@ -104,6 +104,7 @@ export const Login = () => {
       <TextField
         id="email"
         label="Email"
+        type="email"
         inputMode="email"
         variant="outlined"
         size="small"
