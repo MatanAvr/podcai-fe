@@ -17,26 +17,9 @@ import { TermsOfService } from "../../Pages/TermsOfService/TermsOfService";
 import { PrivacyPolicy } from "../../Pages/PrivacyPolicy/PrivacyPolicy";
 import { ContactUs } from "../../Pages/ContactUs/ContactUs";
 import { Updates } from "../../Pages/Updates/Updates";
-import { Pages } from "../../ConstAndTypes/consts";
 
 const apiClientInstance = ApiClient.getInstance();
 
-// export const enabledPages:
-type TEnabledPages = { [page in Pages]: boolean };
-
-export const enabledPages: TEnabledPages = {
-  Login: true,
-  "Sign up": true,
-  Home: true,
-  Settings: true,
-  LandingPage: true,
-  Unsubscribe: true,
-  "Forgot password": true,
-  "Terms of service": true,
-  "Privacy policy": true,
-  "Contact us": true,
-  Updates: false,
-};
 export const Main = () => {
   const dispatch = useAppDispatch();
   const hasMounted = useRef(false);
@@ -92,8 +75,9 @@ export const Main = () => {
           <Route path="/Privacy policy" element={<PrivacyPolicy />} />
           <Route path="/Contact us" element={<ContactUs />} />
           {/* <Route path="/Updates" element={<Updates />} /> */}
+
           {/* Private route using PrivateRoute component */}
-          <Route path="/" element={<PrivateRoute />}>
+          <Route element={<PrivateRoute />}>
             <Route path="/Home" element={<Home />} />
           </Route>
           <Route path="/" element={<PrivateRoute />}>

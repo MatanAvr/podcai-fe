@@ -14,13 +14,22 @@ import { setAuth } from "../../../Features/User/User";
 import { enabledLandingPageSections } from "../LandingPage";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { getBrowser } from "../../../Utils/Utils";
+import { deferredPrompt, pwaInstall } from "../../../Utils/pwaInstall";
 import { IconButton, Avatar, Menu, ListItemIcon } from "@mui/material";
+// Icons
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import ListRoundedIcon from "@mui/icons-material/ListRounded";
+import InstallMobileRoundedIcon from "@mui/icons-material/InstallMobileRounded";
+import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
+import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
+import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
+import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
 
+const browser = getBrowser();
 const logoStyle = {
   maxHeight: "40px",
   height: "auto",
@@ -137,7 +146,7 @@ const CustomAppBar = () => {
           }}
         >
           <Box
-            id="logo"
+            id="podcai-logo"
             sx={{
               display: "flex",
               alignItems: "center",
@@ -150,7 +159,7 @@ const CustomAppBar = () => {
                 changePageHandler("Home");
               } else {
                 changePageHandler("LandingPage");
-                scrollToSection("Hero");
+                // scrollToSection("Hero");
               }
             }}
           >
@@ -278,8 +287,13 @@ const CustomAppBar = () => {
             </>
           )}
         </Box>
-
-        {/* // MOBILE VIEW *** */}
+        {/******************************************************************************************************************/}
+        {/******************************************************************************************************************/}
+        {/******************************************************************************************************************/}
+        {/****************************************************** MOBILE VIEW ***********************************************/}
+        {/******************************************************************************************************************/}
+        {/******************************************************************************************************************/}
+        {/******************************************************************************************************************/}
         <Box sx={{ display: { sm: "", md: "none" } }}>
           {isAuth ? (
             <IconButton onClick={toggleDrawer(true)} sx={{ p: 0, px: 0.5 }}>
@@ -319,11 +333,28 @@ const CustomAppBar = () => {
                     alignItems: "center",
                     width: "100%",
                     justifyContent: "center",
+                    pb: 2,
                   }}
                 >
                   <ToggleColorModeSwitch />
                 </Box>
               </Box>
+              <Divider />
+
+              {browser === "Chrome" && deferredPrompt !== null && (
+                <MenuItem
+                  onClick={() => {
+                    pwaInstall();
+                  }}
+                >
+                  <ListItemIcon>
+                    <InstallMobileRoundedIcon fontSize="small" />
+                  </ListItemIcon>
+                  <Typography>Install app</Typography>
+                </MenuItem>
+              )}
+
+              {/* </Box> */}
               {isAuth ? (
                 <>
                   {manuItemsArr.map((menuItem, index) => {
@@ -346,12 +377,26 @@ const CustomAppBar = () => {
                         key={`manu-item-${index}`}
                         onClick={() => scrollToSection(section)}
                       >
-                        {section}
+                        <ListItemIcon>
+                          {section === "Features" && (
+                            <GradeRoundedIcon fontSize="small" />
+                          )}
+                          {section === "Highlights" && (
+                            <AutoAwesomeRoundedIcon fontSize="small" />
+                          )}
+                          {section === "Faq" && (
+                            <HelpOutlineRoundedIcon fontSize="small" />
+                          )}
+                        </ListItemIcon>
+                        <Typography>{section}</Typography>
                       </MenuItem>
                     );
                   })}
                   <MenuItem onClick={() => changePageHandler("Contact us")}>
-                    Contact us
+                    <ListItemIcon>
+                      <SupportAgentRoundedIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography>Contact us</Typography>
                   </MenuItem>
                 </>
               )}
