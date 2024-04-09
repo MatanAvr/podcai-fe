@@ -36,7 +36,7 @@ export const Unsubscribe = () => {
         setUnsubscribedSuccessfully(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error("onClickUnsubscribeHandler error:", error);
     }
     setIsLoading(false);
   };

@@ -11,10 +11,10 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18.16.0
+          node-version: 20
 
       # - name: Caching Gatsby
       #   id: gatsby-cache-build
@@ -43,3 +43,12 @@ jobs:
 
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./build/ s3://${{ vars.AWS_BUCKET_NAME }} --delete
+
+      - name: Cloudfront Invalidation
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_CF_DISTRIBUTION_ID }}
+          PATHS: "/*"
+          AWS_REGION: "ap-southeast-1"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
