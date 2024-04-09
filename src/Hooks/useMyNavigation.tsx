@@ -16,14 +16,14 @@ export const useMyNavigation = () => {
 
   const replace = useCallback(
     (to: Pages, state: any) => navigate(to, { replace: true, state }),
-    []
+    [navigate]
   );
 
-  const go = useCallback((delta: Pages) => navigate(delta), []);
+  const go = useCallback((delta: Pages) => navigate(delta), [navigate]);
 
-  const back = useCallback(() => navigate(-1), []);
+  const back = useCallback(() => navigate(-1), [navigate]);
 
-  const forward = useCallback(() => navigate(1), []);
+  const forward = useCallback(() => navigate(1), [navigate]);
 
   return {
     back,

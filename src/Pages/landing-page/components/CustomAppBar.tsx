@@ -23,7 +23,7 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import ListRoundedIcon from "@mui/icons-material/ListRounded";
-import InstallMobileRoundedIcon from "@mui/icons-material/InstallMobileRounded";
+import AddToHomeScreenRoundedIcon from "@mui/icons-material/AddToHomeScreenRounded";
 import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
@@ -39,6 +39,9 @@ const logoStyle = {
 const CustomAppBar = () => {
   const [open, setOpen] = useState(false);
   const isAuth = useAppSelector((state) => state.user.auth);
+  const addToHomeScreenEnabled = useAppSelector(
+    (state) => state.featuresToggle.addToHomeScreenEnabled
+  );
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const currentTheme = useAppSelector((state) => state.theme.themeMode);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
@@ -341,20 +344,21 @@ const CustomAppBar = () => {
               </Box>
               <Divider />
 
-              {browser === "Chrome" && deferredPrompt !== null && (
-                <MenuItem
-                  onClick={() => {
-                    pwaInstall();
-                  }}
-                >
-                  <ListItemIcon>
-                    <InstallMobileRoundedIcon fontSize="small" />
-                  </ListItemIcon>
-                  <Typography>Install app</Typography>
-                </MenuItem>
-              )}
+              {addToHomeScreenEnabled &&
+                browser === "Chrome" &&
+                deferredPrompt !== null && (
+                  <MenuItem
+                    onClick={() => {
+                      pwaInstall();
+                    }}
+                  >
+                    <ListItemIcon>
+                      <AddToHomeScreenRoundedIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography>Add to Home Screen</Typography>
+                  </MenuItem>
+                )}
 
-              {/* </Box> */}
               {isAuth ? (
                 <>
                   {manuItemsArr.map((menuItem, index) => {

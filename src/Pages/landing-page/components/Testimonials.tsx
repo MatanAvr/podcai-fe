@@ -105,7 +105,7 @@ export default function Testimonials() {
         <Typography component="h2" variant="h4" color="text.primary">
           Testimonials
         </Typography>
-        <Typography variant="body1" color="text.secondary">
+        <Typography color="text.secondary">
           See what our customers love about our products. Discover how we excel
           in efficiency, durability, and satisfaction. Join us for quality,
           innovation, and reliable support.
@@ -115,7 +115,7 @@ export default function Testimonials() {
         {userTestimonials.map((testimonial, index) => (
           <Card key={`testimonial-${index}`} sx={{ p: 1 }}>
             <CardContent>
-              <Typography variant="body1" color="text.secondary">
+              <Typography color="text.secondary">
                 {testimonial.testimonial}
               </Typography>
             </CardContent>

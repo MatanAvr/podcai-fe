@@ -18,7 +18,7 @@ export const PrivacyPolicy = () => {
       <Typography variant="h4" component="div" textAlign={"center"}>
         Privacy Policy
       </Typography>
-      {/* <Typography variant="body1" component="div" maxWidth={"60%"}>
+      {/* <Typography component="div" maxWidth={"60%"}>
         <p>
           <strong>Privacy Policy</strong>
         </p>
