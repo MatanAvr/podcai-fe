@@ -94,9 +94,7 @@ export default function Footer() {
               gap: 1,
             }}
           >
-            <Typography variant="body1" fontWeight={"bold"}>
-              Product
-            </Typography>
+            <Typography fontWeight={"bold"}>Product</Typography>
 
             {enabledLandingPageSections.map((section, index) => {
               return (
@@ -121,9 +119,7 @@ export default function Footer() {
               gap: 1,
             }}
           >
-            <Typography variant="body1" fontWeight={"bold"}>
-              Company
-            </Typography>
+            <Typography fontWeight={"bold"}>Company</Typography>
             {/* <Link
               sx={linkStyle}
               color={linkColor}
@@ -170,7 +166,7 @@ export default function Footer() {
               gap: 1,
             }}
           >
-            <Typography variant="body1" fontWeight={"bold"}>
+            <Typography  fontWeight={"bold"}>
               Legal
             </Typography>
             <Link
@@ -207,10 +203,10 @@ export default function Footer() {
                 draggable="false"
               />
             </Box>
-            <Typography variant="body1" fontWeight={"bold"} gutterBottom>
+            <Typography fontWeight={"bold"} gutterBottom>
               Newsletter
             </Typography>
-            <Typography variant="body1" color="text.secondary" mb={2}>
+            <Typography color="text.secondary" mb={2}>
               Subscribe to our newsletter for weekly updates and promotions.
             </Typography>
             <Stack direction="row" spacing={1} useFlexGap>

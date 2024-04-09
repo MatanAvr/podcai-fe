@@ -36,6 +36,8 @@ import {
   EpisodeCompletedRequest,
   EpisodeCompletedResponse,
   EPISODE_COMPLETED_URL,
+  GOOGLE_OAUTH_URL,
+  GoogleUserResponse,
 } from "../ConstAndTypes/consts";
 import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
@@ -241,6 +243,22 @@ export class ApiClient {
       return response.data;
     } catch (error) {
       console.error(`episodeCompleted, error:${error}`);
+      throw error;
+    }
+  }
+
+  async getGoogleUser(accessToken: string): Promise<GoogleUserResponse> {
+    try {
+      const response: AxiosResponse<GoogleUserResponse> =
+        await this.axiosInstance.get(`${GOOGLE_OAUTH_URL}${accessToken}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/json",
+          },
+        });
+      return response.data;
+    } catch (error) {
+      console.error(`getGoogleUser, error:${error}`);
       throw error;
     }
   }

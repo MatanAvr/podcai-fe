@@ -7,8 +7,10 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import {
   Alert,
+  Divider,
   FormControl,
   FormControlLabel,
+  Icon,
   Link,
   Radio,
   RadioGroup,
@@ -37,10 +39,14 @@ import {
   DEFAULT_STALE_TIME_MINUTES,
 } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
-import { isValidEmail, minutesInMilliseconds } from "../../Utils/Utils";
+import {
+  isOnlyPositiveNumbers,
+  isValidEmail,
+  minutesInMilliseconds,
+} from "../../Utils/Utils";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { useAppDispatch } from "../../Hooks/Hooks";
+import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
 import { setLoggedUser, setAuth } from "../../Features/User/User";
 import { isAxiosError } from "axios";
 import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
@@ -48,6 +54,10 @@ import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 import { useQuery } from "@tanstack/react-query";
+import { useGoogleLogin, TokenResponse } from "@react-oauth/google";
+import googleIconSvg from "../../Assets/Svg/google-icon.svg";
+import { cloneDeep } from "lodash";
+import { OneLineAudioPlayer } from "../../Components/UI/OneLineAudioPlayer/OneLineAudioPlayer";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -64,11 +74,14 @@ const newUserDefault: INewUser = {
 };
 
 const steps = ["Details", "Verify", "Settings"];
-const onlyNumbersRegex = /^[0-9]+$/;
+const lastStep = steps.length - 1;
 
 export const SignUp = () => {
   const dispatch = useAppDispatch();
   const nav = useMyNavigation();
+  const googleSignUpEnabled = useAppSelector(
+    (state) => state.featuresToggle.googleSignUpEnabled
+  );
   const [newUser, setNewUser] = useState<INewUser>(newUserDefault);
   const [otp, setOtp] = useState<string>("");
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -79,6 +92,9 @@ export const SignUp = () => {
   const [chosenTopics, setChosenTopics] = useState<Topics[]>([]);
   const [emailNotification, setEmailNotification] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingGoogleSignUp, setLoadingGoogleSignUp] =
+    useState<boolean>(false);
+  const [userGoogleToken, setUserGoogleToken] = useState<TokenResponse>();
 
   const getVoiceSamepls = async () => {
     const res = await apiClientInstance.getVoiceSamples();
@@ -145,7 +161,7 @@ export const SignUp = () => {
     } else if (activeStep === 1) {
       verifyOtp();
       return;
-    } else if (activeStep === 2) {
+    } else if (activeStep === lastStep) {
       signupHandler();
       return;
     }
@@ -171,10 +187,6 @@ export const SignUp = () => {
       newSkipped.add(activeStep);
       return newSkipped;
     });
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   const userDataWrapper = (
@@ -224,16 +236,25 @@ export const SignUp = () => {
   );
 
   const verifyOtpWrapper = (
-    <Box sx={{ gap: 2 }}>
-      <Typography>{`Verificaion code was send to ${newUser.email}`}</Typography>
-      <Typography>Enter the code</Typography>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      sx={{ gap: 1 }}
+      alignItems={"center"}
+    >
+      <Typography textAlign={"center"}>
+        {`Verificaion code was send to:`}
+        <br />
+        {`${newUser.email}`}
+      </Typography>
       <TextField
         id="otp"
         variant="outlined"
+        label={`Enter the ${OTP_LENGTH} digits code`}
         size="small"
         onChange={(e) => changeOtpHandler(e)}
         value={otp}
-        placeholder={`${OTP_LENGTH} digits`}
+        placeholder={`Enter the ${OTP_LENGTH} digits code`}
         required
       />
     </Box>
@@ -360,15 +381,10 @@ export const SignUp = () => {
                   >
                     <FormControlLabel
                       value={voiceSample.name}
-                      control={<Radio />}
+                      control={<Radio size="small" />}
                       label={voiceSample.name}
                     />
-                    <audio
-                      style={{ maxWidth: "60%" }}
-                      src={voiceSample.url}
-                      controls
-                      controlsList="nodownload"
-                    />
+                    <OneLineAudioPlayer audioUrl={voiceSample.url} />
                   </Box>
                 );
               })
@@ -392,7 +408,7 @@ export const SignUp = () => {
         width={"100%"}
         justifyContent={"space-between"}
       >
-        <Typography variant="body1" component="div">
+        <Typography component="div">
           Send me emails when my podcai are ready
         </Typography>
         <Switch
@@ -414,7 +430,7 @@ export const SignUp = () => {
       );
     } else if (activeStep === 1) {
       return !(otp?.length === OTP_LENGTH);
-    } else if (activeStep === 2) {
+    } else if (activeStep === lastStep) {
       return !(
         chosenTopics.length >= MIN_NUM_OF_TOPICS &&
         chosenTopics.length <= MAX_NUM_OF_TOPICS &&
@@ -429,7 +445,7 @@ export const SignUp = () => {
     const value = e.target.value;
     const valid =
       value === "" ||
-      (onlyNumbersRegex.test(value) && value.length <= OTP_LENGTH);
+      (isOnlyPositiveNumbers(value) && value.length <= OTP_LENGTH);
     if (valid) setOtp(value);
   };
 
@@ -459,6 +475,41 @@ export const SignUp = () => {
     setLoading(false);
   };
 
+  const googleSignUpHandler = useGoogleLogin({
+    onNonOAuthError: (nonAuthErr) => {
+      console.error(nonAuthErr.type);
+    },
+    onSuccess: (tokenResponse) => {
+      setUserGoogleToken(tokenResponse);
+    },
+    onError: (errorRespondse) =>
+      console.error("googleSignUpHandler error:", errorRespondse),
+  });
+
+  useEffect(() => {
+    if (userGoogleToken) {
+      updateNewUser(userGoogleToken);
+    }
+  }, [userGoogleToken]);
+
+  const updateNewUser = async (userToken: TokenResponse) => {
+    setLoadingGoogleSignUp(true);
+    try {
+      const googleUser = await apiClientInstance.getGoogleUser(
+        userToken.access_token
+      );
+      const newUserClone = cloneDeep(newUser);
+      newUserClone.email = googleUser.email;
+      newUserClone.name = googleUser.given_name;
+      setNewUser(() => newUserClone);
+      setActiveStep(lastStep);
+    } catch (err) {
+      console.error("updateNewUser error:", err);
+    } finally {
+      setLoadingGoogleSignUp(false);
+    }
+  };
+
   return (
     <Box
       id="sign-up-page-wrapper"
@@ -468,7 +519,8 @@ export const SignUp = () => {
         alignItems: "center",
         maxWidth: "95%",
         gap: 2,
-        overflowY: "auto",
+        // overflowY: "auto",
+        minWidth: 270,
       }}
     >
       <Stack
@@ -504,13 +556,13 @@ export const SignUp = () => {
       </Stepper>
       {activeStep === steps.length ? (
         <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
+          {/* <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button onClick={handleReset}>Reset</Button>
-          </Box>
+          </Box> */}
         </>
       ) : (
         <>
@@ -551,8 +603,9 @@ export const SignUp = () => {
               disabled={checkIfNextDisabled()}
               loading={loading}
               variant="contained"
+              color={activeStep === lastStep ? "success" : "primary"}
             >
-              {activeStep === steps.length - 1
+              {activeStep === lastStep
                 ? "Activate my account"
                 : activeStep === 0
                 ? "Verify Email"
@@ -560,17 +613,71 @@ export const SignUp = () => {
             </LoadingButton>
           </Box>
           {activeStep === 0 && (
-            <Box mt={1}>
-              Already have an account?&nbsp;
-              <Link
-                sx={{ cursor: "pointer" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  nav.push("Login");
-                }}
-              >
-                Log in
-              </Link>
+            <Box display={"flex"} flexDirection={"column"} gap={2}>
+              {googleSignUpEnabled && (
+                <>
+                  <Divider>
+                    <Typography variant="caption" textAlign={"center"}>
+                      Or sign up with
+                    </Typography>
+                  </Divider>
+
+                  {/* <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
+                  <GoogleLogin
+                    locale="en_US"
+                    width={"262"}
+                    text="continue_with"
+                    onSuccess={(credentialResponse) => {
+                      const user = jwtDecode(credentialResponse.credential!);
+                    }}
+                    onError={() => {
+                      console.error("Login Failed");
+                    }}
+                  />
+                </Box>  */}
+
+                  <LoadingButton
+                    loading={loadingGoogleSignUp}
+                    onClick={() => googleSignUpHandler()}
+                    variant="outlined"
+                    startIcon={
+                      <Icon
+                        sx={{
+                          display: "flex",
+                          alignContent: "center",
+                          justifyContent: "center",
+                          height: 25,
+                          width: 25,
+                        }}
+                      >
+                        <img
+                          style={{ height: "100%", width: "100%" }}
+                          src={googleIconSvg}
+                          draggable={false}
+                          alt="google logo"
+                        />
+                      </Icon>
+                    }
+                  >
+                    Google
+                  </LoadingButton>
+                </>
+              )}
+
+              <Box>
+                <Typography>
+                  Already have an account?&nbsp;
+                  <Link
+                    sx={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      nav.push("Login");
+                    }}
+                  >
+                    Log in
+                  </Link>
+                </Typography>
+              </Box>
             </Box>
           )}
           {errorMsg && (

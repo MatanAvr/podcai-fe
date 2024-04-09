@@ -18,7 +18,7 @@ export const TermsOfService = () => {
       <Typography variant="h4" component="div" textAlign={"center"}>
         Terms Of Service
       </Typography>
-      {/* <Typography variant="body1" component="div" maxWidth={"60%"}>
+      {/* <Typography component="div" maxWidth={"60%"}>
         <p>
           <strong>Terms of Service</strong>
         </p>

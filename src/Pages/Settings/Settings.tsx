@@ -132,15 +132,11 @@ export const Settings = () => {
           <Typography variant="caption" color="text.secondary" component="div">
             Name
           </Typography>
-          <Typography variant="body1" component="div">
-            {loggedUser.name}
-          </Typography>
+          <Typography component="div">{loggedUser.name}</Typography>
           <Typography variant="caption" color="text.secondary" component="div">
             Email address
           </Typography>
-          <Typography variant="body1" component="div">
-            {loggedUser.email}
-          </Typography>
+          <Typography component="div">{loggedUser.email}</Typography>
         </Box>
         <Box
           sx={{
@@ -150,7 +146,7 @@ export const Settings = () => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ width: 100, height: 100 }} />
+          <Avatar sx={{ width: 100, height: 100 }} src={""} />
         </Box>
       </Card>
     </>
@@ -164,9 +160,7 @@ export const Settings = () => {
         <Typography variant="caption" color="text.secondary" component="div">
           Plan
         </Typography>
-        <Typography variant="body1" component="div">
-          Podcai Basic Plan
-        </Typography>
+        <Typography component="div">Podcai Basic Plan</Typography>
       </Card>
     </>
   );
@@ -216,7 +210,7 @@ export const Settings = () => {
                   >
                     <FormControlLabel
                       value={voiceSample.name}
-                      control={<Radio />}
+                      control={<Radio size="small" />}
                       label={voiceSample.name}
                     />
                     <OneLineAudioPlayer audioUrl={voiceSample.url} />
@@ -255,7 +249,7 @@ export const Settings = () => {
           width={"100%"}
           justifyContent={"space-between"}
         >
-          <Typography variant="body1" component="div">
+          <Typography component="div">
             Send me emails when my podcai are ready
           </Typography>
           <Switch

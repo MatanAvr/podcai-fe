@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DELETE_ERROR_TIMEOUT, loginRequest } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
-import { useAppDispatch } from "../../Hooks/Hooks";
+import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
 import { setAuth, setLoggedUser } from "../../Features/User/User";
-import { Alert, Box, Link, Stack, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Divider,
+  Icon,
+  Link,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { isValidEmail } from "../../Utils/Utils";
 import { isAxiosError } from "axios";
 import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
+import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
+import googleIconSvg from "../../Assets/Svg/google-icon.svg";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -19,12 +30,17 @@ const defaultUser: loginRequest = {
 };
 
 export const Login = () => {
+  const nav = useMyNavigation();
+  const dispatch = useAppDispatch();
+  const googleLoginEnabled = useAppSelector(
+    (state) => state.featuresToggle.googleLoginEnabled
+  );
   const [user, setUser] = useState<loginRequest>(defaultUser);
+  const [userGoogleToken, setUserGoogleToken] = useState<TokenResponse>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadingGoogleLogin, setLoadingGoogleLogin] = useState<boolean>(false);
   const [emailErr, setEmailErr] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const dispatch = useAppDispatch();
-  const nav = useMyNavigation();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id: key, value } = e.target;
@@ -38,45 +54,81 @@ export const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg("");
-    try {
-      const loginRes = await apiClientInstance.userLogin(user);
-      if (loginRes.access_token) {
-        const token = loginRes.access_token;
-        const userToLogIn = loginRes;
-        dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
-        dispatch(setAuth({ newMode: true, token }));
-        nav.push("Home");
-      }
-    } catch (error) {
-      if (isAxiosError(error)) {
-        if (typeof error.response?.data.detail === "string") {
-          setErrorMsg(error.response?.data.detail);
+    const isEmailValid = validateEmail();
+    if (!isEmailValid) {
+      showEmailError();
+    } else {
+      try {
+        const loginRes = await apiClientInstance.userLogin(user);
+        if (loginRes.access_token) {
+          const token = loginRes.access_token;
+          const userToLogIn = loginRes;
+          dispatch(setLoggedUser({ newLoggeduser: userToLogIn }));
+          dispatch(setAuth({ newMode: true, token }));
+          nav.push("Home");
+        }
+      } catch (error) {
+        if (isAxiosError(error)) {
+          if (typeof error.response?.data.detail === "string") {
+            setErrorMsg(error.response?.data.detail);
+          } else {
+            setErrorMsg("General error");
+          }
         } else {
           setErrorMsg("General error");
         }
-      } else {
-        setErrorMsg("General error");
       }
     }
     setIsLoading(false);
   };
 
   const validateEmail = () => {
-    let error = "";
     const emailValid = isValidEmail(user.email);
-    if (!emailValid && user.email.length > 0) {
-      error = "Invalid email";
-      setEmailErr(error);
-      setTimeout(() => {
-        setEmailErr("");
-      }, DELETE_ERROR_TIMEOUT);
-    } else {
-    }
-    if (error !== "") {
+    if (!emailValid) {
+      showEmailError();
       return false;
     }
-    setEmailErr(error);
+    clearEmailError();
     return true;
+  };
+
+  const showEmailError = () => {
+    setEmailErr("Invalid email");
+    setTimeout(() => {
+      clearEmailError();
+    }, DELETE_ERROR_TIMEOUT);
+  };
+
+  const clearEmailError = () => setEmailErr("");
+
+  const googleLoginHandler = useGoogleLogin({
+    onNonOAuthError: (nonAuthErr) => {
+      console.error(nonAuthErr.type);
+    },
+    onSuccess: (tokenResponse) => {
+      setUserGoogleToken(tokenResponse);
+    },
+    onError: (errorRespondse) =>
+      console.error("google login error:", errorRespondse),
+  });
+
+  useEffect(() => {
+    if (userGoogleToken) {
+      updateLoginUser(userGoogleToken);
+    }
+  }, [userGoogleToken]);
+
+  const updateLoginUser = async (userToken: TokenResponse) => {
+    setLoadingGoogleLogin(true);
+    try {
+      const googleUser = await apiClientInstance.getGoogleUser(
+        userToken.access_token
+      );
+    } catch (err) {
+      console.error("updateLoginUser error:", err);
+    } finally {
+      setLoadingGoogleLogin(false);
+    }
   };
 
   return (
@@ -84,11 +136,11 @@ export const Login = () => {
       id="login-page-wrapper"
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 1, width: "auto" },
+        "& .MuiTextField-root": { width: "auto" },
         display: "flex",
         flexDirection: "column",
-        maxWidth: "80%",
-        gap: 1,
+        maxWidth: "95%",
+        gap: 2,
       }}
       onSubmit={loginHandler}
     >
@@ -124,38 +176,87 @@ export const Login = () => {
         value={user.password}
         required
       />
-      <Link
-        sx={{ cursor: "pointer" }}
-        onClick={(e) => {
-          e.preventDefault();
-          nav.push("Forgot password");
-        }}
-      >
-        Forgot your password?
-      </Link>
+
       <LoadingButton
         loading={isLoading}
         variant="contained"
         onClick={loginHandler}
         type="submit"
-        disabled={!(isValidEmail(user.email) && user.password.length > 3)}
+        // disabled={!(isValidEmail(user.email) && user.password.length > min)}
       >
         Log in
       </LoadingButton>
+      {googleLoginEnabled && (
+        <>
+          <Divider>
+            <Typography textAlign={"center"}>Or log in with</Typography>
+          </Divider>
 
-      <Box mt={1}>
-        Don't have an account yet?&nbsp;
+          {/* <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
+        <GoogleLogin
+          locale="en_US"
+          width={"262"}
+          text="continue_with"
+          onSuccess={(credentialResponse) => {
+            const user = jwtDecode(credentialResponse.credential!);
+            console.log(user);
+          }}
+          onError={() => {
+            console.error("Login Failed");
+          }}
+        />
+      </Box> */}
+
+          <LoadingButton
+            loading={loadingGoogleLogin}
+            onClick={() => googleLoginHandler()}
+            variant="outlined"
+            startIcon={
+              <Icon
+                sx={{
+                  display: "flex",
+                  alignContent: "center",
+                  justifyContent: "center",
+                  height: 25,
+                  width: 25,
+                }}
+              >
+                <img
+                  style={{ height: "100%", width: "100%" }}
+                  src={googleIconSvg}
+                  draggable={false}
+                  alt="google logo"
+                />
+              </Icon>
+            }
+          >
+            Google
+          </LoadingButton>
+        </>
+      )}
+      <Box textAlign={"center"}>
+        <Typography>
+          Don't have an account yet?&nbsp;{" "}
+          <Link
+            sx={{ cursor: "pointer" }}
+            onClick={(e) => {
+              e.preventDefault();
+              nav.push("Sign up");
+            }}
+          >
+            Sign up
+          </Link>
+        </Typography>
         <Link
           sx={{ cursor: "pointer" }}
           onClick={(e) => {
             e.preventDefault();
-            nav.push("Sign up");
+            nav.push("Forgot password");
           }}
         >
-          Sign up
+          <Typography>Forgot your password?</Typography>
         </Link>
       </Box>
-
       {errorMsg && (
         <Alert sx={{ my: 1 }} severity="error">
           {errorMsg}
