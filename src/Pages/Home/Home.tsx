@@ -6,9 +6,6 @@ import {
   Episode,
 } from "../../ConstAndTypes/consts";
 import { isMobile, minutesInMilliseconds } from "../../Utils/Utils";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
-import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import {
   Accordion,
   AccordionDetails,
@@ -18,7 +15,6 @@ import {
   Button,
   Card,
   CardActions,
-  Checkbox,
   Link,
   Stack,
   Typography,
@@ -26,7 +22,10 @@ import {
 import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
 import { CustomAudioPlayer } from "../../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
 import { useQuery } from "@tanstack/react-query";
-import { DoneRounded } from "@mui/icons-material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();
@@ -63,10 +62,10 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    if (allEpisodes) {
+    if (allEpisodes && !currentlyPlaying) {
       setCurrentlyPlaying(() => allEpisodes[0]);
     }
-  }, []);
+  }, [allEpisodes]);
 
   const expendHandler = (panelId: string) => {
     if (expandedArr.includes(panelId)) {
@@ -120,7 +119,6 @@ export const Home = () => {
           maxHeight: "100%",
           flex: 1,
           overflow: "hidden",
-          // border: "1px solid red",
         }}
         gap={1}
       >
@@ -138,11 +136,10 @@ export const Home = () => {
                 gap: 1,
                 maxHeight: "100%",
                 height: mobile ? "75%" : "100%",
-                // border: "1px solid blue",
               }}
             >
               <>
-                {currentlyPlaying && (
+                {currentlyPlaying ? (
                   <>
                     <CustomAudioPlayer episode={currentlyPlaying} />
                     <Box
@@ -218,6 +215,8 @@ export const Home = () => {
                       })}
                     </Box>
                   </>
+                ) : (
+                  <Typography>Choose an episode to play</Typography>
                 )}
               </>
             </Box>
@@ -231,7 +230,6 @@ export const Home = () => {
                 maxHeight: "100%",
                 gap: 1,
                 width: mobile ? "100%" : "auto",
-                // border: "1px solid green",
               }}
             >
               <Typography>All episodes</Typography>
@@ -279,19 +277,17 @@ export const Home = () => {
                           <Stack
                             direction={"row"}
                             alignItems={"center"}
-                            width={"90%"}
+                            width={"95%"}
+                            sx={{ py: 0.2 }}
                           >
-                            <Checkbox
-                              checked={active}
-                              icon={<PlayArrowRoundedIcon fontSize="small" />}
-                              checkedIcon={
-                                <PlayArrowRoundedIcon
-                                  color="primary"
-                                  fontSize="small"
-                                />
-                              }
+                            <PlayArrowRoundedIcon
+                              color={active ? "primary" : "disabled"}
+                              fontSize="small"
+                              sx={{ p: 0.5 }}
                             />
                             <Typography
+                              variant="body2"
+                              color={active ? "primary" : ""}
                               sx={{
                                 display: "flex",
                                 flex: 1,
@@ -301,7 +297,10 @@ export const Home = () => {
                               {episode.name}
                             </Typography>
                             {episode.is_completed && (
-                              <DoneRounded color="success" fontSize="small" />
+                              <CheckCircleIcon
+                                color="success"
+                                fontSize="small"
+                              />
                             )}
                           </Stack>
                         </CardActions>

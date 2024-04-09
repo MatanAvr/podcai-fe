@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { ToggleColorMode } from "../../../Features/Theme/Theme";
 
 export const ToggleColorModeButton = () => {
-  const themeMode = useAppSelector((state) => state.theme.themeMode);
+  const themeColor = useAppSelector((state) => state.theme.themeColor);
   const dispatch = useAppDispatch();
 
   return (
@@ -14,13 +14,13 @@ export const ToggleColorModeButton = () => {
       <Button
         variant="text"
         onClick={() =>
-          dispatch(ToggleColorMode(themeMode === "dark" ? "light" : "dark"))
+          dispatch(ToggleColorMode(themeColor === "dark" ? "light" : "dark"))
         }
         size="small"
         aria-label="button to toggle theme"
         sx={{ minWidth: "32px", height: "32px", p: "4px" }}
       >
-        {themeMode === "dark" ? (
+        {themeColor === "dark" ? (
           <WbSunnyRoundedIcon fontSize="small" />
         ) : (
           <NightlightRoundedIcon fontSize="small" />

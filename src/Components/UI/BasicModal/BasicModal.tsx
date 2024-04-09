@@ -34,7 +34,7 @@ export default function BasicModal({
   const [open, setOpen] = React.useState(false);
   const openHandler = () => setOpen(true);
   const closeHandler = () => setOpen(false);
-  const themeMode = useAppSelector((state) => state.theme.themeMode);
+  const themeColor = useAppSelector((state) => state.theme.themeColor);
 
   const modalStyle = {
     position: "absolute" as "absolute",
@@ -44,7 +44,7 @@ export default function BasicModal({
     width: 400,
     maxWidth: "85%",
     bgcolor: "background.paper",
-    color: themeMode === "light" ? "black" : "white",
+    color: themeColor === "light" ? "black" : "white",
     boxShadow: 24,
     gap: 1,
     p: 2,

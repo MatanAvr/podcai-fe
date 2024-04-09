@@ -33,7 +33,7 @@ const linkColor = "text.primary";
 
 const Copyright = () => {
   return (
-    <Typography color="text.secondary" mt={1}>
+    <Typography variant="body2" color="text.secondary" mt={1}>
       {"Copyright © "}
       Podcai&nbsp;
       {new Date().getFullYear()}

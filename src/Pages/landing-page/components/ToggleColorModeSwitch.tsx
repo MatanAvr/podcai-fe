@@ -6,7 +6,7 @@ import { ToggleColorMode } from "../../../Features/Theme/Theme";
 import { Switch } from "@mui/material";
 
 export const ToggleColorModeSwitch = () => {
-  const themeMode = useAppSelector((state) => state.theme.themeMode);
+  const themeColor = useAppSelector((state) => state.theme.themeColor);
   const dispatch = useAppDispatch();
 
   return (
@@ -18,20 +18,19 @@ export const ToggleColorModeSwitch = () => {
     >
       <NightlightRoundedIcon
         fontSize="small"
-        color={themeMode === "dark" ? "primary" : "disabled"}
+        color={themeColor === "dark" ? "primary" : "disabled"}
       />
       <Switch
-        id="theme-color-mode-switch"
         size="small"
         color="primary"
-        checked={themeMode === "light"}
+        checked={themeColor === "light"}
         onClick={() => {
-          dispatch(ToggleColorMode(themeMode === "dark" ? "light" : "dark"));
+          dispatch(ToggleColorMode(themeColor === "dark" ? "light" : "dark"));
         }}
       />
       <WbSunnyRoundedIcon
         fontSize="small"
-        color={themeMode === "light" ? "primary" : "disabled"}
+        color={themeColor === "light" ? "primary" : "disabled"}
       />
     </Box>
   );
