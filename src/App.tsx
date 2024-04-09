@@ -12,7 +12,7 @@ const UI: ThemeOptions = {
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 10,
         },
       },
     },
@@ -34,13 +34,12 @@ const darkTheme = createTheme({
     mode: "dark",
   },
 });
-
 const App = () => {
-  const themeMode = useAppSelector((state) => state.theme.themeMode);
+  const themeColor = useAppSelector((state) => state.theme.themeColor);
 
   return (
     <ThemeProvider
-      theme={themeMode === "dark" ? darkTheme : customDefaultTheme}
+      theme={themeColor === "dark" ? darkTheme : customDefaultTheme}
     >
       <div className="App">
         <CustomAppBar />
