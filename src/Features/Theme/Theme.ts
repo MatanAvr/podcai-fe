@@ -1,14 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-type themeMode = "dark" | "light";
+type themeColor = "dark" | "light";
 
 export const themeSlice = createSlice({
   name: "theme",
   initialState: {
-    themeMode: "light" as themeMode,
+    themeColor: "light" as themeColor,
   },
   reducers: {
-    ToggleColorMode: (state, action: PayloadAction<themeMode>) => {
-      state.themeMode = action.payload === "dark" ? "dark" : "light";
+    ToggleColorMode: (state, action: PayloadAction<themeColor>) => {
+      state.themeColor = action.payload === "dark" ? "dark" : "light";
       localStorage.setItem("theme", action.payload);
     },
   },

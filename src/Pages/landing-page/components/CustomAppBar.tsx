@@ -43,7 +43,7 @@ const CustomAppBar = () => {
     (state) => state.featuresToggle.addToHomeScreenEnabled
   );
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
-  const currentTheme = useAppSelector((state) => state.theme.themeMode);
+  const themeColor = useAppSelector((state) => state.theme.themeColor);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const dispatch = useAppDispatch();
   const nav = useMyNavigation();
@@ -106,7 +106,7 @@ const CustomAppBar = () => {
     },
     {
       name: "Contact us",
-      icon: <EmailRoundedIcon fontSize="small" />,
+      icon: <SupportAgentRoundedIcon fontSize="small" />,
       function: () => changePageHandler("Contact us"),
     },
   ];
@@ -161,13 +161,16 @@ const CustomAppBar = () => {
               if (isAuth) {
                 changePageHandler("Home");
               } else {
-                changePageHandler("LandingPage");
-                // scrollToSection("Hero");
+                if (currentPage === "LandingPage") {
+                  scrollToSection("Hero");
+                } else {
+                  changePageHandler("LandingPage");
+                }
               }
             }}
           >
             <img
-              src={currentTheme === "light" ? podcaiLogo : podcaiLogo}
+              src={themeColor === "light" ? podcaiLogo : podcaiLogo}
               style={logoStyle}
               alt="Podcai logo"
               draggable="false"
