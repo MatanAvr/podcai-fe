@@ -8,13 +8,8 @@ import Typography from "@mui/material/Typography";
 import {
   Alert,
   Divider,
-  FormControl,
-  FormControlLabel,
   Icon,
   Link,
-  Radio,
-  RadioGroup,
-  Skeleton,
   Stack,
   Switch,
   TextField,
@@ -32,9 +27,6 @@ import {
   DELETE_ERROR_TIMEOUT,
   sendOtpRequest,
   verifyOtpRequest,
-  VOICE_SAMPLE_SKELETON_WIDTH,
-  VOICE_SAMPLE_SKELETON_HEIGHT,
-  voicesArray,
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_STALE_TIME_MINUTES,
 } from "../../ConstAndTypes/consts";
@@ -49,7 +41,6 @@ import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
 import { setLoggedUser, setAuth } from "../../Features/User/User";
 import { isAxiosError } from "axios";
-import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
@@ -57,7 +48,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useGoogleLogin, TokenResponse } from "@react-oauth/google";
 import googleIconSvg from "../../Assets/Svg/google-icon.svg";
 import { cloneDeep } from "lodash";
-import { OneLineAudioPlayer } from "../../Components/UI/OneLineAudioPlayer/OneLineAudioPlayer";
+import { PasswordTextField } from "../../Components/UI/PasswordTextField/PasswordTextField";
+import { PodcastersVoices } from "../../Components/UI/PodcastersVoices/PodcastersVoices";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -88,9 +81,10 @@ export const SignUp = () => {
   const [skipped, setSkipped] = useState(new Set<number>());
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [emailErr, setEmailErr] = useState<string>("");
-  const [chosenVoiceSample, setChosenVoiceSample] = useState<Voices | "">("");
+  const [chosenVoice, setChosenVoice] = useState<Voices>();
   const [chosenTopics, setChosenTopics] = useState<Topics[]>([]);
-  const [emailNotification, setEmailNotification] = useState<boolean>(true);
+  const [shouldSendEpisodeEmail, setShouldSendEpisodeEmail] =
+    useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingGoogleSignUp, setLoadingGoogleSignUp] =
     useState<boolean>(false);
@@ -137,6 +131,7 @@ export const SignUp = () => {
   };
 
   const changeTopicsHandler = (newTopics: Topics[]) => {
+    console.log(newTopics);
     setChosenTopics(() => newTopics);
   };
 
@@ -162,7 +157,7 @@ export const SignUp = () => {
       verifyOtp();
       return;
     } else if (activeStep === lastStep) {
-      signupHandler();
+      signUpHandler();
       return;
     }
 
@@ -172,21 +167,6 @@ export const SignUp = () => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
   };
 
   const userDataWrapper = (
@@ -312,25 +292,25 @@ export const SignUp = () => {
     setLoading(false);
   };
 
-  const handleVoiceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeVoiceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
-    setChosenVoiceSample(newVoice as Voices);
+    setChosenVoice(newVoice as Voices);
   };
 
   useEffect(() => {
-    if (chosenVoiceSample === "") return;
+    if (!chosenVoice) return;
     setNewUser({
       ...newUser,
-      voice: chosenVoiceSample,
+      voice: chosenVoice,
     });
-  }, [chosenVoiceSample]);
+  }, [chosenVoice]);
 
   useEffect(() => {
     setNewUser({
       ...newUser,
-      should_send_episode_email: emailNotification,
+      should_send_episode_email: shouldSendEpisodeEmail,
     });
-  }, [emailNotification]);
+  }, [shouldSendEpisodeEmail]);
 
   const settingsWrapper = (
     <Box
@@ -340,9 +320,14 @@ export const SignUp = () => {
       gap={1}
       maxWidth={"90%"}
     >
-      <div>
-        <u>Choose up to {MAX_NUM_OF_TOPICS} topics</u>
-      </div>
+      <Box display={"flex"} alignItems={"center"} gap={1}>
+        <Typography>Choose up to {MAX_NUM_OF_TOPICS} topics</Typography>
+        {chosenTopics.length > 0 ? (
+          <CheckCircleIcon color="success" fontSize="small" />
+        ) : (
+          <CheckCircleIcon color="disabled" fontSize="small" />
+        )}
+      </Box>
 
       <MultiSelect
         options={topicsArray}
@@ -350,56 +335,19 @@ export const SignUp = () => {
         changeValuesHandler={changeTopicsHandler}
       />
 
-      <FormControl
-        sx={{
-          display: "flex",
-          alignContent: "center",
-          maxWidth: "100%",
-        }}
-      >
-        <u>Choose your podcaster</u>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue={chosenVoiceSample}
-          name="radio-buttons-group"
-          value={chosenVoiceSample}
-          onChange={handleVoiceChange}
-          sx={{ gap: 0.1 }}
-        >
-          {voiceSamples
-            ? voiceSamples.length > 0 &&
-              voiceSamples.map((voiceSample, index) => {
-                return (
-                  <Box
-                    key={"voice-sample-" + index}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      maxWidth: "100%",
-                    }}
-                  >
-                    <FormControlLabel
-                      value={voiceSample.name}
-                      control={<Radio size="small" />}
-                      label={voiceSample.name}
-                    />
-                    <OneLineAudioPlayer audioUrl={voiceSample.url} />
-                  </Box>
-                );
-              })
-            : voicesArray.map((voice, index) => {
-                return (
-                  <Skeleton
-                    key={`voice-skeleton-${index}`}
-                    variant="rounded"
-                    width={VOICE_SAMPLE_SKELETON_WIDTH}
-                    height={VOICE_SAMPLE_SKELETON_HEIGHT}
-                  />
-                );
-              })}
-        </RadioGroup>
-      </FormControl>
+      <Box display={"flex"} alignItems={"center"} gap={1}>
+        <Typography>Choose your podcaster</Typography>
+        {chosenVoice ? (
+          <CheckCircleIcon color="success" fontSize="small" />
+        ) : (
+          <CheckCircleIcon color="disabled" fontSize="small" />
+        )}
+      </Box>
+      <PodcastersVoices
+        chosenVoice={chosenVoice}
+        changeVoiceHandler={changeVoiceHandler}
+        voiceSamples={voiceSamples}
+      />
 
       <Box
         display={"flex"}
@@ -412,8 +360,8 @@ export const SignUp = () => {
           Send me emails when my podcai are ready
         </Typography>
         <Switch
-          checked={emailNotification}
-          onClick={() => setEmailNotification((prev) => !prev)}
+          checked={shouldSendEpisodeEmail}
+          onClick={() => setShouldSendEpisodeEmail((prev) => !prev)}
         />
       </Box>
     </Box>
@@ -434,7 +382,7 @@ export const SignUp = () => {
       return !(
         chosenTopics.length >= MIN_NUM_OF_TOPICS &&
         chosenTopics.length <= MAX_NUM_OF_TOPICS &&
-        chosenVoiceSample !== ""
+        chosenVoice
       );
     }
   };
@@ -449,11 +397,15 @@ export const SignUp = () => {
     if (valid) setOtp(value);
   };
 
-  const signupHandler = async () => {
+  const signUpHandler = async () => {
     setErrorMsg("");
     setLoading(true);
+    // validate fields
+    const userToSignUp = cloneDeep(newUser);
+    userToSignUp.categories = chosenTopics;
+    userToSignUp.voice = chosenVoice || "Aria";
     try {
-      const signUpRes = await apiClientInstance.signUp(newUser);
+      const signUpRes = await apiClientInstance.signUp(userToSignUp);
       if (signUpRes.access_token) {
         const token = signUpRes.access_token;
         const userToLogIn = signUpRes;
@@ -519,7 +471,6 @@ export const SignUp = () => {
         alignItems: "center",
         maxWidth: "95%",
         gap: 2,
-        // overflowY: "auto",
         minWidth: 270,
       }}
     >
@@ -555,15 +506,7 @@ export const SignUp = () => {
         })}
       </Stepper>
       {activeStep === steps.length ? (
-        <>
-          {/* <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box> */}
-        </>
+        <></>
       ) : (
         <>
           <Box
@@ -592,12 +535,6 @@ export const SignUp = () => {
               Back
             </Button>
 
-            {isStepOptional(activeStep) && (
-              <Button onClick={handleSkip} sx={{ mr: 1 }} variant="contained">
-                Skip
-              </Button>
-            )}
-
             <LoadingButton
               onClick={handleNext}
               disabled={checkIfNextDisabled()}
@@ -621,20 +558,6 @@ export const SignUp = () => {
                       Or sign up with
                     </Typography>
                   </Divider>
-
-                  {/* <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-                  <GoogleLogin
-                    locale="en_US"
-                    width={"262"}
-                    text="continue_with"
-                    onSuccess={(credentialResponse) => {
-                      const user = jwtDecode(credentialResponse.credential!);
-                    }}
-                    onError={() => {
-                      console.error("Login Failed");
-                    }}
-                  />
-                </Box>  */}
 
                   <LoadingButton
                     loading={loadingGoogleSignUp}
