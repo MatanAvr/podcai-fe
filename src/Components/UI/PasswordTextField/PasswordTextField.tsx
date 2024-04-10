@@ -21,7 +21,7 @@ interface PasswordTextFieldProps {
   size?: "medium" | "small";
 }
 
-export default function PasswordTextField({
+export const PasswordTextField = ({
   id,
   label,
   variant,
@@ -31,7 +31,7 @@ export default function PasswordTextField({
   helperText,
   placeholder,
   size,
-}: PasswordTextFieldProps) {
+}: PasswordTextFieldProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -66,4 +66,4 @@ export default function PasswordTextField({
       }}
     />
   );
-}
+};

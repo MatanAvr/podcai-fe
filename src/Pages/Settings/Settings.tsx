@@ -4,9 +4,6 @@ import {
   topicsArray,
   Voices,
   MAX_NUM_OF_TOPICS,
-  VOICE_SAMPLE_SKELETON_WIDTH,
-  VOICE_SAMPLE_SKELETON_HEIGHT,
-  voicesArray,
   DEFAULT_AUTO_HIDE_DURATION,
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_STALE_TIME_MINUTES,
@@ -14,18 +11,7 @@ import {
 import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../../Services/axios";
-import {
-  Avatar,
-  Box,
-  Card,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Skeleton,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Card, Switch, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import DeleteUserModal from "../../Components/UI/DeleteUserModal/DeleteUserModal";
 import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
@@ -34,12 +20,13 @@ import { updateLoggedUser } from "../../Features/User/User";
 import CustomizedSnackbars from "../../Components/UI/CustomizedSnackbars/CustomizedSnackbars";
 import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../../Utils/Utils";
-import { OneLineAudioPlayer } from "../../Components/UI/OneLineAudioPlayer/OneLineAudioPlayer";
+import { PodcastersVoices } from "../../Components/UI/PodcastersVoices/PodcastersVoices";
 
 const apiClientInstance = ApiClient.getInstance();
 
 export const Settings = () => {
   const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
   const [userUpdatedSuccessfully, setUserUpdatedSuccessfully] = useState(false);
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
@@ -50,7 +37,6 @@ export const Settings = () => {
   const [chosenTopics, setChosenTopics] = useState<Topics[]>(
     loggedUser.categories
   );
-  const nav = useMyNavigation();
 
   const getVoiceSamepls = async () => {
     const res = await apiClientInstance.getVoiceSamples();
@@ -104,7 +90,7 @@ export const Settings = () => {
     nav.push("Home");
   };
 
-  const voiceChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeVoiceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
     setChosenVoice(newVoice as Voices);
   };
@@ -151,6 +137,7 @@ export const Settings = () => {
       </Card>
     </>
   );
+
   const membershipContainer = (
     <>
       <Typography variant="h5" component="div">
@@ -164,6 +151,7 @@ export const Settings = () => {
       </Card>
     </>
   );
+
   const podcastsSettingsContainer = (
     <>
       <Typography variant="h5" component="div">
@@ -178,64 +166,18 @@ export const Settings = () => {
           values={chosenTopics}
           changeValuesHandler={changeTopicsHandler}
         />
-        <FormControl
-          sx={{
-            display: "flex",
-            alignContent: "center",
-          }}
-        >
-          <Typography variant="caption" color="text.secondary" component="div">
-            Podcaster voice
-          </Typography>
-          <RadioGroup
-            aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue={chosenVoice}
-            name="radio-buttons-group"
-            value={chosenVoice}
-            onChange={voiceChangeHandler}
-            sx={{ gap: 0.1 }}
-          >
-            {voiceSamples ? (
-              voiceSamples.length > 0 &&
-              voiceSamples.map((voiceSample, index) => {
-                return (
-                  <Box
-                    key={"voice-sample-" + index}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      maxWidth: "100%",
-                    }}
-                  >
-                    <FormControlLabel
-                      value={voiceSample.name}
-                      control={<Radio size="small" />}
-                      label={voiceSample.name}
-                    />
-                    <OneLineAudioPlayer audioUrl={voiceSample.url} />
-                  </Box>
-                );
-              })
-            ) : (
-              <Box display={"flex"} flexDirection={"column"} gap={0.1}>
-                {voicesArray.map((voice, index) => {
-                  return (
-                    <Skeleton
-                      key={`voice-skeleton-${index}`}
-                      variant="rounded"
-                      width={VOICE_SAMPLE_SKELETON_WIDTH}
-                      height={VOICE_SAMPLE_SKELETON_HEIGHT}
-                    />
-                  );
-                })}
-              </Box>
-            )}
-          </RadioGroup>
-        </FormControl>
+        <Typography variant="caption" color="text.secondary" component="div">
+          Podcaster voice
+        </Typography>
+        <PodcastersVoices
+          chosenVoice={chosenVoice}
+          changeVoiceHandler={changeVoiceHandler}
+          voiceSamples={voiceSamples}
+        />
       </Card>
     </>
   );
+
   const accountSettingsContainer = (
     <>
       <Typography variant="h5" component="div">

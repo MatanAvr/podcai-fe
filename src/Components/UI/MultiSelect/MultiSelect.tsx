@@ -27,6 +27,7 @@ export default function MultiSelect({
       <Select
         multiple
         value={values}
+        sx={{ minHeight: 65 }}
         onChange={(e) => {
           const newValues = e.target.value as Topics[];
           changeValuesHandler(newValues);

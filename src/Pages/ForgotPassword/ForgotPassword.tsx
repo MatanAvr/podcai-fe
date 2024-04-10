@@ -18,8 +18,8 @@ import { isValidEmail } from "../../Utils/Utils";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { isAxiosError } from "axios";
-import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
+import { PasswordTextField } from "../../Components/UI/PasswordTextField/PasswordTextField";
 
 const apiClientInstance = ApiClient.getInstance();
 
