@@ -37,6 +37,8 @@ const logoStyle = {
 };
 
 const CustomAppBar = () => {
+  const dispatch = useAppDispatch();
+  const nav = useMyNavigation();
   const [open, setOpen] = useState(false);
   const isAuth = useAppSelector((state) => state.user.auth);
   const addToHomeScreenEnabled = useAppSelector(
@@ -45,8 +47,6 @@ const CustomAppBar = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const themeColor = useAppSelector((state) => state.theme.themeColor);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
-  const dispatch = useAppDispatch();
-  const nav = useMyNavigation();
   const queryClient = useQueryClient();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 

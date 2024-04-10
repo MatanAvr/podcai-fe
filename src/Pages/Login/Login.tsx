@@ -16,11 +16,11 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { isValidEmail } from "../../Utils/Utils";
 import { isAxiosError } from "axios";
-import PasswordTextField from "../../Components/UI/PasswordTextField/PasswordTextField";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import googleIconSvg from "../../Assets/Svg/google-icon.svg";
+import { PasswordTextField } from "../../Components/UI/PasswordTextField/PasswordTextField";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -191,21 +191,6 @@ export const Login = () => {
           <Divider>
             <Typography textAlign={"center"}>Or log in with</Typography>
           </Divider>
-
-          {/* <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
-        <GoogleLogin
-          locale="en_US"
-          width={"262"}
-          text="continue_with"
-          onSuccess={(credentialResponse) => {
-            const user = jwtDecode(credentialResponse.credential!);
-            console.log(user);
-          }}
-          onError={() => {
-            console.error("Login Failed");
-          }}
-        />
-      </Box> */}
 
           <LoadingButton
             loading={loadingGoogleLogin}

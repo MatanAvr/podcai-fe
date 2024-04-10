@@ -1,13 +1,13 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
-import PasswordTextField from "../PasswordTextField/PasswordTextField";
 import BasicModal from "../BasicModal/BasicModal";
 import { ApiClient } from "../../../Services/axios";
 import { useAppDispatch } from "../../../Hooks/Hooks";
 import { isAxiosError } from "axios";
 import { setAuth } from "../../../Features/User/User";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
+import { PasswordTextField } from "../PasswordTextField/PasswordTextField";
 
 export default function DeleteUserModal() {
   const [password, setPassword] = React.useState("");
@@ -57,6 +57,7 @@ export default function DeleteUserModal() {
           value={password}
           required
           label="Enter password"
+          size="small"
         />
         <Box display={"flex"} width={"100%"} justifyContent={"space-between"}>
           <LoadingButton

@@ -17,20 +17,29 @@ import { TermsOfService } from "../../Pages/TermsOfService/TermsOfService";
 import { PrivacyPolicy } from "../../Pages/PrivacyPolicy/PrivacyPolicy";
 import { ContactUs } from "../../Pages/ContactUs/ContactUs";
 import { Updates } from "../../Pages/Updates/Updates";
+import {
+  LOCAL_STORAGE_THEME_KEY,
+  LOCAL_STORAGE_TOKEN_KEY,
+} from "../../ConstAndTypes/consts";
+import { useMyNavigation } from "../../Hooks/useMyNavigation";
 
 const apiClientInstance = ApiClient.getInstance();
 
 export const Main = () => {
   const dispatch = useAppDispatch();
   const hasMounted = useRef(false);
+  const nav = useMyNavigation();
 
   useEffect(() => {
     // Checks theme mode and if there is a token in local storage
     if (hasMounted.current) return;
-    const tokenLocal = localStorage.getItem("token");
-    const themeLocal = localStorage.getItem("theme");
-    if (tokenLocal) authAndLogin(tokenLocal);
-    if (themeLocal && themeLocal === "dark") {
+    const localToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+    const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME_KEY);
+    if (localToken) {
+      authAndLogin(localToken);
+      nav.push("Home");
+    }
+    if (localTheme && localTheme === "dark") {
       dispatch(ToggleColorMode("dark"));
     }
     hasMounted.current = true;
