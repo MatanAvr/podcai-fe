@@ -125,13 +125,13 @@ export const Home = () => {
             }}
           >
             <Typography variant="h4" component="div">
-              {`Hi ${loggedUser.name}!`}
+              {`Hi ${loggedUser.name}`}
             </Typography>
             <Typography variant="h5" component="div">
-              {`Welcome to podcai!`}
+              {`Welcome to Podcai!`}
             </Typography>
-            <Typography variant="h6" component="div">
-              Right now, we’re generating your first podcai episode!
+            <Typography component="div">
+              Right now, we’re generating your first Podcai episode.
               <br /> It’ll take just a few short minutes.
               <br />
               <Typography variant="h2" component="div">
@@ -139,7 +139,7 @@ export const Home = () => {
               </Typography>
             </Typography>
             <Typography variant="caption" component="div">
-              The page will auto-refresh in <Counter seconds={120} /> seconds
+              The page will refresh in <Counter seconds={120} /> seconds
             </Typography>
           </Card>
         </Box>
