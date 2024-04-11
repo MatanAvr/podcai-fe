@@ -76,12 +76,10 @@ export const Unsubscribe = () => {
       >
         Unsubscribe
       </Typography>
-      <Typography
-        variant="h5"
-        component="div"
-        textAlign={"center"}
-        width={"max-content"}
-      >
+      <Typography variant="h5" component="div" textAlign={"center"}>
+        We’re sorry to see you go
+      </Typography>
+      <Typography variant="h5" component="div" textAlign={"center"}>
         You will be missed!
       </Typography>
       <TextField
@@ -92,7 +90,11 @@ export const Unsubscribe = () => {
         variant="outlined"
         size="small"
         onChange={onChange}
-        onBlur={validateEmail}
+        onBlur={() => {
+          if (emailToUnsubscribe.length > 0) {
+            validateEmail();
+          }
+        }}
         value={emailToUnsubscribe}
         error={emailErr.length > 0 ? true : false}
         helperText={emailErr}

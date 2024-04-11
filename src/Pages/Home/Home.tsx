@@ -26,11 +26,14 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useAppSelector } from "../../Hooks/Hooks";
+import Counter from "../../Components/UI/Counter/Counter";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();
 
 export const Home = () => {
+  const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [expandedArr, setExpandedArr] = useState<string[]>([]);
   const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode | undefined>(
     undefined
@@ -105,26 +108,56 @@ export const Home = () => {
       }}
     >
       {allEpisodes && allEpisodes.length === 0 && (
-        <Typography variant="h5" component="div">
-          Your first podcai wiil be ready in a few short minutes!
-        </Typography>
+        <Box
+          width={"100%"}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
+          <Card
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              p: 2,
+              maxWidth: 400,
+              textAlign: "center",
+              gap: 1,
+            }}
+          >
+            <Typography variant="h4" component="div">
+              {`Hi ${loggedUser.name}!`}
+            </Typography>
+            <Typography variant="h5" component="div">
+              {`Welcome to podcai!`}
+            </Typography>
+            <Typography variant="h6" component="div">
+              Right now, we’re generating your first podcai episode!
+              <br /> It’ll take just a few short minutes.
+              <br />
+              <Typography variant="h2" component="div">
+                &#128515;
+              </Typography>
+            </Typography>
+            <Typography variant="caption" component="div">
+              The page will auto-refresh in <Counter seconds={120} /> seconds
+            </Typography>
+          </Card>
+        </Box>
       )}
-
-      <Box
-        id="home-container"
-        sx={{
-          display: "flex",
-          flexDirection: mobile ? "column" : "row",
-          alignItems: "flex-start",
-          maxHeight: "100%",
-          flex: 1,
-          overflow: "hidden",
-        }}
-        gap={1}
-      >
-        {isLoadingEpisodes ? (
-          <LoadingSpinner />
-        ) : (
+      {isLoadingEpisodes && <LoadingSpinner />}
+      {allEpisodes && allEpisodes.length > 0 && (
+        <Box
+          id="home-container"
+          sx={{
+            display: "flex",
+            flexDirection: mobile ? "column" : "row",
+            alignItems: "flex-start",
+            maxHeight: "100%",
+            flex: 1,
+            overflow: "hidden",
+          }}
+          gap={1}
+        >
           <>
             <Box
               id="currently-playing-wrapper"
@@ -313,8 +346,8 @@ export const Home = () => {
               </Box>
             </Box>
           </>
-        )}
-      </Box>
+        </Box>
+      )}
     </Box>
   );
 };
