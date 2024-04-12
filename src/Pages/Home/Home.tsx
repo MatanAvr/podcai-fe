@@ -139,7 +139,7 @@ export const Home = () => {
               </Typography>
             </Typography>
             <Typography variant="caption" component="div">
-              The page will refresh in <Counter seconds={120} /> seconds
+              The page will refresh in <Counter seconds={60} /> seconds
             </Typography>
           </Card>
         </Box>
