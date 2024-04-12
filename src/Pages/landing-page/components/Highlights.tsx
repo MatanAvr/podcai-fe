@@ -37,7 +37,6 @@ export default function Highlights() {
         py: LANDING_PAGE_PY,
         pb: { xs: 8, sm: 16 },
         color: "white",
-        bgcolor: "#06090a",
         width: "100vw",
       }}
     >
@@ -55,7 +54,7 @@ export default function Highlights() {
             textAlign: { sm: "left", md: "center" },
           }}
         >
-          <Typography component="h2" variant="h4">
+          <Typography component="h2" variant="h4" color="text.primary">
             Highlights
           </Typography>
         </Box>
@@ -70,11 +69,10 @@ export default function Highlights() {
                 useFlexGap
                 sx={{
                   p: 3,
-                  height: "100%",
+                  height: "80%",
                   border: "1px solid",
                   borderColor: "grey.800",
                   background: "transparent",
-                  backgroundColor: "grey.900",
                   transition: "0.2s",
                   "&:hover ": {
                     transform: "translateY(-5px)",
@@ -82,12 +80,12 @@ export default function Highlights() {
                   },
                 }}
               >
-                <Box>{highlight.icon}</Box>
+                <Box sx={{color: "text.primary"}}>{highlight.icon}</Box>
                 <div>
-                  <Typography fontWeight="bold" gutterBottom>
+                  <Typography fontWeight="bold" gutterBottom color="text.primary">
                     {highlight.title}
                   </Typography>
-                  <Typography sx={{ color: "grey.400" }}>
+                  <Typography color="text.primary">
                     {highlight.description}
                   </Typography>
                 </div>
