@@ -20,7 +20,6 @@ import { IconButton, Avatar, Menu, ListItemIcon } from "@mui/material";
 // Icons
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import ListRoundedIcon from "@mui/icons-material/ListRounded";
 import AddToHomeScreenRoundedIcon from "@mui/icons-material/AddToHomeScreenRounded";
