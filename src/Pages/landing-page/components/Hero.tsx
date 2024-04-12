@@ -32,7 +32,7 @@ export default function Hero() {
           useFlexGap
           sx={{ width: { xs: "100%", sm: "70%", textAlign: "center" } }}
         >
-          <Typography variant="h2" color="primary" fontWeight={"bold"}>
+          <Typography variant="h3" color="primary" fontWeight={"bold"}>
             Stay curious,
             <br /> Stay informed
           </Typography>
