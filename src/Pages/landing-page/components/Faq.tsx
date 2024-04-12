@@ -30,6 +30,11 @@ const faqArr = [
     answer: `Yes, topics for your personalized podcasts can be
     changed at any time on the settings page.`,
   },
+  {
+    question: `At what time is my daily podcast produced?`,
+    answer: `Your daily podcast is typically produced around 7:45 AM. 
+    Additionally, we are in the process of developing a custom personalized scheduler feature.`,
+  },
 ];
 
 export default function Faq() {
