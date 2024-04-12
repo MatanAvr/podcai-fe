@@ -139,7 +139,7 @@ export const Home = () => {
               </Typography>
             </Typography>
             <Typography variant="caption" component="div">
-              The page will refresh in <Counter seconds={120} /> seconds
+              The page will refresh in <Counter seconds={60} /> seconds
             </Typography>
           </Card>
         </Box>
@@ -263,6 +263,7 @@ export const Home = () => {
                 maxHeight: "100%",
                 gap: 1,
                 width: mobile ? "100%" : "auto",
+                alignItems: "center",
               }}
             >
               <Typography>All episodes</Typography>
@@ -270,6 +271,8 @@ export const Home = () => {
                 id="all-episoeds-container"
                 sx={{
                   overflow: "auto",
+                  width: "90%",
+                  flexGrow: 1,
                   px: 1,
                 }}
               >
@@ -331,7 +334,7 @@ export const Home = () => {
                             </Typography>
                             {episode.is_completed && (
                               <CheckCircleIcon
-                                color="success"
+                                color="primary"
                                 fontSize="small"
                               />
                             )}

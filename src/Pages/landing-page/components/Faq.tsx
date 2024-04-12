@@ -22,13 +22,17 @@ const faqArr = [
   },
   {
     question: `Can I see the articles featured in each podcast?`,
-    answer: ` Absolutely! Under the podcasts, you’ll find the sources and titles of the articles.
+    answer: `Absolutely. Under each podcast, you’ll find the sources and titles of each article. 
     Click on the hyperlinks to access the articles.`,
   },
   {
-    question: `Can I change the topics for my podcasts?`,
-    answer: `Yes, topics for your personalized podcasts can be
-    changed at any time on the settings page.`,
+    question: `Can I change the topics of my podcasts? `,
+    answer: `Yes, you can change your topics at any time on the settings page.`,
+  },
+  {
+    question: `At what time do new podcasts become available each day?`,
+    answer: `New Podcai episodes are made available everyday at 7:45 AM. 
+    We are currently developing a scheduling feature which will allow you to choose at which time you would like to receive your daily podcast.`,
   },
 ];
 
