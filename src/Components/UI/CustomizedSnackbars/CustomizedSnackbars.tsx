@@ -14,10 +14,7 @@ export default function CustomizedSnackbars({
 }: CustomizedSnackbarsProps) {
   const [open, setOpen] = React.useState(true);
 
-  const closeHandler = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const closeHandler = (_?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }

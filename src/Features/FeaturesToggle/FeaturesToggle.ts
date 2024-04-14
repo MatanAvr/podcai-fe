@@ -6,21 +6,35 @@ export const featuresToggleSlice = createSlice({
     addToHomeScreenEnabled: true,
     googleLoginEnabled: false,
     googleSignUpEnabled: false,
+    uploadProfilePicEnabled: false,
   },
   reducers: {
-    setAddToHomeScreen: (state, action: { payload: { newMode: boolean } }) => {
+    setAddToHomeScreenFT: (
+      state,
+      action: { payload: { newMode: boolean } }
+    ) => {
       state.addToHomeScreenEnabled = action.payload.newMode;
     },
-    setGoogleLogin: (state, action: { payload: { newMode: boolean } }) => {
+    setGoogleLoginFT: (state, action: { payload: { newMode: boolean } }) => {
       state.googleLoginEnabled = action.payload.newMode;
     },
-    setGoogleSignUp: (state, action: { payload: { newMode: boolean } }) => {
+    setGoogleSignUpFT: (state, action: { payload: { newMode: boolean } }) => {
       state.googleSignUpEnabled = action.payload.newMode;
+    },
+    setUploadProfilePicEnabledFT: (
+      state,
+      action: { payload: { newMode: boolean } }
+    ) => {
+      state.uploadProfilePicEnabled = action.payload.newMode;
     },
   },
 });
 
-export const { setAddToHomeScreen, setGoogleLogin, setGoogleSignUp } =
-  featuresToggleSlice.actions;
+export const {
+  setAddToHomeScreenFT,
+  setGoogleLoginFT,
+  setGoogleSignUpFT,
+  setUploadProfilePicEnabledFT,
+} = featuresToggleSlice.actions;
 
 export default featuresToggleSlice.reducer;
