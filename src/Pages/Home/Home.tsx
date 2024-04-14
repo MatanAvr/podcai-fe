@@ -25,7 +25,7 @@ import { useQuery } from "@tanstack/react-query";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { useAppSelector } from "../../Hooks/Hooks";
 import Counter from "../../Components/UI/Counter/Counter";
 
@@ -333,7 +333,7 @@ export const Home = () => {
                               {episode.name}
                             </Typography>
                             {episode.is_completed && (
-                              <CheckCircleIcon
+                              <CheckCircleRoundedIcon
                                 color="primary"
                                 fontSize="small"
                               />
