@@ -225,7 +225,10 @@ const CustomAppBar = () => {
             <>
               <Box sx={{ flexGrow: 0 }}>
                 <IconButton onClick={openMenuHandler} sx={{ p: 0 }}>
-                  <Avatar alt={loggedUser.name} src={""} />
+                  <Avatar
+                    alt={loggedUser.name}
+                    src={loggedUser.profile_pic || ""}
+                  />
                 </IconButton>
                 <Menu
                   anchorEl={anchorElUser}

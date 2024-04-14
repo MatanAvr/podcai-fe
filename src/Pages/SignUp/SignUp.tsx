@@ -64,6 +64,8 @@ const newUserDefault: INewUser = {
   country: "us",
   language: "en",
   should_send_episode_email: true,
+  subscription: "Basic",
+  profile_pic: "",
 };
 
 const steps = ["Details", "Verify", "Settings"];
