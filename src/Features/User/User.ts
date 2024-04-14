@@ -12,6 +12,8 @@ const emptyUser: loggedInUser = {
   country: "us",
   language: "en",
   should_send_episode_email: false,
+  subscription: "Basic",
+  profile_pic: "",
 };
 
 export const userSlice = createSlice({

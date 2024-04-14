@@ -21,12 +21,16 @@ import CustomizedSnackbars from "../../Components/UI/CustomizedSnackbars/Customi
 import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../../Utils/Utils";
 import { PodcastersVoices } from "../../Components/UI/PodcastersVoices/PodcastersVoices";
+import UploadProfilePicModal from "../../Components/UI/UploadProfilePicModal/UploadProfilePicModal";
 
 const apiClientInstance = ApiClient.getInstance();
 
 export const Settings = () => {
   const dispatch = useAppDispatch();
   const nav = useMyNavigation();
+  const uploadProfilePicEnabled = useAppSelector(
+    (state) => state.featuresToggle.uploadProfilePicEnabled
+  );
   const [userUpdatedSuccessfully, setUserUpdatedSuccessfully] = useState(false);
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
@@ -111,28 +115,46 @@ export const Settings = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
-            gap: 0.5,
+            justifyContent: "flex-start",
+            gap: 2,
           }}
         >
-          <Typography variant="caption" color="text.secondary" component="div">
-            Name
-          </Typography>
-          <Typography component="div">{loggedUser.name}</Typography>
-          <Typography variant="caption" color="text.secondary" component="div">
-            Email address
-          </Typography>
-          <Typography component="div">{loggedUser.email}</Typography>
+          <Box>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              component="div"
+            >
+              Name
+            </Typography>
+            <Typography component="div">{loggedUser.name}</Typography>
+          </Box>
+          <Box>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              component="div"
+            >
+              Email address
+            </Typography>
+            <Typography component="div">{loggedUser.email}</Typography>
+          </Box>
         </Box>
         <Box
           sx={{
             display: "flex",
+            flexDirection: "column",
             flex: 1,
             justifyContent: "flex-end",
             alignItems: "center",
+            gap: 1,
           }}
         >
-          <Avatar sx={{ width: 100, height: 100 }} src={""} />
+          <Avatar
+            sx={{ width: 100, height: 100 }}
+            src={loggedUser.profile_pic || ""}
+          />
+          {uploadProfilePicEnabled && <UploadProfilePicModal />}
         </Box>
       </Card>
     </>
@@ -147,7 +169,9 @@ export const Settings = () => {
         <Typography variant="caption" color="text.secondary" component="div">
           Plan
         </Typography>
-        <Typography component="div">Podcai Basic Plan</Typography>
+        <Typography component="div">
+          Podcai {loggedUser.subscription} Plan
+        </Typography>
       </Card>
     </>
   );

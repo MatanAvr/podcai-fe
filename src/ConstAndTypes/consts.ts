@@ -1,3 +1,5 @@
+type subscription = "Basic" | "Standard" | "Premium" | "PayAsYouGo";
+
 export interface INewUser {
   name: string;
   email: string;
@@ -8,6 +10,8 @@ export interface INewUser {
   country: Countries;
   language: Languages;
   should_send_episode_email: boolean;
+  subscription: subscription;
+  profile_pic: string | null;
 }
 
 export type loggedInUser = Omit<INewUser, "num_of_articles" | "password">;
@@ -99,6 +103,8 @@ export interface loginResponse {
   country: Countries;
   language: Languages;
   should_send_episode_email: boolean;
+  subscription: subscription;
+  profile_pic: string;
 }
 
 export const SIGNUP_URL = "/sign_up/";
