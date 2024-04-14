@@ -132,7 +132,10 @@ export const Settings = () => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ width: 100, height: 100 }} src={""} />
+          <Avatar
+            sx={{ width: 100, height: 100 }}
+            src={loggedUser.profile_pic || ""}
+          />
         </Box>
       </Card>
     </>
@@ -147,7 +150,9 @@ export const Settings = () => {
         <Typography variant="caption" color="text.secondary" component="div">
           Plan
         </Typography>
-        <Typography component="div">Podcai Basic Plan</Typography>
+        <Typography component="div">
+          Podcai {loggedUser.subscription} Plan
+        </Typography>
       </Card>
     </>
   );
