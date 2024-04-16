@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ApiClient } from "../../Services/axios";
-import { loggedInUser } from "../../ConstAndTypes/consts";
+import { SuscirptionEnum, loggedInUser } from "../../ConstAndTypes/consts";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -12,7 +12,7 @@ const emptyUser: loggedInUser = {
   country: "us",
   language: "en",
   should_send_episode_email: false,
-  subscription: "Basic",
+  subscription: SuscirptionEnum.Basic,
   profile_pic: "",
 };
 

@@ -1,4 +1,23 @@
-type subscription = "Basic" | "Standard" | "Premium" | "PayAsYouGo";
+export enum SuscirptionEnum {
+  Basic = "Basic",
+  Standard = "Standard",
+  Premium = "Premium",
+  PayAsYouGo = "PayAsYouGo",
+}
+
+export type subscription =
+  | SuscirptionEnum.Basic
+  | SuscirptionEnum.Standard
+  | SuscirptionEnum.Premium
+  | SuscirptionEnum.PayAsYouGo;
+
+export enum RoleEnum {
+  User = "User",
+  Admin = "Admin",
+  Test = "Test",
+}
+
+export type role = RoleEnum.User | RoleEnum.Admin | RoleEnum.Test;
 
 export interface INewUser {
   name: string;
@@ -28,6 +47,7 @@ export type Pages =
   | "Privacy policy"
   | "Contact us"
   | "Updates"
+  | "Admin dashboard"
   | "";
 
 type Countries = "us";

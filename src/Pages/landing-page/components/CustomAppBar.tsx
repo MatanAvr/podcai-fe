@@ -6,7 +6,11 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { ToggleColorModeSwitch } from "./ToggleColorModeSwitch";
-import { ALL_EPISODES_QUERY_KEY, Pages } from "../../../ConstAndTypes/consts";
+import {
+  ALL_EPISODES_QUERY_KEY,
+  Pages,
+  RoleEnum,
+} from "../../../ConstAndTypes/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
 import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
@@ -27,6 +31,7 @@ import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
+import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
 
 const browser = getBrowser();
 const logoStyle = {
@@ -42,6 +47,9 @@ const CustomAppBar = () => {
   const isAuth = useAppSelector((state) => state.user.auth);
   const addToHomeScreenEnabled = useAppSelector(
     (state) => state.featuresToggle.addToHomeScreenEnabled
+  );
+  const adminDashboardenabled = useAppSelector(
+    (state) => state.featuresToggle.adminDashboardenabled
   );
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const themeColor = useAppSelector((state) => state.theme.themeColor);
@@ -252,6 +260,19 @@ const CustomAppBar = () => {
                   >
                     <ToggleColorModeSwitch />
                   </Box>
+                  {adminDashboardenabled && (
+                    // loggedUser.role === RoleEnum.Admin &&
+                    <MenuItem
+                      onClick={() => {
+                        changePageHandler("Admin dashboard");
+                      }}
+                    >
+                      <ListItemIcon>
+                        <AdminPanelSettingsRoundedIcon fontSize="small" />
+                      </ListItemIcon>
+                      <Typography>Admin dashboard</Typography>
+                    </MenuItem>
+                  )}
                   {manuItemsArr.map((menuItem, index) => {
                     return (
                       <MenuItem
@@ -305,7 +326,10 @@ const CustomAppBar = () => {
         <Box sx={{ display: { sm: "", md: "none" } }}>
           {isAuth ? (
             <IconButton onClick={toggleDrawer(true)} sx={{ p: 0, px: 0.5 }}>
-              <Avatar alt={loggedUser.name} src={""} />
+              <Avatar
+                alt={loggedUser.name}
+                src={loggedUser.profile_pic || ""}
+              />
             </IconButton>
           ) : (
             <Button
@@ -366,6 +390,19 @@ const CustomAppBar = () => {
 
               {isAuth ? (
                 <>
+                  {adminDashboardenabled && (
+                    // loggedUser.role === RoleEnum.Admin &&
+                    <MenuItem
+                      onClick={() => {
+                        changePageHandler("Admin dashboard");
+                      }}
+                    >
+                      <ListItemIcon>
+                        <AdminPanelSettingsRoundedIcon fontSize="small" />
+                      </ListItemIcon>
+                      <Typography>Admin dashboard</Typography>
+                    </MenuItem>
+                  )}
                   {manuItemsArr.map((menuItem, index) => {
                     return (
                       <MenuItem

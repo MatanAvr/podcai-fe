@@ -7,6 +7,7 @@ export const featuresToggleSlice = createSlice({
     googleLoginEnabled: false,
     googleSignUpEnabled: false,
     uploadProfilePicEnabled: false,
+    adminDashboardenabled: false,
   },
   reducers: {
     setAddToHomeScreenFT: (
@@ -27,6 +28,12 @@ export const featuresToggleSlice = createSlice({
     ) => {
       state.uploadProfilePicEnabled = action.payload.newMode;
     },
+    setAdminDashboardenabledFT: (
+      state,
+      action: { payload: { newMode: boolean } }
+    ) => {
+      state.uploadProfilePicEnabled = action.payload.newMode;
+    },
   },
 });
 
@@ -35,6 +42,7 @@ export const {
   setGoogleLoginFT,
   setGoogleSignUpFT,
   setUploadProfilePicEnabledFT,
+  setAdminDashboardenabledFT,
 } = featuresToggleSlice.actions;
 
 export default featuresToggleSlice.reducer;
