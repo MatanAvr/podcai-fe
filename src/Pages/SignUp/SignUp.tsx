@@ -29,6 +29,7 @@ import {
   verifyOtpRequest,
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_STALE_TIME_MINUTES,
+  SuscirptionEnum,
 } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
 import {
@@ -64,7 +65,7 @@ const newUserDefault: INewUser = {
   country: "us",
   language: "en",
   should_send_episode_email: true,
-  subscription: "Basic",
+  subscription: SuscirptionEnum.Basic,
   profile_pic: "",
 };
 

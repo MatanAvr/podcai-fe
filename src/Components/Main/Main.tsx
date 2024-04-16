@@ -20,8 +20,11 @@ import { Updates } from "../../Pages/Updates/Updates";
 import {
   LOCAL_STORAGE_THEME_KEY,
   LOCAL_STORAGE_TOKEN_KEY,
+  RoleEnum,
+  role,
 } from "../../ConstAndTypes/consts";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
+import { AdminDashboard } from "../../Pages/AdminDashboard/AdminDashboard";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -86,11 +89,18 @@ export const Main = () => {
           {/* <Route path="/Updates" element={<Updates />} /> */}
 
           {/* Private route using PrivateRoute component */}
-          <Route element={<PrivateRoute />}>
+          <Route element={<PrivateRoute roleRequired={"Any"} />}>
             <Route path="/Home" element={<Home />} />
           </Route>
-          <Route path="/" element={<PrivateRoute />}>
+          <Route path="/" element={<PrivateRoute roleRequired={"Any"} />}>
             <Route path="/Settings" element={<Settings />} />
+          </Route>
+
+          <Route
+            path="/"
+            element={<PrivateRoute roleRequired={RoleEnum.Admin} />}
+          >
+            <Route path="/Admin dashboard" element={<AdminDashboard />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
@@ -99,9 +109,21 @@ export const Main = () => {
   );
 };
 
-const PrivateRoute = () => {
-  const isAuthenticated = useAppSelector((state) => state.user.auth);
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+interface PrivateRouteProps {
+  roleRequired: role | "Any";
+}
+const PrivateRoute = ({ roleRequired }: PrivateRouteProps) => {
+  const loggedUser = useAppSelector((state) => state.user);
+  const isAuthenticated = loggedUser.auth;
+  let isRoleValid = true;
+  // if (roleRequired !== "Any" && roleRequired !== loggedUser.role) {
+  //   isRoleValid = false;
+  // }
+  return isAuthenticated && isRoleValid ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/" replace />
+  );
 };
 
 export default PrivateRoute;
