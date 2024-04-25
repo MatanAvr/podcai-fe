@@ -68,7 +68,7 @@ export const Home = () => {
     if (allEpisodes && !currentlyPlaying) {
       setCurrentlyPlaying(() => allEpisodes[0]);
     }
-  }, [allEpisodes]);
+  }, [allEpisodes, currentlyPlaying]);
 
   const expendHandler = (panelId: string) => {
     if (expandedArr.includes(panelId)) {
@@ -238,7 +238,7 @@ export const Home = () => {
                               <Link
                                 href={article.url}
                                 target="_blank"
-                                rel="noopener"
+                                rel="external nofollow noopener"
                               >
                                 {article.title}
                               </Link>

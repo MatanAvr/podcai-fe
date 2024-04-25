@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ApiClient } from "../../Services/axios";
-import { SuscirptionEnum, loggedInUser } from "../../ConstAndTypes/consts";
+import {
+  RoleEnum,
+  SuscirptionEnum,
+  loggedInUser,
+} from "../../ConstAndTypes/consts";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -14,6 +18,7 @@ const emptyUser: loggedInUser = {
   should_send_episode_email: false,
   subscription: SuscirptionEnum.Basic,
   profile_pic: "",
+  role: RoleEnum.User,
 };
 
 export const userSlice = createSlice({

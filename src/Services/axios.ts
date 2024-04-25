@@ -38,8 +38,9 @@ import {
   EPISODE_COMPLETED_URL,
   GOOGLE_OAUTH_URL,
   GoogleUserResponse,
+  loginRequest,
+  loginResponse,
 } from "../ConstAndTypes/consts";
-import { loginRequest, loginResponse } from "../ConstAndTypes/consts";
 
 export class ApiClient {
   private static instance: ApiClient;

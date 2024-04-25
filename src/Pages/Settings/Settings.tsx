@@ -219,6 +219,7 @@ export const Settings = () => {
             Send me emails when my podcai are ready
           </Typography>
           <Switch
+            size="small"
             checked={shouldSendEpisodeEmail}
             onClick={() => setShouldSendEpisodeEmail((prev) => !prev)}
           />

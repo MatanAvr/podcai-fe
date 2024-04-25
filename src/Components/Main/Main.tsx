@@ -113,12 +113,12 @@ interface PrivateRouteProps {
   roleRequired: role | "Any";
 }
 const PrivateRoute = ({ roleRequired }: PrivateRouteProps) => {
-  const loggedUser = useAppSelector((state) => state.user);
-  const isAuthenticated = loggedUser.auth;
+  const userState = useAppSelector((state) => state.user);
+  const isAuthenticated = userState.auth;
   let isRoleValid = true;
-  // if (roleRequired !== "Any" && roleRequired !== loggedUser.role) {
-  //   isRoleValid = false;
-  // }
+  if (roleRequired !== "Any" && roleRequired !== userState.loggedUser.role) {
+    isRoleValid = false;
+  }
   return isAuthenticated && isRoleValid ? (
     <Outlet />
   ) : (

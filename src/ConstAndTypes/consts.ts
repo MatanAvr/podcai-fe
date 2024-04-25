@@ -31,6 +31,7 @@ export interface INewUser {
   should_send_episode_email: boolean;
   subscription: subscription;
   profile_pic: string | null;
+  role: role;
 }
 
 export type loggedInUser = Omit<INewUser, "num_of_articles" | "password">;
@@ -114,17 +115,8 @@ export const BASE_URL: string = "https://www.podcai.co/api";
 export const USER_LOGIN_URL = "/user/login/";
 export const USER_AUTH_URL = "/user/auth/";
 export type loginRequest = { email: string; password: string };
-export interface loginResponse {
+export interface loginResponse extends loggedInUser {
   access_token: string;
-  name: string;
-  email: string;
-  categories: Topics[];
-  voice: Voices;
-  country: Countries;
-  language: Languages;
-  should_send_episode_email: boolean;
-  subscription: subscription;
-  profile_pic: string;
 }
 
 export const SIGNUP_URL = "/sign_up/";

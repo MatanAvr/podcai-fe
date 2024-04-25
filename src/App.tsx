@@ -24,6 +24,7 @@ const UI: ThemeOptions = {
     },
   },
 };
+
 export const customDefaultTheme = createTheme({
   ...UI,
 });
@@ -34,6 +35,7 @@ const darkTheme = createTheme({
     mode: "dark",
   },
 });
+
 const App = () => {
   const themeColor = useAppSelector((state) => state.theme.themeColor);
 

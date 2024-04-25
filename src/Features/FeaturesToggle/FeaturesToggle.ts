@@ -7,7 +7,7 @@ export const featuresToggleSlice = createSlice({
     googleLoginEnabled: false,
     googleSignUpEnabled: false,
     uploadProfilePicEnabled: false,
-    adminDashboardenabled: false,
+    adminDashboardEnabled: true,
   },
   reducers: {
     setAddToHomeScreenFT: (

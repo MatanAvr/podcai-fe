@@ -30,6 +30,7 @@ import {
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_STALE_TIME_MINUTES,
   SuscirptionEnum,
+  RoleEnum,
 } from "../../ConstAndTypes/consts";
 import { ApiClient } from "../../Services/axios";
 import {
@@ -67,6 +68,7 @@ const newUserDefault: INewUser = {
   should_send_episode_email: true,
   subscription: SuscirptionEnum.Basic,
   profile_pic: "",
+  role: RoleEnum.User,
 };
 
 const steps = ["Details", "Verify", "Settings"];

@@ -254,7 +254,7 @@ export default function Footer() {
                 color="primary"
                 href={socialMedia.link}
                 target="_blank"
-                rel="noopener"
+                rel="external nofollow noopener"
                 aria-label={socialMedia.name}
                 sx={{ alignSelf: "center" }}
                 size="large"

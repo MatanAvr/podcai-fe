@@ -48,8 +48,8 @@ const CustomAppBar = () => {
   const addToHomeScreenEnabled = useAppSelector(
     (state) => state.featuresToggle.addToHomeScreenEnabled
   );
-  const adminDashboardenabled = useAppSelector(
-    (state) => state.featuresToggle.adminDashboardenabled
+  const adminDashboardEnabled = useAppSelector(
+    (state) => state.featuresToggle.adminDashboardEnabled
   );
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const themeColor = useAppSelector((state) => state.theme.themeColor);
@@ -260,19 +260,19 @@ const CustomAppBar = () => {
                   >
                     <ToggleColorModeSwitch />
                   </Box>
-                  {adminDashboardenabled && (
-                    // loggedUser.role === RoleEnum.Admin &&
-                    <MenuItem
-                      onClick={() => {
-                        changePageHandler("Admin dashboard");
-                      }}
-                    >
-                      <ListItemIcon>
-                        <AdminPanelSettingsRoundedIcon fontSize="small" />
-                      </ListItemIcon>
-                      <Typography>Admin dashboard</Typography>
-                    </MenuItem>
-                  )}
+                  {adminDashboardEnabled &&
+                    loggedUser.role === RoleEnum.Admin && (
+                      <MenuItem
+                        onClick={() => {
+                          changePageHandler("Admin dashboard");
+                        }}
+                      >
+                        <ListItemIcon>
+                          <AdminPanelSettingsRoundedIcon fontSize="small" />
+                        </ListItemIcon>
+                        <Typography>Admin dashboard</Typography>
+                      </MenuItem>
+                    )}
                   {manuItemsArr.map((menuItem, index) => {
                     return (
                       <MenuItem
@@ -390,19 +390,19 @@ const CustomAppBar = () => {
 
               {isAuth ? (
                 <>
-                  {adminDashboardenabled && (
-                    // loggedUser.role === RoleEnum.Admin &&
-                    <MenuItem
-                      onClick={() => {
-                        changePageHandler("Admin dashboard");
-                      }}
-                    >
-                      <ListItemIcon>
-                        <AdminPanelSettingsRoundedIcon fontSize="small" />
-                      </ListItemIcon>
-                      <Typography>Admin dashboard</Typography>
-                    </MenuItem>
-                  )}
+                  {adminDashboardEnabled &&
+                    loggedUser.role === RoleEnum.Admin && (
+                      <MenuItem
+                        onClick={() => {
+                          changePageHandler("Admin dashboard");
+                        }}
+                      >
+                        <ListItemIcon>
+                          <AdminPanelSettingsRoundedIcon fontSize="small" />
+                        </ListItemIcon>
+                        <Typography>Admin dashboard</Typography>
+                      </MenuItem>
+                    )}
                   {manuItemsArr.map((menuItem, index) => {
                     return (
                       <MenuItem
