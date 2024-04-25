@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import {
-  DEFAULT_STALE_TIME_MINUTES,
+  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
   EPISODE_EXAMPLE_QUERY_KEY,
   LANDING_PAGE_PY,
 } from "../../../ConstAndTypes/consts";
@@ -25,7 +25,7 @@ export default function BriefAndExample() {
     queryKey: [EPISODE_EXAMPLE_QUERY_KEY],
     queryFn: getEpisodeExample,
     refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_STALE_TIME_MINUTES),
+    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
   });
 
   return (

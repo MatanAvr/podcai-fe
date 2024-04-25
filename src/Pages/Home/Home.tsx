@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { ApiClient } from "../../Services/axios";
 import {
   ALL_EPISODES_QUERY_KEY,
-  DEFAULT_STALE_TIME_MINUTES,
-  Episode,
+  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
+  TEpisode,
 } from "../../ConstAndTypes/consts";
 import { isMobile, minutesInMilliseconds } from "../../Utils/Utils";
 import {
@@ -35,9 +35,9 @@ const apiClientInstance = ApiClient.getInstance();
 export const Home = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [expandedArr, setExpandedArr] = useState<string[]>([]);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<Episode | undefined>(
-    undefined
-  );
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<
+    TEpisode | undefined
+  >(undefined);
 
   const getEpisodes = async () => {
     const res = await apiClientInstance.getEpisodes();
@@ -52,10 +52,10 @@ export const Home = () => {
     queryKey: [ALL_EPISODES_QUERY_KEY],
     queryFn: getEpisodes,
     refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_STALE_TIME_MINUTES),
+    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
   });
 
-  const onClickEpisodeHandler = (newEpisode: Episode) => {
+  const onClickEpisodeHandler = (newEpisode: TEpisode) => {
     if (newEpisode.name === currentlyPlaying?.name) {
       return;
     } else {

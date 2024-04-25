@@ -15,7 +15,7 @@ import {
   TextField,
 } from "@mui/material";
 import {
-  Topics,
+  TTopics,
   INewUser,
   topicsArray,
   MAX_NUM_OF_TOPICS,
@@ -23,12 +23,12 @@ import {
   MIN_NUM_OF_TOPICS,
   MIN_PASS_LENGTH,
   OTP_LENGTH,
-  Voices,
+  TVoices,
   DELETE_ERROR_TIMEOUT,
   sendOtpRequest,
   verifyOtpRequest,
   VOICES_SAMPLES_QUERY_KEY,
-  DEFAULT_STALE_TIME_MINUTES,
+  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
   SuscirptionEnum,
   RoleEnum,
 } from "../../ConstAndTypes/consts";
@@ -86,8 +86,8 @@ export const SignUp = () => {
   const [skipped, setSkipped] = useState(new Set<number>());
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [emailErr, setEmailErr] = useState<string>("");
-  const [chosenVoice, setChosenVoice] = useState<Voices>();
-  const [chosenTopics, setChosenTopics] = useState<Topics[]>([]);
+  const [chosenVoice, setChosenVoice] = useState<TVoices>();
+  const [chosenTopics, setChosenTopics] = useState<TTopics[]>([]);
   const [shouldSendEpisodeEmail, setShouldSendEpisodeEmail] =
     useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
@@ -106,7 +106,7 @@ export const SignUp = () => {
     queryKey: [VOICES_SAMPLES_QUERY_KEY],
     queryFn: getVoiceSamepls,
     refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_STALE_TIME_MINUTES),
+    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
   });
 
   const validateEmail = () => {
@@ -135,7 +135,7 @@ export const SignUp = () => {
     });
   };
 
-  const changeTopicsHandler = (newTopics: Topics[]) => {
+  const changeTopicsHandler = (newTopics: TTopics[]) => {
     console.log(newTopics);
     setChosenTopics(() => newTopics);
   };
@@ -299,7 +299,7 @@ export const SignUp = () => {
 
   const changeVoiceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
-    setChosenVoice(newVoice as Voices);
+    setChosenVoice(newVoice as TVoices);
   };
 
   useEffect(() => {

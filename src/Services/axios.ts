@@ -40,6 +40,10 @@ import {
   GoogleUserResponse,
   loginRequest,
   loginResponse,
+  getAllUsersResponse,
+  GET_ALL_USERS_URL,
+  GET_ALL_USER_EPISODES_URL,
+  getAllUserEpisodesResponse,
 } from "../ConstAndTypes/consts";
 
 export class ApiClient {
@@ -261,6 +265,32 @@ export class ApiClient {
     } catch (error) {
       console.error(`getGoogleUser, error:${error}`);
       throw error;
+    }
+  }
+
+  async getAllUsers(): Promise<getAllUsersResponse> {
+    try {
+      const response: AxiosResponse<getAllUsersResponse> =
+        await this.axiosInstance.get(GET_ALL_USERS_URL);
+      return response.data;
+    } catch (error) {
+      console.error(`getAllUsers, error:${error}`);
+      return { users: [] };
+    }
+  }
+
+  async getAllUserEpisodes(
+    userId: string
+  ): Promise<getAllUserEpisodesResponse> {
+    try {
+      const response: AxiosResponse<getAllUserEpisodesResponse> =
+        await this.axiosInstance.get(
+          `${GET_ALL_USER_EPISODES_URL}?user_id=${userId}`
+        );
+      return response.data;
+    } catch (error) {
+      console.error(`getAllUserEpisodes, error:${error}`);
+      return { episodes_data: [] };
     }
   }
 }

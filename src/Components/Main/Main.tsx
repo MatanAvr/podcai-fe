@@ -16,12 +16,12 @@ import { ForgotPassword } from "../../Pages/ForgotPassword/ForgotPassword";
 import { TermsOfService } from "../../Pages/TermsOfService/TermsOfService";
 import { PrivacyPolicy } from "../../Pages/PrivacyPolicy/PrivacyPolicy";
 import { ContactUs } from "../../Pages/ContactUs/ContactUs";
-import { Updates } from "../../Pages/Updates/Updates";
+// import { Updates } from "../../Pages/Updates/Updates";
 import {
   LOCAL_STORAGE_THEME_KEY,
   LOCAL_STORAGE_TOKEN_KEY,
   RoleEnum,
-  role,
+  TRole,
 } from "../../ConstAndTypes/consts";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 import { AdminDashboard } from "../../Pages/AdminDashboard/AdminDashboard";
@@ -110,7 +110,7 @@ export const Main = () => {
 };
 
 interface PrivateRouteProps {
-  roleRequired: role | "Any";
+  roleRequired: TRole | "Any";
 }
 const PrivateRoute = ({ roleRequired }: PrivateRouteProps) => {
   const userState = useAppSelector((state) => state.user);

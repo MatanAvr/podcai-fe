@@ -5,7 +5,7 @@ export enum SuscirptionEnum {
   PayAsYouGo = "PayAsYouGo",
 }
 
-export type subscription =
+export type TSubscription =
   | SuscirptionEnum.Basic
   | SuscirptionEnum.Standard
   | SuscirptionEnum.Premium
@@ -17,21 +17,21 @@ export enum RoleEnum {
   Test = "Test",
 }
 
-export type role = RoleEnum.User | RoleEnum.Admin | RoleEnum.Test;
+export type TRole = RoleEnum.User | RoleEnum.Admin | RoleEnum.Test;
 
 export interface INewUser {
   name: string;
   email: string;
   password: string;
-  voice: Voices;
+  voice: TVoices;
   num_of_articles: number;
-  categories: Topics[];
-  country: Countries;
-  language: Languages;
+  categories: TTopics[];
+  country: TCountries;
+  language: TLanguages;
   should_send_episode_email: boolean;
-  subscription: subscription;
+  subscription: TSubscription;
   profile_pic: string | null;
-  role: role;
+  role: TRole;
 }
 
 export type loggedInUser = Omit<INewUser, "num_of_articles" | "password">;
@@ -51,10 +51,10 @@ export type Pages =
   | "Admin dashboard"
   | "";
 
-type Countries = "us";
-type Languages = "en";
+type TCountries = "us";
+type TLanguages = "en";
 
-export type Topics =
+export type TTopics =
   | "general"
   | "world"
   | "nation"
@@ -65,7 +65,7 @@ export type Topics =
   | "science"
   | "entertainment";
 
-export const topicsArray: Topics[] = [
+export const topicsArray: TTopics[] = [
   "general",
   "world",
   "nation",
@@ -77,7 +77,13 @@ export const topicsArray: Topics[] = [
   "entertainment",
 ];
 
-export type Voices = "Guy" | "Aria" | "Andrew" | "Jason" | "Nancy" | "Michelle";
+export type TVoices =
+  | "Guy"
+  | "Aria"
+  | "Andrew"
+  | "Jason"
+  | "Nancy"
+  | "Michelle";
 export const voicesArray = [
   "Guy",
   "Aria",
@@ -93,7 +99,6 @@ export const MIN_PASS_LENGTH = 4;
 export const MAX_NUM_OF_TOPICS = 3;
 export const MIN_NUM_OF_TOPICS = 1;
 export const SUPPORT_EMAIL = "support@podcai.co";
-export type Subscription = "Basic" | "Standard" | "Premium";
 export const LOCAL_STORAGE_TOKEN_KEY = "token";
 export const LOCAL_STORAGE_THEME_KEY = "theme";
 
@@ -107,8 +112,9 @@ export const DEFAULT_AUTO_HIDE_DURATION = 6 * 1000;
 // React query consts
 export const EPISODE_EXAMPLE_QUERY_KEY = "episode-example-url";
 export const ALL_EPISODES_QUERY_KEY = "all-episodes";
+export const ALL_USERS_QUERY_KEY = "all-users";
 export const VOICES_SAMPLES_QUERY_KEY = "voices-samples";
-export const DEFAULT_STALE_TIME_MINUTES = 10;
+export const DEFAULT_QUERY_DATA_STALE_TIME_MINUTES = 10;
 
 // API  related
 export const BASE_URL: string = "https://www.podcai.co/api";
@@ -126,29 +132,29 @@ export const USER_UPDATE_URL = "/user/update_user/";
 export type updateUserRequest = {
   name: string;
   num_of_articles: number;
-  categories: Topics[];
-  country: Countries;
-  language: Languages;
-  voice: Voices;
+  categories: TTopics[];
+  country: TCountries;
+  language: TLanguages;
+  voice: TVoices;
 };
 export type updateUserResponse = {
   is_success: boolean;
 };
 
 export const GET_EPISODES_URL = "/user/get_episodes/";
-export type getEpisodesResponse = { episodes: Episode[] };
+export type getEpisodesResponse = { episodes: TEpisode[] };
 
 export const GET_VOICE_SAMPLES_URL = "/get_voice_samples/";
 export type getVoiceSamplesResponse = { voice_samples: VoiceSample[] };
-export type VoiceSample = { name: Voices; url: string };
+export type VoiceSample = { name: TVoices; url: string };
 
-export interface Episode {
+export type TEpisode = {
   name: string;
   link: string;
-  categories: Topics[];
+  categories: TTopics[];
   articles_data: ArticleData[];
   is_completed: boolean;
-}
+};
 
 export interface ArticleData {
   title: string;
@@ -249,4 +255,63 @@ export type GoogleUserResponse = {
   name: string;
   picture: string;
   verified_email: boolean;
+};
+
+enum StageEnum {
+  Alpha = "alpha",
+  Beta = "beta",
+  Release = "release",
+}
+
+type TStage = StageEnum.Alpha | StageEnum.Beta | StageEnum.Release;
+
+export type TUserFromDB = {
+  user_id: string;
+  name: string;
+  email: string;
+  password: string;
+  num_of_articles: number;
+  categories: TTopics[];
+  country: TCountries[];
+  language: TLanguages;
+  salt: string;
+  voice: TVoices;
+  should_create_episode: boolean;
+  should_send_episode_email: boolean;
+  last_login: string;
+  subscription: TSubscription;
+  role: TRole;
+  stage: TStage;
+  login_with: string;
+  profile_pic: string;
+};
+
+export const GET_ALL_USERS_URL = "/admin/get_all_users/";
+export type getAllUsersResponse = {
+  users: TUserFromDB[];
+};
+
+type TEpisodeDB = {
+  user_id: string;
+  episode_name: string;
+  link: string;
+  articles_data: ArticleData[];
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
+  chat_gpt_summary: string;
+  file_size: number;
+  lambda_run_time: number;
+  num_of_articles: number;
+  categories: TTopics[];
+  voice: TVoices[];
+  country: TCountries;
+  language: TLanguages;
+  is_completed: boolean;
+  engine: string;
+  engine_model: string;
+};
+export const GET_ALL_USER_EPISODES_URL = "/admin/get_all_user_episodes/";
+export type getAllUserEpisodesResponse = {
+  episodes_data: TEpisodeDB[];
 };

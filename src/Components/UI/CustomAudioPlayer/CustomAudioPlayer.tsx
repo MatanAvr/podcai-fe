@@ -1,5 +1,8 @@
 import { Card, Box, IconButton, Typography } from "@mui/material";
-import { ALL_EPISODES_QUERY_KEY, Episode } from "../../../ConstAndTypes/consts";
+import {
+  ALL_EPISODES_QUERY_KEY,
+  TEpisode,
+} from "../../../ConstAndTypes/consts";
 import { useRef, useState } from "react";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 import { VolumeInput } from "./VolumeInput/VolumeInput";
@@ -20,7 +23,7 @@ const apiClientInstance = ApiClient.getInstance();
 const mobile = isMobile();
 
 interface audioPlayerProps {
-  episode: Episode;
+  episode: TEpisode;
 }
 type buttonsColorsOptions = "inherit" | "primary";
 type playSpeedOptions = 0.25 | 0.5 | 0.75 | 1 | 1.25 | 1.5 | 1.75 | 2;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  Topics,
+  TTopics,
   topicsArray,
-  Voices,
+  TVoices,
   MAX_NUM_OF_TOPICS,
   DEFAULT_AUTO_HIDE_DURATION,
   VOICES_SAMPLES_QUERY_KEY,
-  DEFAULT_STALE_TIME_MINUTES,
+  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
 } from "../../ConstAndTypes/consts";
 import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
 import { cloneDeep } from "lodash";
@@ -34,11 +34,11 @@ export const Settings = () => {
   const [userUpdatedSuccessfully, setUserUpdatedSuccessfully] = useState(false);
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
   const [isUpdading, setIsUpdading] = useState<boolean>(false);
-  const [chosenVoice, setChosenVoice] = useState<Voices>(loggedUser.voice);
+  const [chosenVoice, setChosenVoice] = useState<TVoices>(loggedUser.voice);
   const [shouldSendEpisodeEmail, setShouldSendEpisodeEmail] = useState<boolean>(
     loggedUser.should_send_episode_email
   );
-  const [chosenTopics, setChosenTopics] = useState<Topics[]>(
+  const [chosenTopics, setChosenTopics] = useState<TTopics[]>(
     loggedUser.categories
   );
 
@@ -53,7 +53,7 @@ export const Settings = () => {
     queryKey: [VOICES_SAMPLES_QUERY_KEY],
     queryFn: getVoiceSamepls,
     refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_STALE_TIME_MINUTES),
+    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
   });
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export const Settings = () => {
     loggedUser.voice,
   ]);
 
-  const changeTopicsHandler = (newTopics: Topics[]) => {
+  const changeTopicsHandler = (newTopics: TTopics[]) => {
     setChosenTopics(() => newTopics);
   };
 
@@ -96,7 +96,7 @@ export const Settings = () => {
 
   const changeVoiceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
-    setChosenVoice(newVoice as Voices);
+    setChosenVoice(newVoice as TVoices);
   };
 
   const accountDetailesContainer = (

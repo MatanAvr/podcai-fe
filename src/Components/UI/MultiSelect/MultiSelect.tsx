@@ -8,13 +8,13 @@ import {
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
-import { Topics, MAX_NUM_OF_TOPICS } from "../../../ConstAndTypes/consts";
+import { TTopics, MAX_NUM_OF_TOPICS } from "../../../ConstAndTypes/consts";
 import _ from "lodash";
 
 interface MultiSelectProps {
-  values: Topics[];
-  options: Topics[];
-  changeValuesHandler: (arg: Topics[]) => void;
+  values: TTopics[];
+  options: TTopics[];
+  changeValuesHandler: (arg: TTopics[]) => void;
 }
 
 export default function MultiSelect({
@@ -29,7 +29,7 @@ export default function MultiSelect({
         value={values}
         sx={{ minHeight: 65 }}
         onChange={(e) => {
-          const newValues = e.target.value as Topics[];
+          const newValues = e.target.value as TTopics[];
           changeValuesHandler(newValues);
         }}
         input={<OutlinedInput />}

@@ -2,11 +2,45 @@ import Typography from "@mui/material/Typography";
 import { Box, Card, Switch } from "@mui/material";
 import { ApiClient } from "../../Services/axios";
 import { useAppSelector } from "../../Hooks/Hooks";
+import { useQuery } from "@tanstack/react-query";
+import {
+  ALL_USERS_QUERY_KEY,
+  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
+} from "../../ConstAndTypes/consts";
+import { minutesInMilliseconds } from "../../Utils/Utils";
+import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
+import UsersTable from "./UsersTable";
 
 const apiClientInstance = ApiClient.getInstance();
-
+const TITLE_SIZE = "h6";
 export const AdminDashboard = () => {
   const features = useAppSelector((state) => state.featuresToggle);
+
+  const getAllUsers = async () => {
+    const res = await apiClientInstance.getAllUsers();
+    return res.users;
+  };
+
+  const { data: users, isLoading: isLoadingUsers } = useQuery({
+    queryKey: [ALL_USERS_QUERY_KEY],
+    queryFn: getAllUsers,
+    refetchOnWindowFocus: false,
+    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
+  });
+
+  const genericBox = (title: string, other: any) => {
+    return (
+      <>
+        <Typography variant={TITLE_SIZE} color={"primary"}>
+          {title}
+        </Typography>
+        <Card sx={{ display: "flex", flexDirection: "column", p: 1, gap: 0.5 }}>
+          {other}
+        </Card>
+      </>
+    );
+  };
+
   const featuresObjArr = [
     {
       name: "Add To Home Screen Enabled",
@@ -23,99 +57,66 @@ export const AdminDashboard = () => {
       checked: features.adminDashboardEnabled,
     },
   ];
-  const usersContainer = (
+
+  const generalContainer = genericBox(
+    "General",
     <>
-      <Typography variant="h5" component="div">
-        Users
+      <Typography variant="caption" color="text.secondary" component="div">
+        Users count
       </Typography>
-      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
-        <Typography variant="caption" color="text.secondary" component="div">
-          Count
-        </Typography>
-        <Typography component="div">41</Typography>
-      </Card>
+      <Typography component="div">{users?.length || "?"}</Typography>
+      <Typography variant="caption" color="text.secondary" component="div">
+        Support messages
+      </Typography>
+      <Typography component="div">?</Typography>
+      <Typography variant="caption" color="text.secondary" component="div">
+        Price calculator (last-month)
+      </Typography>
+      <Typography component="div">~2$ user/month</Typography>
     </>
   );
 
-  const systemContainer = (
+  const systemContainer = genericBox(
+    "System",
     <>
-      <Typography variant="h5" component="div">
-        System
+      <Typography variant="caption" color="text.secondary" component="div">
+        Engine
       </Typography>
-      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
-        <Typography variant="caption" color="text.secondary" component="div">
-          Engine
-        </Typography>
-        <Typography component="div">CLAUDE</Typography>
+      <Typography component="div">CLAUDE</Typography>
 
-        <Typography variant="caption" color="text.secondary" component="div">
-          Engine-model
-        </Typography>
-        <Typography component="div">claude-3-haiku-20240307</Typography>
-      </Card>
+      <Typography variant="caption" color="text.secondary" component="div">
+        Engine-model
+      </Typography>
+      <Typography component="div">claude-3-haiku-20240307</Typography>
     </>
   );
 
-  const featureToggleContainer = (
-    <>
-      <Typography variant="h5" component="div">
-        Feature toggle
-      </Typography>
-      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          alignItems="center"
-          gap={1}
-          width={"100%"}
-          justifyContent={"space-between"}
-        >
-          {featuresObjArr.map((feature, index) => {
-            return (
-              <Box
-                key={`feature-toggle-${index}`}
-                display={"flex"}
-                alignItems="center"
-                gap={1}
-                width={"100%"}
-                justifyContent={"space-between"}
-              >
-                <Typography component="div">{feature.name}</Typography>
-                <Switch size="small" checked={feature.checked} />
-              </Box>
-            );
-          })}
-        </Box>
-      </Card>
-    </>
-  );
-
-  const supportContainer = (
-    <>
-      <Typography variant="h5" component="div">
-        Support
-      </Typography>
-      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
-        <Typography variant="caption" color="text.secondary" component="div">
-          Messages
-        </Typography>
-        <Typography component="div">0</Typography>
-      </Card>
-    </>
-  );
-
-  const priceCalcContainer = (
-    <>
-      <Typography variant="h5" component="div">
-        Price calculator
-      </Typography>
-      <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
-        <Typography variant="caption" color="text.secondary" component="div">
-          Last month
-        </Typography>
-        <Typography component="div">2$ user/month</Typography>
-      </Card>
-    </>
+  const featureToggleContainer = genericBox(
+    "Feature toggle",
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      alignItems="center"
+      gap={1}
+      width={"100%"}
+      justifyContent={"space-between"}
+    >
+      {featuresObjArr.map((feature, index) => {
+        return (
+          <Box
+            key={`feature-toggle-${index}`}
+            display={"flex"}
+            alignItems="center"
+            gap={1}
+            width={"100%"}
+            justifyContent={"space-between"}
+          >
+            <Typography component="div">{feature.name}</Typography>
+            <Switch size="small" checked={feature.checked} disabled />
+          </Box>
+        );
+      })}
+    </Box>
   );
 
   return (
@@ -129,42 +130,29 @@ export const AdminDashboard = () => {
         alignItems: "center",
         justifyContent: "flex-start",
         gap: 1.5,
+        maxHeight: "90%",
       }}
     >
-      <Typography variant="h4" component="div" textAlign={"center"}>
-        Admin dashboard
-      </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          maxWidth: "90%",
-          gap: 2,
-        }}
-      >
-        <Box display={"flex"} flexDirection={"column"} gap={1}>
-          {usersContainer}
-          {systemContainer}
-          {featureToggleContainer}
-        </Box>
-        <Box display={"flex"} flexDirection={"column"} gap={1}>
-          {supportContainer}
-          {priceCalcContainer}
-          {/* {featureToggleContainer} */}
-        </Box>
-        {/* <Typography>Users count and list</Typography>
-        <Typography>Can see user episodes</Typography>
-        <Typography>Can change episode text and regenerate it</Typography>
-        <Typography>Can delete/archive user</Typography>
-        <Typography>Can change feature flags</Typography>
-        <Typography>
-          Can change global variables like engine and model (?)
-        </Typography>
-        <Typography>
-          See and edit/delete messages from 'support' table
-        </Typography>
-        <Typography>Price calculator</Typography> */}
-      </Box>
+      {isLoadingUsers ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            width={"90%"}
+            maxWidth="90%"
+            gap={2}
+          >
+            <Box display={"flex"} flexDirection={"column"} gap={1}>
+              {generalContainer}
+              {systemContainer}
+              {featureToggleContainer}
+            </Box>
+            <UsersTable users={users!} />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

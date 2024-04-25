@@ -10,13 +10,13 @@ import {
   voicesArray,
   VOICE_SAMPLE_SKELETON_WIDTH,
   VOICE_SAMPLE_SKELETON_HEIGHT,
-  Voices,
+  TVoices,
   VoiceSample,
 } from "../../../ConstAndTypes/consts";
 import { OneLineAudioPlayer } from "../OneLineAudioPlayer/OneLineAudioPlayer";
 
 interface PodcastersVoicesProps {
-  chosenVoice: Voices | undefined;
+  chosenVoice: TVoices | undefined;
   changeVoiceHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   voiceSamples: VoiceSample[] | undefined;
 }
