@@ -12,8 +12,8 @@ import {
   VOICE_SAMPLE_SKELETON_HEIGHT,
   TVoices,
   VoiceSample,
-} from "../../../ConstAndTypes/consts";
-import { OneLineAudioPlayer } from "../OneLineAudioPlayer/OneLineAudioPlayer";
+} from "../../ConstAndTypes/consts";
+import { OneLineAudioPlayer } from "./OneLineAudioPlayer/OneLineAudioPlayer";
 
 interface PodcastersVoicesProps {
   chosenVoice: TVoices | undefined;

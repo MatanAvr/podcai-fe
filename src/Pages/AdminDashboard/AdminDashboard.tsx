@@ -8,7 +8,7 @@ import {
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
 } from "../../ConstAndTypes/consts";
 import { minutesInMilliseconds } from "../../Utils/Utils";
-import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../Components/UI/LoadingSpinner";
 import UsersTable from "./UsersTable";
 
 const apiClientInstance = ApiClient.getInstance();

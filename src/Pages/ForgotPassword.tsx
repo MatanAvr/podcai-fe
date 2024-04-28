@@ -19,7 +19,7 @@ import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { isAxiosError } from "axios";
 import { useMyNavigation } from "../Hooks/useMyNavigation";
-import { PasswordTextField } from "../Components/UI/PasswordTextField/PasswordTextField";
+import { PasswordTextField } from "../Components/UI/PasswordTextField";
 
 const apiClientInstance = ApiClient.getInstance();
 

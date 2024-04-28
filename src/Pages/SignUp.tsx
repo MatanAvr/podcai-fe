@@ -43,15 +43,15 @@ import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../Hooks/Hooks";
 import { setLoggedUser, setAuth } from "../Features/User";
 import { isAxiosError } from "axios";
-import MultiSelect from "../Components/UI/MultiSelect/MultiSelect";
+import MultiSelect from "../Components/UI/MultiSelect";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../Hooks/useMyNavigation";
 import { useQuery } from "@tanstack/react-query";
 import { useGoogleLogin, TokenResponse } from "@react-oauth/google";
 import googleIconSvg from "../Assets/Svg/google-icon.svg";
 import { cloneDeep } from "lodash";
-import { PasswordTextField } from "../Components/UI/PasswordTextField/PasswordTextField";
-import { PodcastersVoices } from "../Components/UI/PodcastersVoices/PodcastersVoices";
+import { PasswordTextField } from "../Components/UI/PasswordTextField";
+import { PodcastersVoices } from "../Components/UI/PodcastersVoices";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const apiClientInstance = ApiClient.getInstance();

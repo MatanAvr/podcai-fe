@@ -80,9 +80,13 @@ export default function Highlights() {
                   },
                 }}
               >
-                <Box sx={{color: "text.primary"}}>{highlight.icon}</Box>
+                <Box sx={{ color: "primary.main" }}>{highlight.icon}</Box>
                 <div>
-                  <Typography fontWeight="bold" gutterBottom color="text.primary">
+                  <Typography
+                    fontWeight="bold"
+                    gutterBottom
+                    color="text.primary"
+                  >
                     {highlight.title}
                   </Typography>
                   <Typography color="text.primary">

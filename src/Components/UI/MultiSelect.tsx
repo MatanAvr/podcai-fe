@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
-import { TTopics, MAX_NUM_OF_TOPICS } from "../../../ConstAndTypes/consts";
+import { TTopics, MAX_NUM_OF_TOPICS } from "../../ConstAndTypes/consts";
 import _ from "lodash";
 
 interface MultiSelectProps {

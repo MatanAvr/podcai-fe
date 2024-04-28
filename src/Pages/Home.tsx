@@ -19,7 +19,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import LoadingSpinner from "../Components/UI/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../Components/UI/LoadingSpinner";
 import { CustomAudioPlayer } from "../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
 import { useQuery } from "@tanstack/react-query";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -27,7 +27,7 @@ import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { useAppSelector } from "../Hooks/Hooks";
-import Counter from "../Components/UI/Counter/Counter";
+import Counter from "../Components/UI/Counter";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();

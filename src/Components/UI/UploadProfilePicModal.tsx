@@ -1,28 +1,16 @@
-// import * as React from "react";
 import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
-import BasicModal from "../BasicModal/BasicModal";
-import { useEffect, useState } from "react";
-import { ApiClient } from "../../../Services/axios";
-// import { useAppDispatch } from "../../../Hooks/Hooks";
-// import { isAxiosError } from "axios";
-// import { setAuth } from "../../../Features/User/User";
-// import { useMyNavigation } from "../../../Hooks/useMyNavigation";
-// import { PasswordTextField } from "../PasswordTextField/PasswordTextField";
-// import { Button, Input, TextField } from "@mui/material";
+import { useState } from "react";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { Typography } from "@mui/material";
+import BasicModal from "./BasicModal";
 
 const FILES_INPUT_ID = "files_input";
 const FILE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 megabyte
 export default function UploadProfilePicModal() {
-  // const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValidSize, setIsValidSize] = useState<boolean>(false);
   const [isValidType, setIsValidType] = useState<boolean>(false);
-  const apiClientInstance = ApiClient.getInstance();
-  // const dispatch = useAppDispatch();
-  // const nav = useMyNavigation();
 
   const uploadProfilePicHandler = async () => {
     setIsLoading(true);

@@ -13,15 +13,15 @@ import { cloneDeep } from "lodash";
 import { ApiClient } from "../Services/axios";
 import { Avatar, Box, Card, Switch, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import DeleteUserModal from "../Components/UI/DeleteUserModal/DeleteUserModal";
-import MultiSelect from "../Components/UI/MultiSelect/MultiSelect";
+import DeleteUserModal from "../Components/UI/DeleteUserModal";
+import MultiSelect from "../Components/UI/MultiSelect";
 import { useMyNavigation } from "../Hooks/useMyNavigation";
 import { updateLoggedUser } from "../Features/User";
-import CustomizedSnackbars from "../Components/UI/CustomizedSnackbars/CustomizedSnackbars";
+import CustomizedSnackbars from "../Components/UI/CustomizedSnackbars";
 import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../Utils/Utils";
-import { PodcastersVoices } from "../Components/UI/PodcastersVoices/PodcastersVoices";
-import UploadProfilePicModal from "../Components/UI/UploadProfilePicModal/UploadProfilePicModal";
+import { PodcastersVoices } from "../Components/UI/PodcastersVoices";
+import UploadProfilePicModal from "../Components/UI/UploadProfilePicModal";
 
 const apiClientInstance = ApiClient.getInstance();
 

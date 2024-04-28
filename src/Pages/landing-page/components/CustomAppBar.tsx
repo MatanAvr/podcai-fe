@@ -13,7 +13,6 @@ import {
 } from "../../../ConstAndTypes/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
-import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
 import { setAuth } from "../../../Features/User";
 import { enabledLandingPageSections } from "../LandingPage";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
@@ -32,13 +31,9 @@ import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
 import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
+import PodcaiLogo from "../../../Components/UI/Logo";
 
 const browser = getBrowser();
-const logoStyle = {
-  maxHeight: "40px",
-  height: "auto",
-  marginStart: "10px",
-};
 
 const CustomAppBar = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +47,6 @@ const CustomAppBar = () => {
     (state) => state.featuresToggle.adminDashboardEnabled
   );
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
-  const themeColor = useAppSelector((state) => state.theme.themeColor);
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const queryClient = useQueryClient();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -133,10 +127,9 @@ const CustomAppBar = () => {
         sx={(theme) => ({
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-around",
+          justifyContent: "center",
           width: "100%",
           py: 1.5,
-
           bgcolor:
             theme.palette.mode === "light"
               ? "rgba(255, 255, 255, 0.4)"
@@ -150,18 +143,17 @@ const CustomAppBar = () => {
         })}
       >
         <Box
-          sx={{
-            display: "flex",
-            flex: 1,
-          }}
+          display={"flex"}
+          flex={1}
+          alignContent={"center"}
+          justifyContent={"space-between"}
+          maxWidth={"90%"}
         >
           <Box
             id="podcai-logo"
+            display={"flex"}
+            flex={1}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              px: 3,
               cursor: "pointer",
             }}
             onClick={() => {
@@ -176,145 +168,141 @@ const CustomAppBar = () => {
               }
             }}
           >
-            <img
-              src={themeColor === "light" ? podcaiLogo : podcaiLogo}
-              style={logoStyle}
-              alt="Podcai logo"
-              draggable="false"
-            />
-            <Typography color="text.primary" variant="h6">
-              Podcai
-            </Typography>
+            <PodcaiLogo />
           </Box>
-        </Box>
 
-        <Box
-          sx={{
-            display: "flex",
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {isAuth ? (
-              <></>
-            ) : (
-              <>
-                {enabledLandingPageSections.map((section, index) => {
-                  return (
-                    <MenuItem
-                      key={`manu-item-${index}`}
-                      onClick={() => scrollToSection(section)}
-                    >
-                      <Typography color="text.primary">{section}</Typography>
-                    </MenuItem>
-                  );
-                })}
-                <MenuItem onClick={() => changePageHandler("Contact us")}>
-                  <Typography color="text.primary">Contact us</Typography>
-                </MenuItem>
-              </>
-            )}
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            display: { xs: "none", md: "flex" },
-            flex: 1,
-            px: 3,
-            gap: 1,
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          {isAuth ? (
-            <>
-              <Box sx={{ flexGrow: 0 }}>
-                <IconButton onClick={openMenuHandler} sx={{ p: 0 }}>
-                  <Avatar
-                    alt={loggedUser.name}
-                    src={loggedUser.profile_pic || ""}
-                  />
-                </IconButton>
-                <Menu
-                  anchorEl={anchorElUser}
-                  id="account-menu"
-                  onClose={closeMenuHandler}
-                  onClick={closeMenuHandler}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-                  open={Boolean(anchorElUser)}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                  >
-                    <ToggleColorModeSwitch />
-                  </Box>
-                  {adminDashboardEnabled &&
-                    loggedUser.role === RoleEnum.Admin && (
-                      <MenuItem
-                        onClick={() => {
-                          changePageHandler("Admin dashboard");
-                        }}
-                      >
-                        <ListItemIcon>
-                          <AdminPanelSettingsRoundedIcon fontSize="small" />
-                        </ListItemIcon>
-                        <Typography>Admin dashboard</Typography>
-                      </MenuItem>
-                    )}
-                  {manuItemsArr.map((menuItem, index) => {
+          <Box
+            id="sections-buttons"
+            display="flex"
+            flex={1}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Box
+              sx={{
+                display: {
+                  xs: "none",
+                  md: "flex",
+                  gap: 20,
+                },
+              }}
+            >
+              {isAuth ? (
+                <></>
+              ) : (
+                <>
+                  {enabledLandingPageSections.map((section, index) => {
                     return (
                       <MenuItem
-                        key={`menu-item-${index}`}
-                        onClick={menuItem.function}
+                        key={`manu-item-${index}`}
+                        onClick={() => scrollToSection(section)}
                       >
-                        <ListItemIcon>{menuItem.icon}</ListItemIcon>
-                        <Typography>{menuItem.name}</Typography>
+                        <Typography color="text.primary">{section}</Typography>
                       </MenuItem>
                     );
                   })}
-                  <Divider />
-                  <MenuItem onClick={logoutHandler}>
-                    <ListItemIcon>
-                      <LogoutRoundedIcon fontSize="small" />
-                    </ListItemIcon>
-                    <Typography>Log out</Typography>
+                  <MenuItem onClick={() => changePageHandler("Contact us")}>
+                    <Typography color="text.primary">Contact us</Typography>
                   </MenuItem>
-                </Menu>
-              </Box>
-            </>
-          ) : (
-            <>
-              <ToggleColorModeSwitch />
-              <Button
-                color="primary"
-                variant="outlined"
-                size="small"
-                onClick={() => changePageHandler("Login")}
-              >
-                Log in
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                onClick={() => changePageHandler("Sign up")}
-              >
-                Sign up
-              </Button>
-            </>
-          )}
+                </>
+              )}
+            </Box>
+          </Box>
+
+          <Box
+            display={{ xs: "none", md: "flex" }}
+            flex={1}
+            gap={1}
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            {isAuth ? (
+              <>
+                <Box sx={{ flexGrow: 0 }}>
+                  <IconButton onClick={openMenuHandler} sx={{ p: 0 }}>
+                    <Avatar
+                      alt={loggedUser.name}
+                      src={loggedUser.profile_pic || ""}
+                    />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorElUser}
+                    id="account-menu"
+                    onClose={closeMenuHandler}
+                    onClick={closeMenuHandler}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+                    open={Boolean(anchorElUser)}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    >
+                      <ToggleColorModeSwitch />
+                    </Box>
+                    {adminDashboardEnabled &&
+                      loggedUser.role === RoleEnum.Admin && (
+                        <MenuItem
+                          onClick={() => {
+                            changePageHandler("Admin dashboard");
+                          }}
+                        >
+                          <ListItemIcon>
+                            <AdminPanelSettingsRoundedIcon fontSize="small" />
+                          </ListItemIcon>
+                          <Typography>Admin dashboard</Typography>
+                        </MenuItem>
+                      )}
+                    {manuItemsArr.map((menuItem, index) => {
+                      return (
+                        <MenuItem
+                          key={`menu-item-${index}`}
+                          onClick={menuItem.function}
+                        >
+                          <ListItemIcon>{menuItem.icon}</ListItemIcon>
+                          <Typography>{menuItem.name}</Typography>
+                        </MenuItem>
+                      );
+                    })}
+                    <Divider />
+                    <MenuItem onClick={logoutHandler}>
+                      <ListItemIcon>
+                        <LogoutRoundedIcon fontSize="small" />
+                      </ListItemIcon>
+                      <Typography>Log out</Typography>
+                    </MenuItem>
+                  </Menu>
+                </Box>
+              </>
+            ) : (
+              <>
+                <ToggleColorModeSwitch />
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  size="small"
+                  onClick={() => changePageHandler("Login")}
+                >
+                  Log in
+                </Button>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  size="small"
+                  onClick={() => changePageHandler("Sign up")}
+                >
+                  Sign up
+                </Button>
+              </>
+            )}
+          </Box>
         </Box>
         {/******************************************************************************************************************/}
         {/******************************************************************************************************************/}

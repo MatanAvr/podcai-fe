@@ -20,7 +20,7 @@ import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../Hooks/useMyNavigation";
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import googleIconSvg from "../Assets/Svg/google-icon.svg";
-import { PasswordTextField } from "../Components/UI/PasswordTextField/PasswordTextField";
+import { PasswordTextField } from "../Components/UI/PasswordTextField";
 
 const apiClientInstance = ApiClient.getInstance();
 

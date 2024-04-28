@@ -14,12 +14,7 @@ export default function Hero() {
   };
 
   return (
-    <Box
-      id="Hero"
-      sx={{
-        width: "100%",
-      }}
-    >
+    <Box id="Hero" width="100%">
       <Container
         sx={{
           display: "flex",
@@ -28,21 +23,28 @@ export default function Hero() {
         }}
       >
         <Stack
-          spacing={2}
-          useFlexGap
-          sx={{ width: { xs: "100%", sm: "70%", textAlign: "center" } }}
+          spacing={1}
+          flexWrap={"wrap"}
+          sx={{ width: { xs: "100%", sm: "70%" } }}
+          textAlign={"center"}
         >
-          <Typography variant="h3" color="primary" fontWeight={"bold"}>
-            Stay curious,
-            <br /> Stay informed
+          <Typography variant="h2" fontWeight="bold">
+            Daily personalized
           </Typography>
-          <Typography variant="h4" textAlign="center">
-            Daily personalized news podcasts
+          <Typography variant="h2" fontWeight="bold">
+            news podcasts
           </Typography>
-          <Typography variant="h4" color="primary" fontWeight="bold">
+          <Typography variant="h2" color="primary" fontWeight="bold">
             Powered by AI
           </Typography>
-
+          <Typography variant="h6">
+            Wanna get caught up quickly on the topics that matter most to you?
+            <br />
+            We got you covered.
+          </Typography>
+          <Typography variant="h5" color="primary">
+            <b>Stay curious.</b>
+          </Typography>
           <Stack
             direction={{ xs: "column", sm: "row" }}
             alignSelf="center"
