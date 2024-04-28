@@ -12,14 +12,14 @@ import {
   DELETE_ERROR_TIMEOUT,
   sendOtpRequest,
   verifyOtpRequest,
-} from "../../ConstAndTypes/consts";
-import { ApiClient } from "../../Services/axios";
-import { isValidEmail } from "../../Utils/Utils";
+} from "../ConstAndTypes/consts";
+import { ApiClient } from "../Services/axios";
+import { isValidEmail } from "../Utils/Utils";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { isAxiosError } from "axios";
-import { useMyNavigation } from "../../Hooks/useMyNavigation";
-import { PasswordTextField } from "../../Components/UI/PasswordTextField/PasswordTextField";
+import { useMyNavigation } from "../Hooks/useMyNavigation";
+import { PasswordTextField } from "../Components/UI/PasswordTextField/PasswordTextField";
 
 const apiClientInstance = ApiClient.getInstance();
 

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { Pages } from "../ConstAndTypes/consts";
-import { moveToPage } from "../Features/Navigation/Navigation";
+import { moveToPage } from "../Features/Navigation";
 import { useAppDispatch } from "./Hooks";
 
 export const useMyNavigation = () => {

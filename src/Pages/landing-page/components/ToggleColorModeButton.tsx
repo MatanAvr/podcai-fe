@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import WbSunnyRoundedIcon from "@mui/icons-material/WbSunnyRounded";
 import NightlightRoundedIcon from "@mui/icons-material/NightlightRounded";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
-import { ToggleColorMode } from "../../../Features/Theme/Theme";
+import { ToggleColorMode } from "../../../Features/Theme";
 
 export const ToggleColorModeButton = () => {
   const themeColor = useAppSelector((state) => state.theme.themeColor);

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { ApiClient } from "../../Services/axios";
+import { ApiClient } from "../Services/axios";
 import {
   ALL_EPISODES_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
   TEpisode,
-} from "../../ConstAndTypes/consts";
-import { isMobile, minutesInMilliseconds } from "../../Utils/Utils";
+} from "../ConstAndTypes/consts";
+import { isMobile, minutesInMilliseconds } from "../Utils/Utils";
 import {
   Accordion,
   AccordionDetails,
@@ -19,15 +19,15 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import LoadingSpinner from "../../Components/UI/LoadingSpinner/LoadingSpinner";
-import { CustomAudioPlayer } from "../../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
+import LoadingSpinner from "../Components/UI/LoadingSpinner/LoadingSpinner";
+import { CustomAudioPlayer } from "../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
 import { useQuery } from "@tanstack/react-query";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { useAppSelector } from "../../Hooks/Hooks";
-import Counter from "../../Components/UI/Counter/Counter";
+import { useAppSelector } from "../Hooks/Hooks";
+import Counter from "../Components/UI/Counter/Counter";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();

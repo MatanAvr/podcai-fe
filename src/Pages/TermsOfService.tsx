@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
-import Footer from "../landing-page/components/Footer";
+import Footer from "./landing-page/components/Footer";
 export const TermsOfService = () => {
   return (
     <Box

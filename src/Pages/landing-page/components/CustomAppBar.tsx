@@ -14,7 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
 import podcaiLogo from "../../../Assets/Images/podcaiLogo.png";
-import { setAuth } from "../../../Features/User/User";
+import { setAuth } from "../../../Features/User";
 import { enabledLandingPageSections } from "../LandingPage";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 import { useQueryClient } from "@tanstack/react-query";

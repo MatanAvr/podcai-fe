@@ -7,21 +7,21 @@ import {
   DEFAULT_AUTO_HIDE_DURATION,
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-} from "../../ConstAndTypes/consts";
-import { useAppSelector, useAppDispatch } from "../../Hooks/Hooks";
+} from "../ConstAndTypes/consts";
+import { useAppSelector, useAppDispatch } from "../Hooks/Hooks";
 import { cloneDeep } from "lodash";
-import { ApiClient } from "../../Services/axios";
+import { ApiClient } from "../Services/axios";
 import { Avatar, Box, Card, Switch, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import DeleteUserModal from "../../Components/UI/DeleteUserModal/DeleteUserModal";
-import MultiSelect from "../../Components/UI/MultiSelect/MultiSelect";
-import { useMyNavigation } from "../../Hooks/useMyNavigation";
-import { updateLoggedUser } from "../../Features/User/User";
-import CustomizedSnackbars from "../../Components/UI/CustomizedSnackbars/CustomizedSnackbars";
+import DeleteUserModal from "../Components/UI/DeleteUserModal/DeleteUserModal";
+import MultiSelect from "../Components/UI/MultiSelect/MultiSelect";
+import { useMyNavigation } from "../Hooks/useMyNavigation";
+import { updateLoggedUser } from "../Features/User";
+import CustomizedSnackbars from "../Components/UI/CustomizedSnackbars/CustomizedSnackbars";
 import { useQuery } from "@tanstack/react-query";
-import { minutesInMilliseconds } from "../../Utils/Utils";
-import { PodcastersVoices } from "../../Components/UI/PodcastersVoices/PodcastersVoices";
-import UploadProfilePicModal from "../../Components/UI/UploadProfilePicModal/UploadProfilePicModal";
+import { minutesInMilliseconds } from "../Utils/Utils";
+import { PodcastersVoices } from "../Components/UI/PodcastersVoices/PodcastersVoices";
+import UploadProfilePicModal from "../Components/UI/UploadProfilePicModal/UploadProfilePicModal";
 
 const apiClientInstance = ApiClient.getInstance();
 

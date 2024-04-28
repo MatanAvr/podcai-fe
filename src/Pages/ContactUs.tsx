@@ -1,10 +1,10 @@
 import Typography from "@mui/material/Typography";
 import { Alert, Box, TextField } from "@mui/material";
-import Footer from "../landing-page/components/Footer";
+import Footer from "./landing-page/components/Footer";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { isValidEmail } from "../../Utils/Utils";
-import { ApiClient } from "../../Services/axios";
+import { isValidEmail } from "../Utils/Utils";
+import { ApiClient } from "../Services/axios";
 import { isAxiosError } from "axios";
 import CheckIcon from "@mui/icons-material/Check";
 

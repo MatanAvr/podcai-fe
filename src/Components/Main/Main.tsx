@@ -1,21 +1,21 @@
 import "./Main.scss";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { Login } from "../../Pages/Login/Login";
-import { SignUp } from "../../Pages/SignUp/SignUp";
-import { Home } from "../../Pages/Home/Home";
-import { Settings } from "../../Pages/Settings/Settings";
-import { Unsubscribe } from "../../Pages/Unsubscribe/Unsubscribe";
+import { Login } from "../../Pages/Login";
+import { SignUp } from "../../Pages/SignUp";
+import { Home } from "../../Pages/Home";
+import { Settings } from "../../Pages/Settings";
+import { Unsubscribe } from "../../Pages/Unsubscribe";
 import { Box, Paper } from "@mui/material";
 import LandingPage from "../../Pages/landing-page/LandingPage";
 import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
 import { useEffect, useRef } from "react";
-import { setAuth, setLoggedUser } from "../../Features/User/User";
+import { setAuth, setLoggedUser } from "../../Features/User";
 import { ApiClient } from "../../Services/axios";
-import { ToggleColorMode } from "../../Features/Theme/Theme";
-import { ForgotPassword } from "../../Pages/ForgotPassword/ForgotPassword";
-import { TermsOfService } from "../../Pages/TermsOfService/TermsOfService";
-import { PrivacyPolicy } from "../../Pages/PrivacyPolicy/PrivacyPolicy";
-import { ContactUs } from "../../Pages/ContactUs/ContactUs";
+import { ToggleColorMode } from "../../Features/Theme";
+import { ForgotPassword } from "../../Pages/ForgotPassword";
+import { TermsOfService } from "../../Pages/TermsOfService";
+import { PrivacyPolicy } from "../../Pages/PrivacyPolicy";
+import { ContactUs } from "../../Pages/ContactUs";
 // import { Updates } from "../../Pages/Updates/Updates";
 import {
   LOCAL_STORAGE_THEME_KEY,

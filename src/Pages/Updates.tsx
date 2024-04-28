@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { Box, Divider, List, ListItem, ListItemText } from "@mui/material";
-import Footer from "../landing-page/components/Footer";
+import Footer from "./landing-page/components/Footer";
 
 interface Update {
   version: string;

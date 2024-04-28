@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Pages } from "../../ConstAndTypes/consts";
+import { Pages } from "../ConstAndTypes/consts";
 
 export const navigationSlice = createSlice({
   name: "navigation",
