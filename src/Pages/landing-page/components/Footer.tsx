@@ -12,9 +12,9 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import { enabledLandingPageSections } from "../LandingPage";
 import { useAppSelector } from "../../../Hooks/Hooks";
-import { Pages } from "../../../ConstAndTypes/consts";
 import { Divider } from "@mui/material";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
+import { TPages } from "../../../ConstAndTypes/Types";
 
 const twitterLink = "https://twitter.com/podcai";
 const instagramLink = "https://instagram.com/podcai";
@@ -45,7 +45,7 @@ export default function Footer() {
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const nav = useMyNavigation();
 
-  const changePageHandler = (newPage: Pages) => {
+  const changePageHandler = (newPage: TPages) => {
     nav.push(newPage);
   };
 

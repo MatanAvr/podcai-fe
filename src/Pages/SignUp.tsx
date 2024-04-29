@@ -15,22 +15,15 @@ import {
   TextField,
 } from "@mui/material";
 import {
-  TTopics,
-  INewUser,
   topicsArray,
   MAX_NUM_OF_TOPICS,
   MIN_NAME_LENGTH,
   MIN_NUM_OF_TOPICS,
   MIN_PASS_LENGTH,
   OTP_LENGTH,
-  TVoices,
   DELETE_ERROR_TIMEOUT,
-  sendOtpRequest,
-  verifyOtpRequest,
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-  SuscirptionEnum,
-  RoleEnum,
 } from "../ConstAndTypes/consts";
 import { ApiClient } from "../Services/axios";
 import {
@@ -53,6 +46,12 @@ import { cloneDeep } from "lodash";
 import { PasswordTextField } from "../Components/UI/PasswordTextField";
 import { PodcastersVoices } from "../Components/UI/PodcastersVoices";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import {
+  sendOtpRequest,
+  verifyOtpRequest,
+} from "../ConstAndTypes/ApiTypesAndConsts";
+import { INewUser, TVoices, TTopics } from "../ConstAndTypes/Types";
+import { SuscirptionEnum, RoleEnum } from "../ConstAndTypes/Enums";
 
 const apiClientInstance = ApiClient.getInstance();
 

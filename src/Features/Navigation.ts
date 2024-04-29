@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Pages } from "../ConstAndTypes/consts";
+import { TPages } from "../ConstAndTypes/Types";
 
 export const navigationSlice = createSlice({
   name: "navigation",
   initialState: {
-    currentPage: "" as Pages,
+    currentPage: "" as TPages,
   },
   reducers: {
-    moveToPage: (state, action: PayloadAction<Pages>) => {
+    moveToPage: (state, action: PayloadAction<TPages>) => {
       state.currentPage = action.payload;
     },
   },

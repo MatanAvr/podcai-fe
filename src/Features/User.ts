@@ -1,10 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ApiClient } from "../Services/axios";
-import {
-  RoleEnum,
-  SuscirptionEnum,
-  loggedInUser,
-} from "../ConstAndTypes/consts";
+import { SuscirptionEnum, RoleEnum } from "../ConstAndTypes/Enums";
+import { loggedInUser } from "../ConstAndTypes/Types";
 
 const apiClientInstance = ApiClient.getInstance();
 

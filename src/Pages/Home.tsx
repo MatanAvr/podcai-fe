@@ -3,7 +3,6 @@ import { ApiClient } from "../Services/axios";
 import {
   ALL_EPISODES_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-  TEpisode,
 } from "../ConstAndTypes/consts";
 import { isMobile, minutesInMilliseconds } from "../Utils/Utils";
 import {
@@ -28,6 +27,7 @@ import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { useAppSelector } from "../Hooks/Hooks";
 import Counter from "../Components/UI/Counter";
+import { TEpisode } from "../ConstAndTypes/ApiTypesAndConsts";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();

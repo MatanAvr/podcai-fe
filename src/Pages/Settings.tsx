@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  TTopics,
   topicsArray,
-  TVoices,
   MAX_NUM_OF_TOPICS,
   DEFAULT_AUTO_HIDE_DURATION,
   VOICES_SAMPLES_QUERY_KEY,
@@ -22,6 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../Utils/Utils";
 import { PodcastersVoices } from "../Components/UI/PodcastersVoices";
 import UploadProfilePicModal from "../Components/UI/UploadProfilePicModal";
+import { TVoices, TTopics } from "../ConstAndTypes/Types";
 
 const apiClientInstance = ApiClient.getInstance();
 

@@ -3,13 +3,13 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Pages } from "../../../ConstAndTypes/consts";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
+import { TPages } from "../../../ConstAndTypes/Types";
 
 export default function Hero() {
   const nav = useMyNavigation();
 
-  const changePageHandler = (newPage: Pages) => {
+  const changePageHandler = (newPage: TPages) => {
     nav.push(newPage);
   };
 
@@ -23,7 +23,7 @@ export default function Hero() {
         }}
       >
         <Stack
-          spacing={1}
+          spacing={2}
           flexWrap={"wrap"}
           sx={{ width: { xs: "100%", sm: "70%" } }}
           textAlign={"center"}
@@ -42,7 +42,7 @@ export default function Hero() {
             <br />
             We got you covered.
           </Typography>
-          <Typography variant="h5" color="primary">
+          <Typography variant="h4" color="primary">
             <b>Stay curious.</b>
           </Typography>
           <Stack

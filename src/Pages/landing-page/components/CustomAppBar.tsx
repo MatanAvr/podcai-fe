@@ -6,11 +6,7 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { ToggleColorModeSwitch } from "./ToggleColorModeSwitch";
-import {
-  ALL_EPISODES_QUERY_KEY,
-  Pages,
-  RoleEnum,
-} from "../../../ConstAndTypes/consts";
+import { ALL_EPISODES_QUERY_KEY } from "../../../ConstAndTypes/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
 import { useState } from "react";
 import { setAuth } from "../../../Features/User";
@@ -32,6 +28,8 @@ import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
 import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
 import PodcaiLogo from "../../../Components/UI/Logo";
+import { TPages } from "../../../ConstAndTypes/Types";
+import { RoleEnum } from "../../../ConstAndTypes/Enums";
 
 const browser = getBrowser();
 
@@ -82,7 +80,7 @@ const CustomAppBar = () => {
     setOpen(false);
   };
 
-  const changePageHandler = (newPage: Pages) => {
+  const changePageHandler = (newPage: TPages) => {
     nav.push(newPage);
     setOpen(false);
   };

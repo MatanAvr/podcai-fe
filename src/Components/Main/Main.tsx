@@ -20,11 +20,11 @@ import { ContactUs } from "../../Pages/ContactUs";
 import {
   LOCAL_STORAGE_THEME_KEY,
   LOCAL_STORAGE_TOKEN_KEY,
-  RoleEnum,
-  TRole,
 } from "../../ConstAndTypes/consts";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 import { AdminDashboard } from "../../Pages/AdminDashboard/AdminDashboard";
+import { RoleEnum } from "../../ConstAndTypes/Enums";
+import { TRole } from "../../ConstAndTypes/Types";
 
 const apiClientInstance = ApiClient.getInstance();
 
