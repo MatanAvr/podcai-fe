@@ -7,7 +7,7 @@ import { Settings } from "../../Pages/Settings";
 import { Unsubscribe } from "../../Pages/Unsubscribe";
 import { Box, Paper } from "@mui/material";
 import LandingPage from "../../Pages/landing-page/LandingPage";
-import { useAppDispatch, useAppSelector } from "../../Hooks/Hooks";
+import { useAppDispatch, useAppSelector } from "../../Hooks/useStoreHooks";
 import { useEffect, useRef } from "react";
 import { setAuth, setLoggedUser } from "../../Features/User";
 import { ApiClient } from "../../Services/axios";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DELETE_ERROR_TIMEOUT } from "../ConstAndTypes/consts";
 import { ApiClient } from "../Services/axios";
-import { useAppDispatch, useAppSelector } from "../Hooks/Hooks";
+import { useAppDispatch, useAppSelector } from "../Hooks/useStoreHooks";
 import { setAuth, setLoggedUser } from "../Features/User";
 import {
   Alert,

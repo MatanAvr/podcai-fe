@@ -8,7 +8,7 @@ import Pricing from "./components/Pricing";
 import Footer from "./components/Footer";
 import Faq from "./components/Faq";
 import { useEffect } from "react";
-import { useAppSelector } from "../../Hooks/Hooks";
+import { useAppSelector } from "../../Hooks/useStoreHooks";
 import BriefAndExample from "./components/BriefAndExample";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 

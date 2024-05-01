@@ -2,7 +2,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { useAppSelector } from "../../Hooks/Hooks";
+import { useAppSelector } from "../../Hooks/useStoreHooks";
 import { Card, IconButton } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useState } from "react";

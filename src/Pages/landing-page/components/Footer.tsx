@@ -11,7 +11,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import { enabledLandingPageSections } from "../LandingPage";
-import { useAppSelector } from "../../../Hooks/Hooks";
+import { useAppSelector } from "../../../Hooks/useStoreHooks";
 import { Divider } from "@mui/material";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 import { TPages } from "../../../ConstAndTypes/Types";

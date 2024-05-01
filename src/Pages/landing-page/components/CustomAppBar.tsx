@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { ToggleColorModeSwitch } from "./ToggleColorModeSwitch";
 import { ALL_EPISODES_QUERY_KEY } from "../../../ConstAndTypes/consts";
-import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/useStoreHooks";
 import { useState } from "react";
 import { setAuth } from "../../../Features/User";
 import { enabledLandingPageSections } from "../LandingPage";

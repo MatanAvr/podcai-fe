@@ -33,7 +33,7 @@ import {
 } from "../Utils/Utils";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { useAppDispatch, useAppSelector } from "../Hooks/Hooks";
+import { useAppDispatch, useAppSelector } from "../Hooks/useStoreHooks";
 import { setLoggedUser, setAuth } from "../Features/User";
 import { isAxiosError } from "axios";
 import MultiSelect from "../Components/UI/MultiSelect";

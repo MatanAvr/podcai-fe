@@ -6,7 +6,7 @@ import {
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
 } from "../ConstAndTypes/consts";
-import { useAppSelector, useAppDispatch } from "../Hooks/Hooks";
+import { useAppSelector, useAppDispatch } from "../Hooks/useStoreHooks";
 import { cloneDeep } from "lodash";
 import { ApiClient } from "../Services/axios";
 import { Avatar, Box, Card, Switch, Typography } from "@mui/material";

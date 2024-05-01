@@ -25,7 +25,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { useAppSelector } from "../Hooks/Hooks";
+import { useAppSelector } from "../Hooks/useStoreHooks";
 import Counter from "../Components/UI/Counter";
 import { TEpisode } from "../ConstAndTypes/ApiTypesAndConsts";
 

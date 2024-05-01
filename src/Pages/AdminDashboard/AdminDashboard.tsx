@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import { Box, Card, Switch } from "@mui/material";
 import { ApiClient } from "../../Services/axios";
-import { useAppSelector } from "../../Hooks/Hooks";
+import { useAppSelector } from "../../Hooks/useStoreHooks";
 import { useQuery } from "@tanstack/react-query";
 import {
   ALL_USERS_QUERY_KEY,
