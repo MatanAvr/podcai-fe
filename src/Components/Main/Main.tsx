@@ -75,8 +75,7 @@ export const Main = () => {
         borderRadius: "0px",
       })}
     >
-      <div className="main-wrapper">
-        <Box sx={{ display: "flex", width: "100%", py: 1 }} />
+      <Box className="main-wrapper">
         <Routes>
           <Route path="/" element={<LandingPage />}></Route>
           <Route path="/Login" element={<Login />} />
@@ -104,7 +103,7 @@ export const Main = () => {
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </div>
+      </Box>
     </Paper>
   );
 };

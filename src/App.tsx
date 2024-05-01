@@ -4,7 +4,7 @@ import { useAppSelector } from "./Hooks/useStoreHooks";
 import { ThemeProvider } from "@mui/material/styles";
 import CustomAppBar from "./Pages/landing-page/components/CustomAppBar";
 import { pwaInit } from "./Utils/pwaInstall";
-import { darkTheme, customDefaultTheme } from "./Theme";
+import { customDefaultTheme, darkTheme } from "./Theme/Theme";
 pwaInit();
 
 const App = () => {

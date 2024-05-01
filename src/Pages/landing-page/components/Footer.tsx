@@ -15,6 +15,7 @@ import { useAppSelector } from "../../../Hooks/useStoreHooks";
 import { Divider } from "@mui/material";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 import { TPages } from "../../../Types/Types";
+import Logo from "../../../Components/UI/Logo";
 
 const twitterLink = "https://twitter.com/podcai";
 const instagramLink = "https://instagram.com/podcai";
@@ -85,14 +86,51 @@ export default function Footer() {
           justifyContent: "space-between",
         }}
       >
-        <Box sx={{ display: "flex", flex: 1, gap: 5 }}>
+        {/* Newsletter related  ---------------------------------------------*/}
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={4}
+          minWidth={{ xs: "100%", sm: "60%" }}
+          flex={1}
+        >
+          <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
+            <Logo />
+            {/* <Typography fontWeight={"bold"}>Stay curious</Typography> */}
+            {/* <Typography color="text.secondary" mb={2}>
+              Subscribe to our newsletter for weekly updates and promotions.
+            </Typography>
+            <Stack direction="row" spacing={1} useFlexGap>
+              <TextField
+                id="outlined-basic"
+                hiddenLabel
+                size="small"
+                variant="outlined"
+                fullWidth
+                aria-label="Enter your email address"
+                placeholder="Your email address"
+                inputProps={{
+                  autocomplete: "off",
+                  ariaLabel: "Enter your email address",
+                }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ flexShrink: 0 }}
+              >
+                Subscribe
+              </Button>
+            </Stack> */}
+          </Box>
+        </Box>
+        {/* // ==================================================================================== */}
+        <Box display="flex" gap={5}>
           {/* Product -------------------------------------------------*/}
           <Box
-            sx={{
-              display: { xs: "flex", sm: "flex" },
-              flexDirection: "column",
-              gap: 1,
-            }}
+            display={{ xs: "flex", sm: "flex" }}
+            flexDirection="column"
+            gap={1}
           >
             <Typography fontWeight={"bold"}>Product</Typography>
 
@@ -185,54 +223,6 @@ export default function Footer() {
             </Link>
           </Box> */}
         </Box>
-        {/* Newsletter related  ---------------------------------------------*/}
-        {/* <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 4,
-            minWidth: { xs: "100%", sm: "60%" },
-          }}
-        >
-          <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
-            <Box>
-              <img
-                src={currentTheme === "light" ? podcaiLogo : podcaiLogoDark}
-                style={logoStyle}
-                alt="Podcai logo"
-                draggable="false"
-              />
-            </Box>
-            <Typography fontWeight={"bold"} gutterBottom>
-              Newsletter
-            </Typography>
-            <Typography color="text.secondary" mb={2}>
-              Subscribe to our newsletter for weekly updates and promotions.
-            </Typography>
-            <Stack direction="row" spacing={1} useFlexGap>
-              <TextField
-                id="outlined-basic"
-                hiddenLabel
-                size="small"
-                variant="outlined"
-                fullWidth
-                aria-label="Enter your email address"
-                placeholder="Your email address"
-                inputProps={{
-                  autocomplete: "off",
-                  ariaLabel: "Enter your email address",
-                }}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ flexShrink: 0 }}
-              >
-                Subscribe
-              </Button>
-            </Stack>
-          </Box>
-        </Box> */}
       </Box>
 
       <Box
