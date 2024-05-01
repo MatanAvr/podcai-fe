@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LANDING_PAGE_PY, SUPPORT_EMAIL } from "../../../ConstAndTypes/consts";
+import { LANDING_PAGE_PY, SUPPORT_EMAIL } from "../../../Consts/consts";
 
 const faqArr = [
   {

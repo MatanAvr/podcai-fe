@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
+import { LANDING_PAGE_PY } from "../../../Consts/consts";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 
 const tiers = [

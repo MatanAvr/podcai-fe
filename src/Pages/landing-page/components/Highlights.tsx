@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import RecordVoiceOverRoundedIcon from "@mui/icons-material/RecordVoiceOverRounded";
 import FeedRoundedIcon from "@mui/icons-material/FeedRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
-import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
+import { LANDING_PAGE_PY } from "../../../Consts/consts";
 
 const highlights = [
   {
@@ -80,9 +80,13 @@ export default function Highlights() {
                   },
                 }}
               >
-                <Box sx={{color: "text.primary"}}>{highlight.icon}</Box>
+                <Box sx={{ color: "primary.main" }}>{highlight.icon}</Box>
                 <div>
-                  <Typography fontWeight="bold" gutterBottom color="text.primary">
+                  <Typography
+                    fontWeight="bold"
+                    gutterBottom
+                    color="text.primary"
+                  >
                     {highlight.title}
                   </Typography>
                   <Typography color="text.primary">

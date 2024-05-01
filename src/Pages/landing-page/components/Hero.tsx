@@ -3,22 +3,32 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Pages } from "../../../ConstAndTypes/consts";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
+import { TPages } from "../../../Types/Types";
+import glowSvgLight from "../../../Assets/Svg/bg-light.svg";
+import glowSvgDark from "../../../Assets/Svg/bg-dark.svg";
+import { useAppSelector } from "../../../Hooks/useStoreHooks";
 
 export default function Hero() {
   const nav = useMyNavigation();
-
-  const changePageHandler = (newPage: Pages) => {
+  const themeColor = useAppSelector((state) => state.theme.themeColor);
+  const relevantSvg = themeColor === "dark" ? glowSvgDark : glowSvgLight;
+  const changePageHandler = (newPage: TPages) => {
     nav.push(newPage);
   };
 
   return (
     <Box
       id="Hero"
+      width="100%"
       sx={{
-        width: "100%",
+        backgroundImage: `url(${relevantSvg})`,
+        display: "block",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "center",
       }}
+      py={{ sx: 6, md: 12 }}
     >
       <Container
         sx={{
@@ -27,41 +37,36 @@ export default function Hero() {
           alignItems: "center",
         }}
       >
-        <Stack
-          spacing={2}
-          useFlexGap
-          sx={{ width: { xs: "100%", sm: "70%", textAlign: "center" } }}
-        >
-          <Typography variant="h3" color="primary" fontWeight={"bold"}>
-            Stay curious,
-            <br /> Stay informed
-          </Typography>
-          <Typography variant="h4" textAlign="center">
-            Daily personalized news podcasts
-          </Typography>
-          <Typography variant="h4" color="primary" fontWeight="bold">
-            Powered by AI
-          </Typography>
-
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            alignSelf="center"
-            spacing={1}
-            useFlexGap
-            sx={{
-              width: { xs: "100%", sm: "auto" },
+        <Stack flexWrap={"wrap"} gap={2}>
+          <Box>
+            <Typography variant="h2" fontWeight="bold">
+              Daily personalized
+            </Typography>
+            <Typography variant="h2" fontWeight="bold">
+              news podcasts
+            </Typography>
+            <Typography variant="h2" color="primary" fontWeight="bold">
+              Powered by AI
+            </Typography>
+            <Typography variant="h6">
+              Wanna get caught up quickly on the topics that matter most to you?
+              <br />
+              We got you covered.
+            </Typography>
+            <Typography variant="h4" color="primary" fontWeight={"bold"}>
+              Stay curious.
+            </Typography>
+          </Box>
+          <Button
+            sx={{ minWidth: 150, maxWidth: 250, alignSelf: "center" }}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              changePageHandler("Sign up");
             }}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                changePageHandler("Sign up");
-              }}
-            >
-              Sign up
-            </Button>
-          </Stack>
+            Sign up
+          </Button>
         </Stack>
       </Container>
     </Box>

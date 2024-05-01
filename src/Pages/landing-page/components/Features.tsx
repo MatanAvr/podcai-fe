@@ -16,10 +16,7 @@ import topicsLight from "../../../Assets/Images/Hero-images/topics-light.png";
 import podcaiPreviewDark from "../../../Assets/Images/Hero-images/podcai-dark.png";
 import podcaiPreviewLight from "../../../Assets/Images/Hero-images/podcai-light.png";
 import podcastersPhoto from "../../../Assets/Images/Hero-images/podcasters.png";
-import {
-  LANDING_PAGE_PY,
-  MAX_NUM_OF_TOPICS,
-} from "../../../ConstAndTypes/consts";
+import { LANDING_PAGE_PY, MAX_NUM_OF_TOPICS } from "../../../Consts/consts";
 
 const features = [
   {

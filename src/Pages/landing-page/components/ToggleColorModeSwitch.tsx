@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import WbSunnyRoundedIcon from "@mui/icons-material/WbSunnyRounded";
 import NightlightRoundedIcon from "@mui/icons-material/NightlightRounded";
-import { useAppDispatch, useAppSelector } from "../../../Hooks/Hooks";
-import { ToggleColorMode } from "../../../Features/Theme/Theme";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/useStoreHooks";
+import { ToggleColorMode } from "../../../Features/Theme";
 import { Switch } from "@mui/material";
 
 export const ToggleColorModeSwitch = () => {
