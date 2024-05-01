@@ -1,8 +1,8 @@
-import { Card, Box, IconButton, Typography } from "@mui/material";
+import { AppBar, Toolbar } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { ALL_EPISODES_QUERY_KEY } from "../../../Consts/consts";
 import { useRef, useState } from "react";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
-import { VolumeInput } from "./VolumeInput/VolumeInput";
 import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
 import PauseCircleFilledOutlinedIcon from "@mui/icons-material/PauseCircleFilledOutlined";
 import Forward10RoundedIcon from "@mui/icons-material/Forward10Rounded";
@@ -11,23 +11,25 @@ import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import VolumeDownRoundedIcon from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUp";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
-import { AudioProgressBar } from "./AudioProgressBar/AudioProgressBar";
 import { formatDurationDisplay, isMobile } from "../../../Utils/Utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "../../../Api/axios";
 import { TEpisode } from "../../../Api/ApiTypesAndConsts";
+import { VolumeInput } from "../CustomAudioPlayer/VolumeInput/VolumeInput";
+import { AudioProgressBar } from "../OneLineAudioPlayer/AudioProgressBar/AudioProgressBar";
 
 const apiClientInstance = ApiClient.getInstance();
-const mobile = isMobile();
 
 type buttonsColorsOptions = "inherit" | "primary";
 type playSpeedOptions = 0.25 | 0.5 | 0.75 | 1 | 1.25 | 1.5 | 1.75 | 2;
 
 const buttonsColor: buttonsColorsOptions = "primary";
+
 const timelineStyle = {
   width: "50px",
   display: "flex",
   justifyContent: "center",
+  color: "text.primary",
 };
 
 const dynamicVolumeIconButton = (
@@ -51,12 +53,9 @@ const dynamicVolumeIconButton = (
     </IconButton>
   );
 };
+type BottomAudioPlayerProps = { episode: TEpisode };
 
-interface audioPlayerProps {
-  episode: TEpisode;
-}
-
-export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
+const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
   const [duration, setDuration] = useState<number>(0);
   const [playSpeed, setPlaySpeed] = useState<playSpeedOptions>(1);
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -186,137 +185,138 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
     setPlaySpeed(localPlaySpeed);
     audioRef.current.playbackRate = localPlaySpeed;
   };
-
   return (
-    <Card
-      id="Custom-Audio-Player"
+    <AppBar
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        py: 1,
-        px: 0.5,
-        overflow: "visible",
-        border: 1,
-        borderColor: "primary.main",
+        top: "auto",
+        bottom: 0,
+        py: 0.5,
+        backgroundColor: "transparent",
       }}
     >
-      <Typography variant="h6" sx={{ my: 0.5, marginInlineStart: 1 }}>
-        {episode.name}
-      </Typography>
-      <audio
-        ref={audioRef}
-        style={{ display: "none" }}
-        src={episode.link}
-        controls
-        controlsList="nodownload"
-        onDurationChange={(e) => setDuration(e.currentTarget.duration)}
-        onCanPlay={(e) => {
-          e.currentTarget.volume = volume;
-          setIsReady(true);
-        }}
-        onPlaying={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onVolumeChange={(e) => setVolume(e.currentTarget.volume)}
-        onTimeUpdate={(e) => {
-          setCurrrentProgress(e.currentTarget.currentTime);
-          bufferProgressHandler(e);
-        }}
-        onProgress={bufferProgressHandler}
-      />
-
-      <Box
-        sx={{
-          p: 0.1,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{ display: "flex", flex: 1, alignItems: "center", width: "100%" }}
-        >
-          <Typography sx={timelineStyle}>{`${elapsedTime}`}</Typography>
-
-          <AudioProgressBar
-            duration={duration}
-            currentProgress={currrentProgress}
-            buffered={buffered}
-            customOnChange={(newValue: number) => {
-              if (!audioRef.current) return;
-              audioRef.current.currentTime = newValue;
-              setCurrrentProgress(newValue);
+      <Toolbar>
+        <>
+          <audio
+            ref={audioRef}
+            style={{ display: "none" }}
+            src={episode.link}
+            controls
+            controlsList="nodownload"
+            onDurationChange={(e) => setDuration(e.currentTarget.duration)}
+            onCanPlay={(e) => {
+              e.currentTarget.volume = volume;
+              setIsReady(true);
             }}
+            onPlaying={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onVolumeChange={(e) => setVolume(e.currentTarget.volume)}
+            onTimeUpdate={(e) => {
+              setCurrrentProgress(e.currentTarget.currentTime);
+              bufferProgressHandler(e);
+            }}
+            onProgress={bufferProgressHandler}
           />
-          <Typography sx={timelineStyle}>{`${episodeDuration}`}</Typography>
-        </Box>
-      </Box>
-
-      <Box
-        id="custom-audio-player-buttons-wrapper"
-        sx={{
-          display: "flex",
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
-        {/* used to align to center */}
-        {!mobile && <Box sx={{ display: "flex", flex: 1 }} />}
+        </>
         <Box
-          id="custom-audio-player-buttons-container"
-          sx={{
-            display: "flex",
-            flex: 1,
-            justifyContent: "center",
-            gap: 0.5,
-          }}
+          id="custom-bottom-audio-player"
+          display="flex"
+          flex={1}
+          alignItems={"center"}
+          justifyContent={"space-between"}
         >
-          <IconButton
-            onClick={playbackSpeedHandler}
-            color={buttonsColor}
-            size="small"
+          <Box display={{ xs: "none", md: "flex" }}>
+            <Typography color={"text.primary"}>{episode.name}</Typography>
+          </Box>
+
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            flex={1}
           >
-            <Typography variant="body2">{playSpeed}</Typography>
-            <ClearRoundedIcon fontSize="small" />
-          </IconButton>
-
-          <IconButton onClick={() => changeProgressHandler("back")}>
-            <Replay10RoundedIcon fontSize="large" color={buttonsColor} />
-          </IconButton>
-
-          <IconButton
-            onClick={togglePlayPause}
-            aria-label={isPlaying ? "Pause" : "Play"}
-          >
-            {isPlaying ? (
-              <PauseCircleFilledOutlinedIcon
-                fontSize="large"
-                color={buttonsColor}
-              />
-            ) : (
-              <PlayCircleFilledOutlinedIcon
-                fontSize="large"
-                color={buttonsColor}
-              />
-            )}
-          </IconButton>
-
-          <IconButton onClick={() => changeProgressHandler("forward")}>
-            <Forward10RoundedIcon fontSize="large" color={buttonsColor} />
-          </IconButton>
-
-          {dynamicVolumeIconButton(volume, toggleMuteUnmute, "medium")}
-        </Box>
-        {!mobile && (
-          <>
             <Box
-              id="volume-slider-wrapper"
-              sx={{
-                display: "flex",
-                flex: 1,
-              }}
+              id="custom-audio-player-buttons-container"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              flex={1}
             >
+              <Typography variant="body2" color={"primary"}>
+                {playSpeed}
+              </Typography>
+              <IconButton
+                onClick={playbackSpeedHandler}
+                color={buttonsColor}
+                size="small"
+              >
+                <ClearRoundedIcon fontSize="small" />
+              </IconButton>
+
+              <IconButton onClick={() => changeProgressHandler("back")}>
+                <Replay10RoundedIcon fontSize="large" color={buttonsColor} />
+              </IconButton>
+
+              <IconButton
+                onClick={togglePlayPause}
+                aria-label={isPlaying ? "Pause" : "Play"}
+              >
+                {isPlaying ? (
+                  <PauseCircleFilledOutlinedIcon
+                    fontSize="large"
+                    color={buttonsColor}
+                  />
+                ) : (
+                  <PlayCircleFilledOutlinedIcon
+                    fontSize="large"
+                    color={buttonsColor}
+                  />
+                )}
+              </IconButton>
+
+              <IconButton onClick={() => changeProgressHandler("forward")}>
+                <Forward10RoundedIcon fontSize="large" color={buttonsColor} />
+              </IconButton>
+
+              {dynamicVolumeIconButton(volume, toggleMuteUnmute, "small")}
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              width={"100%"}
+              maxWidth={600}
+              flex={1}
+            >
+              <Typography
+                variant="body2"
+                sx={timelineStyle}
+              >{`${elapsedTime}`}</Typography>
+
+              <AudioProgressBar
+                duration={duration}
+                currentProgress={currrentProgress}
+                buffered={buffered}
+                customOnChange={(newValue: number) => {
+                  if (!audioRef.current) return;
+                  audioRef.current.currentTime = newValue;
+                  setCurrrentProgress(newValue);
+                }}
+              />
+              <Typography
+                variant="body2"
+                sx={timelineStyle}
+              >{`${episodeDuration}`}</Typography>
+            </Box>
+          </Box>
+
+          <Box
+            id="custom-audio-player-buttons-wrapper"
+            display={{ xs: "none", md: "flex" }}
+            alignItems="center"
+            justifyContent="center"
+            maxWidth={500}
+          >
+            <Box id="volume-slider-wrapper" flex={1}>
               <Box
                 sx={{
                   display: "flex",
@@ -330,9 +330,11 @@ export const CustomAudioPlayer = ({ episode }: audioPlayerProps) => {
                 />
               </Box>
             </Box>
-          </>
-        )}
-      </Box>
-    </Card>
+          </Box>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
+
+export default BottomAudioPlayer;

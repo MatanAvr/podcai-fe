@@ -229,7 +229,7 @@ const CustomAppBar = () => {
                     onClose={closeMenuHandler}
                     onClick={closeMenuHandler}
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
-                    anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+                    anchorOrigin={{ horizontal: "center", vertical: "center" }}
                     open={Boolean(anchorElUser)}
                   >
                     <Box

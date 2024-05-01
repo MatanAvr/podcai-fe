@@ -2,7 +2,7 @@ import "./Main.scss";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { Login } from "../../Pages/Login";
 import { SignUp } from "../../Pages/SignUp";
-import { Home } from "../../Pages/Home";
+import { Home } from "../../Pages/landing-page/components/Home/Home";
 import { Settings } from "../../Pages/Settings";
 import { Unsubscribe } from "../../Pages/Unsubscribe";
 import { Box, Paper } from "@mui/material";
@@ -65,7 +65,7 @@ export const Main = () => {
         height: "100%",
         width: "100%",
         overflowY: "auto",
-        pt: { xs: 8, sm: 12 },
+        pt: 8,
         backgroundImage:
           theme.palette.mode === "light"
             ? "linear-gradient(180deg, #CEE5FD, #FFF)"

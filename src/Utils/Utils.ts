@@ -55,3 +55,8 @@ export const getBrowser = () => {
     return "unknown";
   }
 };
+
+export const openInNewTab = (url: string) => {
+  if (!window) return;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
