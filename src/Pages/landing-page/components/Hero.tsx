@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -8,6 +7,7 @@ import { TPages } from "../../../Types/Types";
 import glowSvgLight from "../../../Assets/Svg/bg-light.svg";
 import glowSvgDark from "../../../Assets/Svg/bg-dark.svg";
 import { useAppSelector } from "../../../Hooks/useStoreHooks";
+import Button from "@mui/material/Button/Button";
 
 export default function Hero() {
   const nav = useMyNavigation();
@@ -61,11 +61,12 @@ export default function Hero() {
             sx={{ minWidth: 150, maxWidth: 250, alignSelf: "center" }}
             variant="contained"
             color="primary"
+            size="large"
             onClick={() => {
               changePageHandler("Sign up");
             }}
           >
-            Sign up
+            Try the free beta now
           </Button>
         </Stack>
       </Container>
