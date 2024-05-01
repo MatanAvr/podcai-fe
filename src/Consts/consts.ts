@@ -1,4 +1,4 @@
-import { TTopics, TVoices } from "./Types";
+import { TTopics, TVoices } from "../Types/Types";
 
 export const topicsArray: TTopics[] = [
   "general",

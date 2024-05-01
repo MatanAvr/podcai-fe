@@ -8,7 +8,7 @@ import Container from "@mui/material/Container";
 import Masonry from "@mui/lab/Masonry";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/system";
-import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
+import { LANDING_PAGE_PY } from "../../../Consts/consts";
 
 const userTestimonials = [
   {

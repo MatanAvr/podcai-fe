@@ -2,11 +2,11 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { isValidEmail } from "../Utils/Utils";
-import { ApiClient } from "../Services/axios";
+import { ApiClient } from "../Api/axios";
 import { Alert, Box } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import { DELETE_ERROR_TIMEOUT } from "../ConstAndTypes/consts";
+import { DELETE_ERROR_TIMEOUT } from "../Consts/consts";
 
 const apiClientInstance = ApiClient.getInstance();
 

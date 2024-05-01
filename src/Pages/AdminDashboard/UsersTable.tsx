@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { TUserFromDB } from "../../ConstAndTypes/ApiTypesAndConsts";
+import { TUserFromDB } from "../../Api/ApiTypesAndConsts";
 
 type UserTableProps = {
   users: TUserFromDB[];

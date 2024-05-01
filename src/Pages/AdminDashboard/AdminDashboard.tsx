@@ -1,12 +1,12 @@
 import Typography from "@mui/material/Typography";
 import { Box, Card, Switch } from "@mui/material";
-import { ApiClient } from "../../Services/axios";
+import { ApiClient } from "../../Api/axios";
 import { useAppSelector } from "../../Hooks/useStoreHooks";
 import { useQuery } from "@tanstack/react-query";
 import {
   ALL_USERS_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-} from "../../ConstAndTypes/consts";
+} from "../../Consts/consts";
 import { minutesInMilliseconds } from "../../Utils/Utils";
 import LoadingSpinner from "../../Components/UI/LoadingSpinner";
 import UsersTable from "./UsersTable";

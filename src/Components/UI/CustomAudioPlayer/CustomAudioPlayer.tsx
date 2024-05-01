@@ -1,5 +1,5 @@
 import { Card, Box, IconButton, Typography } from "@mui/material";
-import { ALL_EPISODES_QUERY_KEY } from "../../../ConstAndTypes/consts";
+import { ALL_EPISODES_QUERY_KEY } from "../../../Consts/consts";
 import { useRef, useState } from "react";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 import { VolumeInput } from "./VolumeInput/VolumeInput";
@@ -14,8 +14,8 @@ import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import { AudioProgressBar } from "./AudioProgressBar/AudioProgressBar";
 import { formatDurationDisplay, isMobile } from "../../../Utils/Utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { ApiClient } from "../../../Services/axios";
-import { TEpisode } from "../../../ConstAndTypes/ApiTypesAndConsts";
+import { ApiClient } from "../../../Api/axios";
+import { TEpisode } from "../../../Api/ApiTypesAndConsts";
 
 const apiClientInstance = ApiClient.getInstance();
 const mobile = isMobile();

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { ApiClient } from "../Services/axios";
+import { ApiClient } from "../Api/axios";
 import {
   ALL_EPISODES_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-} from "../ConstAndTypes/consts";
+} from "../Consts/consts";
 import { isMobile, minutesInMilliseconds } from "../Utils/Utils";
 import {
   Accordion,
@@ -27,7 +27,7 @@ import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { useAppSelector } from "../Hooks/useStoreHooks";
 import Counter from "../Components/UI/Counter";
-import { TEpisode } from "../ConstAndTypes/ApiTypesAndConsts";
+import { TEpisode } from "../Api/ApiTypesAndConsts";
 
 const mobile = isMobile();
 const apiClientInstance = ApiClient.getInstance();

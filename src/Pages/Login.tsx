@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { DELETE_ERROR_TIMEOUT } from "../ConstAndTypes/consts";
-import { ApiClient } from "../Services/axios";
+import { DELETE_ERROR_TIMEOUT } from "../Consts/consts";
+import { ApiClient } from "../Api/axios";
 import { useAppDispatch, useAppSelector } from "../Hooks/useStoreHooks";
 import { setAuth, setLoggedUser } from "../Features/User";
 import {
@@ -21,7 +21,7 @@ import { useMyNavigation } from "../Hooks/useMyNavigation";
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import googleIconSvg from "../Assets/Svg/google-icon.svg";
 import { PasswordTextField } from "../Components/UI/PasswordTextField";
-import { loginRequest } from "../ConstAndTypes/ApiTypesAndConsts";
+import { loginRequest } from "../Api/ApiTypesAndConsts";
 
 const apiClientInstance = ApiClient.getInstance();
 

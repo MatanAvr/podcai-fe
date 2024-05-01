@@ -10,18 +10,15 @@ import {
   MIN_PASS_LENGTH,
   OTP_LENGTH,
   DELETE_ERROR_TIMEOUT,
-} from "../ConstAndTypes/consts";
-import { ApiClient } from "../Services/axios";
+} from "../Consts/consts";
+import { ApiClient } from "../Api/axios";
 import { isValidEmail } from "../Utils/Utils";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { isAxiosError } from "axios";
 import { useMyNavigation } from "../Hooks/useMyNavigation";
 import { PasswordTextField } from "../Components/UI/PasswordTextField";
-import {
-  sendOtpRequest,
-  verifyOtpRequest,
-} from "../ConstAndTypes/ApiTypesAndConsts";
+import { sendOtpRequest, verifyOtpRequest } from "../Api/ApiTypesAndConsts";
 
 const apiClientInstance = ApiClient.getInstance();
 

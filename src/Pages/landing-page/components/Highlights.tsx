@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import RecordVoiceOverRoundedIcon from "@mui/icons-material/RecordVoiceOverRounded";
 import FeedRoundedIcon from "@mui/icons-material/FeedRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
-import { LANDING_PAGE_PY } from "../../../ConstAndTypes/consts";
+import { LANDING_PAGE_PY } from "../../../Consts/consts";
 
 const highlights = [
   {

@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
-import { TPages } from "../../../ConstAndTypes/Types";
+import { TPages } from "../../../Types/Types";
 
 export default function Hero() {
   const nav = useMyNavigation();

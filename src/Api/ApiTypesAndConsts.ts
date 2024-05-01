@@ -1,4 +1,4 @@
-import { StageEnum } from "./Enums";
+import { StageEnum } from "../Enums/Enums";
 import {
   loggedInUser,
   INewUser,
@@ -8,7 +8,7 @@ import {
   TVoices,
   TSubscription,
   TRole,
-} from "./Types";
+} from "../Types/Types";
 
 // URLS
 export const BASE_URL: string = "https://www.podcai.co/api";

@@ -24,8 +24,8 @@ import {
   DELETE_ERROR_TIMEOUT,
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-} from "../ConstAndTypes/consts";
-import { ApiClient } from "../Services/axios";
+} from "../Consts/consts";
+import { ApiClient } from "../Api/axios";
 import {
   isOnlyPositiveNumbers,
   isValidEmail,
@@ -46,12 +46,9 @@ import { cloneDeep } from "lodash";
 import { PasswordTextField } from "../Components/UI/PasswordTextField";
 import { PodcastersVoices } from "../Components/UI/PodcastersVoices";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import {
-  sendOtpRequest,
-  verifyOtpRequest,
-} from "../ConstAndTypes/ApiTypesAndConsts";
-import { INewUser, TVoices, TTopics } from "../ConstAndTypes/Types";
-import { SuscirptionEnum, RoleEnum } from "../ConstAndTypes/Enums";
+import { sendOtpRequest, verifyOtpRequest } from "../Api/ApiTypesAndConsts";
+import { INewUser, TVoices, TTopics } from "../Types/Types";
+import { SuscirptionEnum, RoleEnum } from "../Enums/Enums";
 
 const apiClientInstance = ApiClient.getInstance();
 

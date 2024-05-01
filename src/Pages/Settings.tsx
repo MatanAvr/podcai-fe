@@ -5,10 +5,10 @@ import {
   DEFAULT_AUTO_HIDE_DURATION,
   VOICES_SAMPLES_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-} from "../ConstAndTypes/consts";
+} from "../Consts/consts";
 import { useAppSelector, useAppDispatch } from "../Hooks/useStoreHooks";
 import { cloneDeep } from "lodash";
-import { ApiClient } from "../Services/axios";
+import { ApiClient } from "../Api/axios";
 import { Avatar, Box, Card, Switch, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import DeleteUserModal from "../Components/UI/DeleteUserModal";
@@ -20,7 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import { minutesInMilliseconds } from "../Utils/Utils";
 import { PodcastersVoices } from "../Components/UI/PodcastersVoices";
 import UploadProfilePicModal from "../Components/UI/UploadProfilePicModal";
-import { TVoices, TTopics } from "../ConstAndTypes/Types";
+import { TVoices, TTopics } from "../Types/Types";
 
 const apiClientInstance = ApiClient.getInstance();
 

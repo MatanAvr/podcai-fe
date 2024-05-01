@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router";
 import { moveToPage } from "../Features/Navigation";
 import { useAppDispatch } from "./useStoreHooks";
-import { TPages } from "../ConstAndTypes/Types";
+import { TPages } from "../Types/Types";
 
 export const useMyNavigation = () => {
   const navigate = useNavigate();

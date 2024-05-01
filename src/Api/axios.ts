@@ -44,7 +44,7 @@ import {
   GET_ALL_USERS_URL,
   GET_ALL_USER_EPISODES_URL,
   getAllUserEpisodesResponse,
-} from "../ConstAndTypes/ApiTypesAndConsts";
+} from "./ApiTypesAndConsts";
 
 export class ApiClient {
   private static instance: ApiClient;

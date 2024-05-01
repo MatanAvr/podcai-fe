@@ -1,4 +1,4 @@
-import { SuscirptionEnum, RoleEnum } from "./Enums";
+import { SuscirptionEnum, RoleEnum } from "../Enums/Enums";
 
 export type TPages =
   | "Login"

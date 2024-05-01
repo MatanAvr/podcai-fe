@@ -10,7 +10,7 @@ import LandingPage from "../../Pages/landing-page/LandingPage";
 import { useAppDispatch, useAppSelector } from "../../Hooks/useStoreHooks";
 import { useEffect, useRef } from "react";
 import { setAuth, setLoggedUser } from "../../Features/User";
-import { ApiClient } from "../../Services/axios";
+import { ApiClient } from "../../Api/axios";
 import { ToggleColorMode } from "../../Features/Theme";
 import { ForgotPassword } from "../../Pages/ForgotPassword";
 import { TermsOfService } from "../../Pages/TermsOfService";
@@ -20,11 +20,11 @@ import { ContactUs } from "../../Pages/ContactUs";
 import {
   LOCAL_STORAGE_THEME_KEY,
   LOCAL_STORAGE_TOKEN_KEY,
-} from "../../ConstAndTypes/consts";
+} from "../../Consts/consts";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 import { AdminDashboard } from "../../Pages/AdminDashboard/AdminDashboard";
-import { RoleEnum } from "../../ConstAndTypes/Enums";
-import { TRole } from "../../ConstAndTypes/Types";
+import { RoleEnum } from "../../Enums/Enums";
+import { TRole } from "../../Types/Types";
 
 const apiClientInstance = ApiClient.getInstance();
 

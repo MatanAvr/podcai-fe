@@ -14,7 +14,7 @@ import { enabledLandingPageSections } from "../LandingPage";
 import { useAppSelector } from "../../../Hooks/useStoreHooks";
 import { Divider } from "@mui/material";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
-import { TPages } from "../../../ConstAndTypes/Types";
+import { TPages } from "../../../Types/Types";
 
 const twitterLink = "https://twitter.com/podcai";
 const instagramLink = "https://instagram.com/podcai";

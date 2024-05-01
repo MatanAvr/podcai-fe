@@ -10,10 +10,10 @@ import {
   voicesArray,
   VOICE_SAMPLE_SKELETON_WIDTH,
   VOICE_SAMPLE_SKELETON_HEIGHT,
-} from "../../ConstAndTypes/consts";
+} from "../../Consts/consts";
 import { OneLineAudioPlayer } from "./OneLineAudioPlayer/OneLineAudioPlayer";
-import { TVoiceSample } from "../../ConstAndTypes/ApiTypesAndConsts";
-import { TVoices } from "../../ConstAndTypes/Types";
+import { TVoiceSample } from "../../Api/ApiTypesAndConsts";
+import { TVoices } from "../../Types/Types";
 
 interface PodcastersVoicesProps {
   chosenVoice: TVoices | undefined;

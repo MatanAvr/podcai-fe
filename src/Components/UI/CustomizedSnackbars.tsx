@@ -1,7 +1,7 @@
 import * as React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import { DEFAULT_AUTO_HIDE_DURATION } from "../../ConstAndTypes/consts";
+import { DEFAULT_AUTO_HIDE_DURATION } from "../../Consts/consts";
 
 interface CustomizedSnackbarsProps {
   text: string;

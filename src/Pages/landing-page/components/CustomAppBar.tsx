@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { ToggleColorModeSwitch } from "./ToggleColorModeSwitch";
-import { ALL_EPISODES_QUERY_KEY } from "../../../ConstAndTypes/consts";
+import { ALL_EPISODES_QUERY_KEY } from "../../../Consts/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/useStoreHooks";
 import { useState } from "react";
 import { setAuth } from "../../../Features/User";
@@ -28,8 +28,8 @@ import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 import GradeRoundedIcon from "@mui/icons-material/GradeRounded";
 import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
 import PodcaiLogo from "../../../Components/UI/Logo";
-import { TPages } from "../../../ConstAndTypes/Types";
-import { RoleEnum } from "../../../ConstAndTypes/Enums";
+import { TPages } from "../../../Types/Types";
+import { RoleEnum } from "../../../Enums/Enums";
 
 const browser = getBrowser();
 
