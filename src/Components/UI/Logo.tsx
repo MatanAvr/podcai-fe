@@ -1,17 +1,43 @@
 import Typography from "@mui/material/Typography/Typography";
 import podcaiLogoImg from "../../Assets/Images/podcaiLogo.png";
 import { Avatar, Box } from "@mui/material";
+import { useScrollToSection } from "../../Hooks/useScrollToSection";
+import { TPages } from "../../Types/Types";
+import { useMyNavigation } from "../../Hooks/useMyNavigation";
+import { useAppSelector } from "../../Hooks/useStoreHooks";
 
 const logoSize = {
-  width: "2.6vw",
-  height: "2.6vw",
+  width: 35,
+  height: 35,
 };
-const PodcaiLogo = () => {
+
+type PodcaiLogoProps = { clickToHomePage?: boolean };
+const PodcaiLogo = ({ clickToHomePage }: PodcaiLogoProps) => {
+  const scrollToSection = useScrollToSection();
+  const nav = useMyNavigation();
+  const isAuth = useAppSelector((state) => state.user.auth);
+
+  const changePageHandler = (newPage: TPages) => {
+    nav.push(newPage);
+  };
+
   return (
     <Box
       id="podcai-logo-wrapper"
+      display="flex"
+      alignItems={"center"}
+      justifyContent="center"
+      gap={1}
+      marginInlineStart={2}
       sx={{
-        display: { xs: "none", md: "flex", gap: 8, alignItems: "center" },
+        cursor: "pointer",
+      }}
+      onClick={() => {
+        if (isAuth) {
+          changePageHandler("Home");
+        } else {
+          scrollToSection("Hero");
+        }
       }}
     >
       <Avatar src={podcaiLogoImg} sx={{ ...logoSize }} alt="Podcai-logo" />

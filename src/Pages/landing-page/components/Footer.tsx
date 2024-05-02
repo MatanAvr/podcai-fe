@@ -11,11 +11,12 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 import { enabledLandingPageSections } from "../LandingPage";
-import { useAppSelector } from "../../../Hooks/useStoreHooks";
 import { Divider } from "@mui/material";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 import { TPages } from "../../../Types/Types";
 import Logo from "../../../Components/UI/Logo";
+import { useScrollToSection } from "../../../Hooks/useScrollToSection";
+import { openInNewTab } from "../../../Utils/Utils";
 
 const twitterLink = "https://twitter.com/podcai";
 const instagramLink = "https://instagram.com/podcai";
@@ -43,27 +44,11 @@ const Copyright = () => {
 };
 
 export default function Footer() {
-  const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const nav = useMyNavigation();
+  const scrollToSection = useScrollToSection();
 
   const changePageHandler = (newPage: TPages) => {
     nav.push(newPage);
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    if (currentPage !== "LandingPage") {
-      nav.push("LandingPage");
-    }
-    const sectionElement = document.getElementById(sectionId);
-    const offset = 128;
-    if (sectionElement) {
-      const targetScroll = sectionElement.offsetTop - offset;
-      sectionElement.scrollIntoView({ behavior: "smooth" });
-      window.scrollTo({
-        top: targetScroll,
-        behavior: "smooth",
-      });
-    }
   };
 
   return (
@@ -79,53 +64,21 @@ export default function Footer() {
     >
       <Divider sx={{ width: "100%" }} />
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          width: "100%",
-          justifyContent: "space-between",
-        }}
+        display="flex"
+        flexDirection={{ xs: "column", sm: "row" }}
+        justifyContent="space-between"
+        width="100%"
       >
-        {/* Newsletter related  ---------------------------------------------*/}
         <Box
           display="flex"
-          flexDirection="column"
+          alignItems="flex-start"
+          flex={1}
           gap={4}
           minWidth={{ xs: "100%", sm: "60%" }}
-          flex={1}
         >
-          <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
-            <Logo />
-            {/* <Typography fontWeight={"bold"}>Stay curious</Typography> */}
-            {/* <Typography color="text.secondary" mb={2}>
-              Subscribe to our newsletter for weekly updates and promotions.
-            </Typography>
-            <Stack direction="row" spacing={1} useFlexGap>
-              <TextField
-                id="outlined-basic"
-                hiddenLabel
-                size="small"
-                variant="outlined"
-                fullWidth
-                aria-label="Enter your email address"
-                placeholder="Your email address"
-                inputProps={{
-                  autocomplete: "off",
-                  ariaLabel: "Enter your email address",
-                }}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ flexShrink: 0 }}
-              >
-                Subscribe
-              </Button>
-            </Stack> */}
-          </Box>
+          <Logo />
         </Box>
-        {/* // ==================================================================================== */}
-        <Box display="flex" gap={5}>
+        <Box display="flex" gap={5} px={2}>
           {/* Product -------------------------------------------------*/}
           <Box
             display={{ xs: "flex", sm: "flex" }}
@@ -140,7 +93,6 @@ export default function Footer() {
                   key={`link-${index}`}
                   sx={linkStyle}
                   color={linkColor}
-                  // color="text.primary"
                   onClick={() => scrollToSection(section)}
                   underline="hover"
                 >
@@ -158,13 +110,6 @@ export default function Footer() {
             }}
           >
             <Typography fontWeight={"bold"}>Company</Typography>
-            {/* <Link
-              sx={linkStyle}
-              color={linkColor}
-              onClick={() => changePageHandler("")}
-            >
-              About us
-            </Link> */}
             <Link
               sx={linkStyle}
               color={linkColor}
@@ -173,55 +118,7 @@ export default function Footer() {
             >
               Contact us
             </Link>
-            {/* <Link
-              sx={linkStyle}
-              color={linkColor}
-              onClick={() => changePageHandler("Updates")}
-              underline="hover"
-            >
-              Updates
-            </Link> */}
-            {/* <Link
-              sx={linkStyle}
-              color={linkColor}
-              onClick={() => changePageHandler("Terms of service")}
-            >
-              Careers
-            </Link> */}
-            {/* <Link
-              sx={linkStyle}
-              color={linkColor}
-              onClick={() => changePageHandler("Terms of service")}
-            >
-              Press
-            </Link> */}
           </Box>
-          {/* // Legal -------------------------------------------------*/}
-          {/* <Box
-            sx={{
-              display: { xs: "flex", sm: "flex" },
-              flexDirection: "column",
-              gap: 1,
-            }}
-          >
-            <Typography  fontWeight={"bold"}>
-              Legal
-            </Typography>
-            <Link
-              sx={linkStyle}
-              color={linkColor}
-              onClick={() => changePageHandler("Terms of service")}
-            >
-              Terms of Service
-            </Link>
-            <Link
-              sx={linkStyle}
-              color={linkColor}
-              onClick={() => changePageHandler("Privacy policy")}
-            >
-              Privacy Policy
-            </Link>
-          </Box> */}
         </Box>
       </Box>
 
@@ -240,11 +137,12 @@ export default function Footer() {
           {socialMediaButtons.map((socialMedia, index) => {
             return (
               <IconButton
+                onClick={() => openInNewTab(socialMedia.link)}
                 key={`social-medie-button-${index}`}
                 color="primary"
-                href={socialMedia.link}
-                target="_blank"
-                rel="external nofollow noopener"
+                // href={socialMedia.link}
+                // target="_blank"
+                // rel="external nofollow noopener"
                 aria-label={socialMedia.name}
                 sx={{ alignSelf: "center" }}
                 size="large"

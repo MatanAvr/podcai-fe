@@ -9,7 +9,6 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
 
 import { openInNewTab } from "../../../../Utils/Utils";

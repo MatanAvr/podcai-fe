@@ -11,7 +11,7 @@ import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import VolumeDownRoundedIcon from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUp";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
-import { formatDurationDisplay, isMobile } from "../../../Utils/Utils";
+import { formatDurationDisplay } from "../../../Utils/Utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "../../../Api/axios";
 import { TEpisode } from "../../../Api/ApiTypesAndConsts";
@@ -187,12 +187,17 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
   };
   return (
     <AppBar
-      sx={{
+      sx={(theme) => ({
         top: "auto",
         bottom: 0,
         py: 0.5,
         backgroundColor: "transparent",
-      }}
+
+        outline:
+          theme.palette.mode === "light"
+            ? "1px solid rgba(0,119,237,1)"
+            : "1px solid rgba(255,255,255,0.5)",
+      })}
     >
       <Toolbar>
         <>

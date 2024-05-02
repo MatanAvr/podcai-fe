@@ -12,14 +12,14 @@ import { useAppSelector } from "../../Hooks/useStoreHooks";
 import BriefAndExample from "./components/BriefAndExample";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 
-type LandingPageSectionsOptions =
+type LandingPageSectionsType =
   | "Features"
   | "Testimonials"
   | "Highlights"
   | "Pricing"
   | "Faq";
 
-export const enabledLandingPageSections: LandingPageSectionsOptions[] = [
+export const enabledLandingPageSections: LandingPageSectionsType[] = [
   "Features",
   // "Testimonials",
   "Highlights",
@@ -35,7 +35,7 @@ export default function LandingPage() {
     if (isAuth) {
       nav.push("Home");
     }
-  }, [isAuth]);
+  }, [isAuth, nav]);
 
   return (
     <>

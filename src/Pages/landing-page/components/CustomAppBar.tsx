@@ -16,7 +16,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getBrowser } from "../../../Utils/Utils";
 import { deferredPrompt, pwaInstall } from "../../../Utils/pwaInstall";
 import { IconButton, Avatar, Menu, ListItemIcon } from "@mui/material";
-// Icons
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
@@ -30,6 +29,7 @@ import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSetting
 import PodcaiLogo from "../../../Components/UI/Logo";
 import { TPages } from "../../../Types/Types";
 import { RoleEnum } from "../../../Enums/Enums";
+import { useScrollToSection } from "../../../Hooks/useScrollToSection";
 
 const browser = getBrowser();
 
@@ -45,9 +45,9 @@ const CustomAppBar = () => {
     (state) => state.featuresToggle.adminDashboardEnabled
   );
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
-  const currentPage = useAppSelector((state) => state.navigation.currentPage);
   const queryClient = useQueryClient();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const scrollToSection = useScrollToSection();
 
   const openMenuHandler = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -61,22 +61,8 @@ const CustomAppBar = () => {
     setOpen(newOpen);
   };
 
-  const scrollToSection = (sectionId: string) => {
-    if (currentPage !== "LandingPage") {
-      nav.push("LandingPage");
-    }
-    const sectionElement = document.getElementById(sectionId);
-    let offset = 128;
-    if (sectionElement) {
-      const targetScroll = sectionElement.offsetTop - offset;
-      sectionElement.scrollIntoView({ behavior: "smooth" });
-      window.scrollTo({
-        top: targetScroll,
-        behavior: "smooth",
-      });
-    } else {
-      console.error(`Could not find element with id:${sectionId}`);
-    }
+  const scrollToSectionLocal = (sectionId: string) => {
+    scrollToSection(sectionId);
     setOpen(false);
   };
 
@@ -114,11 +100,15 @@ const CustomAppBar = () => {
     <AppBar
       id="app-bar"
       position="fixed"
-      sx={{
+      sx={(theme) => ({
         boxShadow: 0,
         bgcolor: "transparent",
         alignItems: "center",
-      }}
+        outline:
+          theme.palette.mode === "light"
+            ? "1px solid rgba(0,119,237,0.25)"
+            : "1px solid rgba(255,255,255,0.5)",
+      })}
     >
       <Box
         id="toolbar"
@@ -127,7 +117,8 @@ const CustomAppBar = () => {
           alignItems: "center",
           justifyContent: "center",
           width: "100%",
-          py: 1.5,
+          height: 64,
+          maxHeight: 64,
           bgcolor:
             theme.palette.mode === "light"
               ? "rgba(255, 255, 255, 0.4)"
@@ -147,25 +138,7 @@ const CustomAppBar = () => {
           justifyContent={"space-between"}
           maxWidth={"90%"}
         >
-          <Box
-            id="podcai-logo"
-            display={"flex"}
-            flex={1}
-            sx={{
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              if (isAuth) {
-                changePageHandler("Home");
-              } else {
-                if (currentPage === "LandingPage") {
-                  scrollToSection("Hero");
-                } else {
-                  changePageHandler("LandingPage");
-                }
-              }
-            }}
-          >
+          <Box id="podcai-logo" display={"flex"} flex={1}>
             <PodcaiLogo />
           </Box>
 
@@ -193,7 +166,7 @@ const CustomAppBar = () => {
                     return (
                       <MenuItem
                         key={`manu-item-${index}`}
-                        onClick={() => scrollToSection(section)}
+                        onClick={() => scrollToSectionLocal(section)}
                       >
                         <Typography color="text.primary">{section}</Typography>
                       </MenuItem>
@@ -229,8 +202,9 @@ const CustomAppBar = () => {
                     onClose={closeMenuHandler}
                     onClick={closeMenuHandler}
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
-                    anchorOrigin={{ horizontal: "center", vertical: "center" }}
+                    anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
                     open={Boolean(anchorElUser)}
+                    sx={{ mt: 1 }}
                   >
                     <Box
                       sx={{
@@ -407,7 +381,7 @@ const CustomAppBar = () => {
                     return (
                       <MenuItem
                         key={`manu-item-${index}`}
-                        onClick={() => scrollToSection(section)}
+                        onClick={() => scrollToSectionLocal(section)}
                       >
                         <ListItemIcon>
                           {section === "Features" && (

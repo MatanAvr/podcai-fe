@@ -7,9 +7,7 @@ import {
 import { minutesInMilliseconds } from "../../../../Utils/Utils";
 import { Box, Card, Typography } from "@mui/material";
 import LoadingSpinner from "../../../../Components/UI/LoadingSpinner";
-import { CustomAudioPlayer } from "../../../../Components/UI/CustomAudioPlayer/CustomAudioPlayer";
 import { useQuery } from "@tanstack/react-query";
-
 import { useAppSelector } from "../../../../Hooks/useStoreHooks";
 import Counter from "../../../../Components/UI/Counter";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
@@ -63,7 +61,11 @@ export const Home = () => {
         maxHeight={"86.5%"}
         width={"100%"}
       >
-        {isLoadingEpisodes && <LoadingSpinner />}
+        {isLoadingEpisodes && (
+          <Box display="flex" width={"100%"} p={2}>
+            <LoadingSpinner />
+          </Box>
+        )}
 
         {allEpisodes && allEpisodes.length === 0 && (
           <Box
@@ -132,7 +134,6 @@ export const Home = () => {
                 <>
                   {currentlyPlaying ? (
                     <>
-                      {/* <CustomAudioPlayer episode={currentlyPlaying} /> */}
                       <SourcesContainer currentlyPlaying={currentlyPlaying} />
                     </>
                   ) : (

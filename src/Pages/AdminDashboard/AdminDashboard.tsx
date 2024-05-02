@@ -134,7 +134,9 @@ export const AdminDashboard = () => {
       }}
     >
       {isLoadingUsers ? (
-        <LoadingSpinner />
+        <Box display="flex" width={"100%"} p={2}>
+          <LoadingSpinner />
+        </Box>
       ) : (
         <>
           <Box

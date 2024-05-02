@@ -32,6 +32,18 @@ export const Main = () => {
   const dispatch = useAppDispatch();
   const hasMounted = useRef(false);
   const nav = useMyNavigation();
+  const currentPage = useAppSelector((state) => state.navigation.currentPage);
+
+  const authAndLogin = async (token: string) => {
+    try {
+      // Try to login with the token from local storage
+      dispatch(setAuth({ newMode: true, token })); // Attach token to apiClient
+      const authUserRes = await apiClientInstance.userAuth();
+      dispatch(setLoggedUser({ newLoggeduser: authUserRes }));
+    } catch (err) {
+      dispatch(setAuth({ newMode: false, token: "" }));
+    }
+  };
 
   useEffect(() => {
     // Checks theme mode and if there is a token in local storage
@@ -46,18 +58,7 @@ export const Main = () => {
       dispatch(ToggleColorMode("dark"));
     }
     hasMounted.current = true;
-  }, []);
-
-  const authAndLogin = async (token: string) => {
-    try {
-      // Try to login with the token from local storage
-      dispatch(setAuth({ newMode: true, token })); // Attach token to apiClient
-      const authUserRes = await apiClientInstance.userAuth();
-      dispatch(setLoggedUser({ newLoggeduser: authUserRes }));
-    } catch (err) {
-      dispatch(setAuth({ newMode: false, token: "" }));
-    }
-  };
+  }, [authAndLogin, dispatch, nav]);
 
   return (
     <Paper
@@ -76,6 +77,9 @@ export const Main = () => {
       })}
     >
       <Box className="main-wrapper">
+        {currentPage !== "Home" && (
+          <Box sx={{ display: "flex", width: "100%", py: 1 }} />
+        )}
         <Routes>
           <Route path="/" element={<LandingPage />}></Route>
           <Route path="/Login" element={<Login />} />
