@@ -14,7 +14,7 @@ export const VolumeInput = (props: VolumeInputProps) => {
 
   return (
     <Slider
-      sx={{ marginInline: 2, display: "flex", flex: 1 }}
+      sx={{ marginInline: 2, display: "flex", flex: 1, minWidth: 100 }}
       min={0}
       step={0.05}
       max={1}

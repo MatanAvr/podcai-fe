@@ -84,6 +84,7 @@ export const Login = () => {
   };
 
   const validateEmail = () => {
+    if (user.email.length === 0) return;
     const emailValid = isValidEmail(user.email);
     if (!emailValid) {
       showEmailError();
