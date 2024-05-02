@@ -55,3 +55,23 @@ export const getBrowser = () => {
     return "unknown";
   }
 };
+
+export const openInNewTab = (url: string) => {
+  if (!window) return;
+  window.open(url, "_blank", "external, noopener, noreferrer");
+};
+
+export const tryScrollToSection = (sectionId: string): boolean => {
+  const sectionElement = document.getElementById(sectionId);
+  const offset = 128;
+  if (sectionElement) {
+    const targetScroll = sectionElement.offsetTop - offset;
+    sectionElement.scrollIntoView({ behavior: "smooth" });
+    window.scrollTo({
+      top: targetScroll,
+      behavior: "smooth",
+    });
+    return true;
+  }
+  return false;
+};
