@@ -49,10 +49,6 @@ export default function BriefAndExample() {
             gap: 2,
           }}
         >
-          <Typography variant="h4">
-            A convenient and enjoyable way <br />
-            to stay informed about the topics that interest you.
-          </Typography>
           <br />
           {episodeExampleUrl && (
             <Box
@@ -61,12 +57,11 @@ export default function BriefAndExample() {
                 flexDirection: "column",
                 minWidth: "300px",
                 width: "60%",
-                textAlign: "start",
                 gap: 1,
               }}
             >
-              <Typography justifySelf={"start"}>
-                Check out this sample episode:
+              <Typography variant="h6">
+                Check out this sample episode
               </Typography>
               <OneLineAudioPlayer audioUrl={episodeExampleUrl} />
             </Box>

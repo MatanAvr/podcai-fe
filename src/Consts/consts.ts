@@ -37,6 +37,8 @@ export const VOICE_SAMPLE_SKELETON_WIDTH = "100%";
 export const VOICE_SAMPLE_SKELETON_HEIGHT = 40;
 export const LANDING_PAGE_PY = { xs: 8, sm: 10 };
 export const DEFAULT_AUTO_HIDE_DURATION = 6 * 1000;
+export const HEADER_HEIGHT = 64;
+export const BOTTOM_PLAYER_HEIGHT = 85;
 
 // React query consts
 export const EPISODE_EXAMPLE_QUERY_KEY = "episode-example-url";

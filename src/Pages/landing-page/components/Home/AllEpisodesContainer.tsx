@@ -8,14 +8,13 @@ import {
 } from "@mui/material";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { isMobile } from "../../../../Utils/Utils";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
+
 type AllEpisodesContainerProps = {
   allEpisodes: TEpisode[];
-  currentlyPlaying: TEpisode;
+  currentlyPlaying?: TEpisode;
   onClickEpisodeHandler: (newEpisode: TEpisode) => void;
 };
-const mobile = isMobile();
 
 export const AllEpisodesContainer = ({
   allEpisodes,
@@ -29,18 +28,17 @@ export const AllEpisodesContainer = ({
         id="all-episodes-wrapper"
         display="flex"
         flexDirection="column"
+        overflow={"auto"}
         flex={1}
         gap={1}
-        width={{ xs: "100%", md: "auto" }}
         alignItems="center"
-        maxHeight={"100%"}
+        minWidth={200}
       >
         <Box
           id="all-episoeds-container"
           sx={{
             overflow: "auto",
             width: "90%",
-            flexGrow: 1,
             px: 1,
           }}
         >

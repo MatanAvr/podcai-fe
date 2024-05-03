@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography/Typography";
-import podcaiLogoImg from "../../Assets/Images/podcaiLogo.png";
+import podcaiLogoImg from "../../Assets/Images/podcaiLogo.webp";
 import { Avatar, Box } from "@mui/material";
 import { useScrollToSection } from "../../Hooks/useScrollToSection";
 import { TPages } from "../../Types/Types";

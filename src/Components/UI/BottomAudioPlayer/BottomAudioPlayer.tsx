@@ -1,27 +1,30 @@
-import { AppBar, Toolbar } from "@mui/material";
+import { Fab, Toolbar } from "@mui/material";
 import { Box, IconButton, Typography } from "@mui/material";
-import { ALL_EPISODES_QUERY_KEY } from "../../../Consts/consts";
+import {
+  ALL_EPISODES_QUERY_KEY,
+  BOTTOM_PLAYER_HEIGHT,
+} from "../../../Consts/consts";
 import { useRef, useState } from "react";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
-import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
-import PauseCircleFilledOutlinedIcon from "@mui/icons-material/PauseCircleFilledOutlined";
 import Forward10RoundedIcon from "@mui/icons-material/Forward10Rounded";
 import Replay10RoundedIcon from "@mui/icons-material/Replay10Rounded";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import VolumeDownRoundedIcon from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUp";
-import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import { formatDurationDisplay } from "../../../Utils/Utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "../../../Api/axios";
 import { TEpisode } from "../../../Api/ApiTypesAndConsts";
 import { VolumeInput } from "../CustomAudioPlayer/VolumeInput/VolumeInput";
 import { AudioProgressBar } from "../OneLineAudioPlayer/AudioProgressBar/AudioProgressBar";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import ChangePlaybackSpeed from "../ChangePlaybackSpeed";
 
 const apiClientInstance = ApiClient.getInstance();
 
 type buttonsColorsOptions = "inherit" | "primary";
-type playSpeedOptions = 0.25 | 0.5 | 0.75 | 1 | 1.25 | 1.5 | 1.75 | 2;
+export type playSpeedOptions = 0.25 | 0.5 | 0.75 | 1 | 1.25 | 1.5 | 1.75 | 2;
 
 const buttonsColor: buttonsColorsOptions = "primary";
 
@@ -53,7 +56,8 @@ const dynamicVolumeIconButton = (
     </IconButton>
   );
 };
-type BottomAudioPlayerProps = { episode: TEpisode };
+
+type BottomAudioPlayerProps = { episode: TEpisode | undefined };
 
 const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
   const [duration, setDuration] = useState<number>(0);
@@ -85,12 +89,14 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
   }, [isReady]);
 
   useEnhancedEffect(() => {
+    if (!episode) return;
     if (!episode.is_completed && !sentIsCompleted) {
       checkIfEpisodeCompleted();
     }
   }, [elapsedTime]);
 
   const checkIfEpisodeCompleted = async () => {
+    if (!episode) return;
     if (Math.ceil((currrentProgress / duration) * 100) > 90) {
       setSentIsCompleted(() => true);
       const markEpisodeAsCompleted = await apiClientInstance.episodeCompleted({
@@ -162,45 +168,26 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
     setCurrrentProgress(newProgress);
   };
 
-  const playbackSpeedHandler = () => {
+  const playbackSpeedHandler = (speed: playSpeedOptions) => {
     if (!audioRef.current) return;
-    let localPlaySpeed: playSpeedOptions = 1;
-    switch (playSpeed) {
-      case 1:
-        localPlaySpeed = 1.25;
-        break;
-      case 1.25:
-        localPlaySpeed = 1.5;
-        break;
-      case 1.5:
-        localPlaySpeed = 1.75;
-        break;
-      case 1.75:
-        localPlaySpeed = 2;
-        break;
-      case 2:
-        localPlaySpeed = 1;
-        break;
-    }
-    setPlaySpeed(localPlaySpeed);
-    audioRef.current.playbackRate = localPlaySpeed;
+    setPlaySpeed(speed);
+    audioRef.current.playbackRate = speed;
   };
   return (
-    <AppBar
+    <Box
+      height={BOTTOM_PLAYER_HEIGHT}
+      maxHeight={BOTTOM_PLAYER_HEIGHT}
       sx={(theme) => ({
-        top: "auto",
-        bottom: 0,
-        py: 0.5,
-        backgroundColor: "transparent",
-
+        width: "100%",
         outline:
           theme.palette.mode === "light"
             ? "1px solid rgba(0,119,237,1)"
             : "1px solid rgba(255,255,255,0.5)",
       })}
+      py={1}
     >
       <Toolbar>
-        <>
+        {episode && (
           <audio
             ref={audioRef}
             style={{ display: "none" }}
@@ -221,7 +208,8 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
             }}
             onProgress={bufferProgressHandler}
           />
-        </>
+        )}
+
         <Box
           id="custom-bottom-audio-player"
           display="flex"
@@ -230,7 +218,9 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
           justifyContent={"space-between"}
         >
           <Box display={{ xs: "none", md: "flex" }}>
-            <Typography color={"text.primary"}>{episode.name}</Typography>
+            <Typography color={"text.primary"}>
+              {episode?.name || ""}
+            </Typography>
           </Box>
 
           <Box
@@ -247,36 +237,28 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
               flex={1}
             >
               <Typography variant="body2" color={"primary"}>
-                {playSpeed}
+                x{playSpeed}
               </Typography>
-              <IconButton
-                onClick={playbackSpeedHandler}
-                color={buttonsColor}
-                size="small"
-              >
-                <ClearRoundedIcon fontSize="small" />
-              </IconButton>
+
+              <ChangePlaybackSpeed
+                playbackSpeedHandler={playbackSpeedHandler}
+              />
 
               <IconButton onClick={() => changeProgressHandler("back")}>
                 <Replay10RoundedIcon fontSize="large" color={buttonsColor} />
               </IconButton>
 
-              <IconButton
+              <Fab
+                color="primary"
                 onClick={togglePlayPause}
                 aria-label={isPlaying ? "Pause" : "Play"}
               >
                 {isPlaying ? (
-                  <PauseCircleFilledOutlinedIcon
-                    fontSize="large"
-                    color={buttonsColor}
-                  />
+                  <PauseRoundedIcon fontSize="large" />
                 ) : (
-                  <PlayCircleFilledOutlinedIcon
-                    fontSize="large"
-                    color={buttonsColor}
-                  />
+                  <PlayArrowRoundedIcon fontSize="large" />
                 )}
-              </IconButton>
+              </Fab>
 
               <IconButton onClick={() => changeProgressHandler("forward")}>
                 <Forward10RoundedIcon fontSize="large" color={buttonsColor} />
@@ -338,7 +320,7 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
           </Box>
         </Box>
       </Toolbar>
-    </AppBar>
+    </Box>
   );
 };
 

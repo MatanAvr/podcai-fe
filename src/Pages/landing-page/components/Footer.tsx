@@ -70,7 +70,7 @@ export default function Footer() {
         width="100%"
       >
         <Box
-          display="flex"
+          display={{ xs: "none", md: "flex" }}
           alignItems="flex-start"
           flex={1}
           gap={4}
