@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { ApiClient } from "../../../../Api/axios";
 import {
   ALL_EPISODES_QUERY_KEY,
+  BOTTOM_PLAYER_HEIGHT,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
+  HEADER_HEIGHT,
 } from "../../../../Consts/consts";
 import { minutesInMilliseconds } from "../../../../Utils/Utils";
 import { Box, Card, Typography } from "@mui/material";
@@ -53,20 +55,26 @@ export const Home = () => {
     }
   }, [allEpisodes, currentlyPlaying]);
 
+  const calcHeight = `calc(100vh - ${HEADER_HEIGHT}px)`;
+  const calcMaxHeight = `calc(100vh - ${HEADER_HEIGHT}px)`;
+
   return (
     <>
       <Box
         id="home-page-wrapper"
         display="flex"
-        maxHeight={"86.5%"}
         width={"100%"}
+        height={calcHeight}
+        maxHeight={calcMaxHeight}
+        overflow={"hidden"}
       >
+        {/* // Loading */}
         {isLoadingEpisodes && (
           <Box display="flex" width={"100%"} p={2}>
             <LoadingSpinner />
           </Box>
         )}
-
+        {/* // New user */}
         {allEpisodes && allEpisodes.length === 0 && (
           <Box
             width={"100%"}
@@ -104,55 +112,36 @@ export const Home = () => {
             </Card>
           </Box>
         )}
-
+        {/* //Main */}
         {allEpisodes && allEpisodes.length > 0 && (
           <Box
             id="home-container"
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              alignItems: "flex-start",
-              maxHeight: "100%",
-              flex: 1,
-              overflow: "hidden",
-            }}
-            gap={0.5}
+            display="flex"
+            flex={1}
+            flexDirection={"column"}
+            height={"100%"}
+            overflow={"hidden"}
           >
-            <>
-              <Box
-                id="currently-playing-wrapper"
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-start",
-                  flex: 6,
-                  gap: 1,
-                  maxHeight: "100%",
-                  height: { xs: "75%", md: "100%" },
-                }}
-              >
-                <>
-                  {currentlyPlaying ? (
-                    <>
-                      <SourcesContainer currentlyPlaying={currentlyPlaying} />
-                    </>
-                  ) : (
-                    <Typography>Choose an episode to play</Typography>
-                  )}
-                </>
-              </Box>
+            <Box
+              display="flex"
+              flexDirection={{ xs: "column", md: "row" }}
+              flex={1}
+              width={"100%"}
+              maxHeight={`calc(100% - ${BOTTOM_PLAYER_HEIGHT}px)`}
+              maxWidth={"100%"}
+              overflow={"hidden"}
+            >
+              <SourcesContainer currentlyPlaying={currentlyPlaying} />
+              <AllEpisodesContainer
+                allEpisodes={allEpisodes}
+                currentlyPlaying={currentlyPlaying}
+                onClickEpisodeHandler={onClickEpisodeHandler}
+              />
+            </Box>
 
-              {currentlyPlaying && (
-                <AllEpisodesContainer
-                  allEpisodes={allEpisodes}
-                  currentlyPlaying={currentlyPlaying}
-                  onClickEpisodeHandler={onClickEpisodeHandler}
-                />
-              )}
-            </>
+            <BottomAudioPlayer episode={currentlyPlaying} />
           </Box>
         )}
-        {currentlyPlaying && <BottomAudioPlayer episode={currentlyPlaying} />}
       </Box>
     </>
   );

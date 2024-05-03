@@ -58,7 +58,7 @@ export const Main = () => {
       dispatch(ToggleColorMode("dark"));
     }
     hasMounted.current = true;
-  }, [authAndLogin, dispatch, nav]);
+  }, [dispatch, nav]);
 
   return (
     <Paper

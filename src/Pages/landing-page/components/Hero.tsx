@@ -28,7 +28,7 @@ export default function Hero() {
         backgroundSize: "contain",
         backgroundPosition: "center",
       }}
-      py={{ sx: 6, md: 12 }}
+      py={{ sx: 6, md: 10 }}
     >
       <Container
         sx={{
@@ -38,7 +38,7 @@ export default function Hero() {
         }}
       >
         <Stack flexWrap={"wrap"} gap={2}>
-          <Box>
+          <Box sx={{ pb: 6 }}>
             <Typography variant="h2" fontWeight="bold">
               Daily personalized
             </Typography>

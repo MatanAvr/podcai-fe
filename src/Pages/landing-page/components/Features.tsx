@@ -11,11 +11,11 @@ import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 import GroupsIcon from "@mui/icons-material/Groups";
 import NewspaperRoundedIcon from "@mui/icons-material/NewspaperRounded";
 import { useState } from "react";
-import topicsDark from "../../../Assets/Images/Hero-images/topics-dark.png";
-import topicsLight from "../../../Assets/Images/Hero-images/topics-light.png";
-import podcaiPreviewDark from "../../../Assets/Images/Hero-images/podcai-dark.png";
-import podcaiPreviewLight from "../../../Assets/Images/Hero-images/podcai-light.png";
-import podcastersPhoto from "../../../Assets/Images/Hero-images/podcasters.png";
+import topicsDark from "../../../Assets/Images/Hero-images/topics-dark.webp";
+import topicsLight from "../../../Assets/Images/Hero-images/topics-light.webp";
+import podcaiPreviewDark from "../../../Assets/Images/Hero-images/podcai-dark.webp";
+import podcaiPreviewLight from "../../../Assets/Images/Hero-images/podcai-light.webp";
+import podcastersPhoto from "../../../Assets/Images/Hero-images/podcasters.webp";
 import { LANDING_PAGE_PY, MAX_NUM_OF_TOPICS } from "../../../Consts/consts";
 
 const features = [

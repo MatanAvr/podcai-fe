@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { ToggleColorModeSwitch } from "./ToggleColorModeSwitch";
-import { ALL_EPISODES_QUERY_KEY } from "../../../Consts/consts";
+import { ALL_EPISODES_QUERY_KEY, HEADER_HEIGHT } from "../../../Consts/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/useStoreHooks";
 import { useState } from "react";
 import { setAuth } from "../../../Features/User";
@@ -117,8 +117,8 @@ const CustomAppBar = () => {
           alignItems: "center",
           justifyContent: "center",
           width: "100%",
-          height: 64,
-          maxHeight: 64,
+          height: HEADER_HEIGHT,
+          maxHeight: HEADER_HEIGHT,
           bgcolor:
             theme.palette.mode === "light"
               ? "rgba(255, 255, 255, 0.4)"
