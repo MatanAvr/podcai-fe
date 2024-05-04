@@ -10,7 +10,6 @@ import {
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
-import { useState } from "react";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import {
   useAppDispatch,

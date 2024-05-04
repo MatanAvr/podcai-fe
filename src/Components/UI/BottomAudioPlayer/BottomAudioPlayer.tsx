@@ -4,7 +4,7 @@ import {
   ALL_EPISODES_QUERY_KEY,
   BOTTOM_PLAYER_HEIGHT,
 } from "../../../Consts/consts";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 import Forward10RoundedIcon from "@mui/icons-material/Forward10Rounded";
 import Replay10RoundedIcon from "@mui/icons-material/Replay10Rounded";
