@@ -4,7 +4,7 @@ import {
   ALL_EPISODES_QUERY_KEY,
   BOTTOM_PLAYER_HEIGHT,
 } from "../../../Consts/consts";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 import Forward10RoundedIcon from "@mui/icons-material/Forward10Rounded";
 import Replay10RoundedIcon from "@mui/icons-material/Replay10Rounded";
@@ -15,19 +15,20 @@ import { formatDurationDisplay } from "../../../Utils/Utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "../../../Api/axios";
 import { TEpisode } from "../../../Api/ApiTypesAndConsts";
-import { VolumeInput } from "../CustomAudioPlayer/VolumeInput/VolumeInput";
+import { VolumeInput } from "../VolumeInput/VolumeInput";
 import { AudioProgressBar } from "../OneLineAudioPlayer/AudioProgressBar/AudioProgressBar";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import ChangePlaybackSpeed from "../ChangePlaybackSpeed";
+import { TPlaySpeedOptions } from "../../../Types/Types";
+import { useAppDispatch, useAppSelector } from "../../../Hooks/useStoreHooks";
+import { setPlaySpeedConfig } from "../../../Features/Config";
+
+type BottomAudioPlayerProps = { episode: TEpisode | undefined };
+type buttonsColorsOptions = "inherit" | "primary";
 
 const apiClientInstance = ApiClient.getInstance();
-
-type buttonsColorsOptions = "inherit" | "primary";
-export type playSpeedOptions = 0.25 | 0.5 | 0.75 | 1 | 1.25 | 1.5 | 1.75 | 2;
-
 const buttonsColor: buttonsColorsOptions = "primary";
-
 const timelineStyle = {
   width: "50px",
   display: "flex",
@@ -57,11 +58,10 @@ const dynamicVolumeIconButton = (
   );
 };
 
-type BottomAudioPlayerProps = { episode: TEpisode | undefined };
-
 const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
+  const playbackSpeed = useAppSelector((state) => state.config.playbackSpeed);
+  const dispatch = useAppDispatch();
   const [duration, setDuration] = useState<number>(0);
-  const [playSpeed, setPlaySpeed] = useState<playSpeedOptions>(1);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [sentIsCompleted, setSentIsCompleted] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -79,6 +79,12 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
     setIsPlaying(false);
     setSentIsCompleted(false);
   }, [episode]);
+
+  useEnhancedEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = playbackSpeed;
+    }
+  }, [playbackSpeed]);
 
   useEnhancedEffect(() => {
     if (isReady) {
@@ -168,11 +174,10 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
     setCurrrentProgress(newProgress);
   };
 
-  const playbackSpeedHandler = (speed: playSpeedOptions) => {
-    if (!audioRef.current) return;
-    setPlaySpeed(speed);
-    audioRef.current.playbackRate = speed;
+  const playbackSpeedHandler = (speed: TPlaySpeedOptions) => {
+    dispatch(setPlaySpeedConfig(speed));
   };
+
   return (
     <Box
       height={BOTTOM_PLAYER_HEIGHT}
@@ -237,7 +242,7 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
               flex={1}
             >
               <Typography variant="body2" color={"primary"}>
-                x{playSpeed}
+                x{playbackSpeed}
               </Typography>
 
               <ChangePlaybackSpeed

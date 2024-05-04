@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ApiClient } from "../Api/axios";
 import { SuscirptionEnum, RoleEnum } from "../Enums/Enums";
 import { loggedInUser } from "../Types/Types";
+import { LS_TOKEN_KEY } from "../Consts/consts";
+import { LS } from "../Utils/localStorage";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -39,10 +41,10 @@ export const userSlice = createSlice({
       state.auth = newMode;
       if (newMode) {
         apiClientInstance.setToken(token);
-        localStorage.setItem("token", token);
+        LS.getInstance().save(LS_TOKEN_KEY, token);
       } else {
         apiClientInstance.removeToken();
-        localStorage.removeItem("token");
+        LS.getInstance().delete(LS_TOKEN_KEY);
       }
     },
     updateLoggedUser: (

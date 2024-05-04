@@ -1,4 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { LS_THEME_KEY } from "../Consts/consts";
+import { LS } from "../Utils/localStorage";
 type themeColor = "dark" | "light";
 
 export const themeSlice = createSlice({
@@ -8,8 +10,8 @@ export const themeSlice = createSlice({
   },
   reducers: {
     ToggleColorMode: (state, action: PayloadAction<themeColor>) => {
-      state.themeColor = action.payload === "dark" ? "dark" : "light";
-      localStorage.setItem("theme", action.payload);
+      state.themeColor = action.payload;
+      LS.getInstance().save(LS_THEME_KEY, action.payload);
     },
   },
 });
