@@ -57,7 +57,6 @@ const columns: readonly Column[] = [
     // align: "right",
     format: (value: string) => {
       const newVal = new Date(value).toString();
-      console.log(value, newVal);
       return newVal;
     },
   },
@@ -80,7 +79,6 @@ function createData(user: TUserFromDB): Data {
 }
 
 const formatDate = (date: string) => {
-  console.log(date);
   const dateString = new Date(date).toDateString();
   const timeString = new Date(date).toLocaleTimeString();
   return `${dateString} ${timeString}`;

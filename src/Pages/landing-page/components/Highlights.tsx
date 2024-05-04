@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import RecordVoiceOverRoundedIcon from "@mui/icons-material/RecordVoiceOverRounded";
 import FeedRoundedIcon from "@mui/icons-material/FeedRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
-import { LANDING_PAGE_PY } from "../../../Consts/consts";
+import { SECTION_GAP, SECTION_PY } from "../../../Consts/consts";
 
 const highlights = [
   {
@@ -34,10 +34,8 @@ export default function Highlights() {
     <Box
       id="Highlights"
       sx={{
-        py: LANDING_PAGE_PY,
+        py: SECTION_PY,
         pb: { xs: 8, sm: 16 },
-        color: "white",
-        width: "100vw",
       }}
     >
       <Container
@@ -45,7 +43,7 @@ export default function Highlights() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: { xs: 3, sm: 6 },
+          gap: SECTION_GAP,
         }}
       >
         <Box
