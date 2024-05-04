@@ -1,7 +1,7 @@
 import { ThemeOptions, createTheme, responsiveFontSizes } from "@mui/material";
 
-// const PRIMARY_COLOR_RGBA = "rgba(0,119,237,255)";
-const PRIMARY_COLOR_HEX = "#0077ED";
+// const PRIMARY_COLOR_RGBA = "rgba(0, 113, 227,255)";
+const PRIMARY_COLOR_HEX = "#0072e3";
 
 const themeOptions: ThemeOptions = {
   typography: {

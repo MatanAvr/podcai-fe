@@ -8,7 +8,7 @@ import Container from "@mui/material/Container";
 import Masonry from "@mui/lab/Masonry";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/system";
-import { LANDING_PAGE_PY } from "../../../Consts/consts";
+import { SECTION_GAP, SECTION_PY } from "../../../Consts/consts";
 
 const userTestimonials = [
   {
@@ -88,12 +88,12 @@ export default function Testimonials() {
     <Container
       id="Testimonials"
       sx={{
-        py: LANDING_PAGE_PY,
+        py: SECTION_PY,
         position: "relative",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: { xs: 3, sm: 6 },
+        gap: SECTION_GAP,
       }}
     >
       <Box

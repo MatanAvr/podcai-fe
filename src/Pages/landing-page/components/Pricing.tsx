@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
-import { LANDING_PAGE_PY } from "../../../Consts/consts";
+import { SECTION_GAP, SECTION_PY } from "../../../Consts/consts";
 import { useMyNavigation } from "../../../Hooks/useMyNavigation";
 
 const tiers = [
@@ -61,12 +61,12 @@ export default function Pricing() {
     <Container
       id="Pricing"
       sx={{
-        py: LANDING_PAGE_PY,
+        py: SECTION_PY,
         position: "relative",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: { xs: 3, sm: 6 },
+        gap: SECTION_GAP,
       }}
     >
       <Box

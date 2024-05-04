@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LANDING_PAGE_PY, SUPPORT_EMAIL } from "../../../Consts/consts";
+import { SECTION_GAP, SECTION_PY, SUPPORT_EMAIL } from "../../../Consts/consts";
 
 const faqArr = [
   {
@@ -48,23 +48,15 @@ export default function Faq() {
     <Container
       id="Faq"
       sx={{
-        py: LANDING_PAGE_PY,
+        py: SECTION_PY,
         position: "relative",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: { xs: 3, sm: 6 },
+        gap: SECTION_GAP,
       }}
     >
-      <Typography
-        component="h2"
-        variant="h4"
-        color="text.primary"
-        sx={{
-          width: { sm: "100%", md: "60%" },
-          textAlign: { sm: "left", md: "center" },
-        }}
-      >
+      <Typography component="h2" variant="h4" color="text.primary">
         Frequently asked questions
       </Typography>
       <Box sx={{ width: "100%" }}>

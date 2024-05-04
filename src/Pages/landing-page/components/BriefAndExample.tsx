@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import {
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
   EPISODE_EXAMPLE_QUERY_KEY,
-  LANDING_PAGE_PY,
+  SECTION_PY,
 } from "../../../Consts/consts";
 import { ApiClient } from "../../../Api/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -29,7 +29,7 @@ export default function BriefAndExample() {
   });
 
   return (
-    <Box id="bried-and-example" sx={{ py: LANDING_PAGE_PY }}>
+    <Box id="bried-and-example" sx={{ py: SECTION_PY }}>
       <Container
         sx={{
           display: "flex",
