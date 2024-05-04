@@ -11,6 +11,7 @@ import {
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
 
 import { openInNewTab } from "../../../../Utils/Utils";
+import { useEffect } from "react";
 
 type SourcesContainerProps = {
   currentlyPlaying: TEpisode | undefined;
@@ -19,6 +20,16 @@ type SourcesContainerProps = {
 export const SourcesContainer = ({
   currentlyPlaying,
 }: SourcesContainerProps) => {
+  useEffect(() => {
+    scrollToTop();
+  }, [currentlyPlaying?.name]);
+
+  const scrollToTop = () => {
+    const el = document.getElementById("sources-grid");
+    if (!el) return;
+    el.scrollTop = 0;
+  };
+
   return (
     <Box
       id="sources-container-wrapper"

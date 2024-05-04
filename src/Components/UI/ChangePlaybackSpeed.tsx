@@ -5,13 +5,13 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedIcon from "@mui/icons-material/Speed";
 import { Typography } from "@mui/material";
-import { playSpeedOptions } from "./BottomAudioPlayer/BottomAudioPlayer";
+import { TPlaySpeedOptions } from "../../Types/Types";
 
-const speedArr: playSpeedOptions[] = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+const speedArr: TPlaySpeedOptions[] = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
 type ChangePlaybackSpeedProps = {
   direction?: "right" | "left" | "up" | "down" | undefined;
-  playbackSpeedHandler: (speed: playSpeedOptions) => void;
+  playbackSpeedHandler: (speed: TPlaySpeedOptions) => void;
 };
 
 const ChangePlaybackSpeed = ({
@@ -20,7 +20,7 @@ const ChangePlaybackSpeed = ({
 }: ChangePlaybackSpeedProps) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = (speed?: playSpeedOptions) => {
+  const handleClose = (speed?: TPlaySpeedOptions) => {
     if (speed) {
       playbackSpeedHandler(speed);
     }

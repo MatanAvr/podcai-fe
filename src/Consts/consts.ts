@@ -28,8 +28,11 @@ export const MIN_PASS_LENGTH = 4;
 export const MAX_NUM_OF_TOPICS = 3;
 export const MIN_NUM_OF_TOPICS = 1;
 export const SUPPORT_EMAIL = "support@podcai.co";
-export const LOCAL_STORAGE_TOKEN_KEY = "token";
-export const LOCAL_STORAGE_THEME_KEY = "theme";
+// LS = local storage
+export const LS_TOKEN_KEY = "token";
+export const LS_THEME_KEY = "theme";
+export const LS_PLAYBACK_SPEED_KEY = "playBackSpeed";
+export const LS_ALL_EPISODES_OPEN_KEY = "allEpisodesOpen";
 
 // UI consts
 export const DELETE_ERROR_TIMEOUT = 2.5 * 1000;
