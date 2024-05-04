@@ -61,3 +61,10 @@ export type TTopics =
   | "sports"
   | "science"
   | "entertainment";
+
+export type TPlaySpeedOptions = 0.25 | 0.5 | 0.75 | 1 | 1.25 | 1.5 | 1.75 | 2;
+
+export type TConfig = {
+  allEpisodesOpen: boolean;
+  playbackSpeed: TPlaySpeedOptions;
+};

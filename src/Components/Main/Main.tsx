@@ -7,58 +7,26 @@ import { Settings } from "../../Pages/Settings";
 import { Unsubscribe } from "../../Pages/Unsubscribe";
 import { Box, Paper } from "@mui/material";
 import LandingPage from "../../Pages/landing-page/LandingPage";
-import { useAppDispatch, useAppSelector } from "../../Hooks/useStoreHooks";
-import { useEffect, useRef } from "react";
-import { setAuth, setLoggedUser } from "../../Features/User";
-import { ApiClient } from "../../Api/axios";
-import { ToggleColorMode } from "../../Features/Theme";
+import { useAppSelector } from "../../Hooks/useStoreHooks";
+
 import { ForgotPassword } from "../../Pages/ForgotPassword";
 import { TermsOfService } from "../../Pages/TermsOfService";
 import { PrivacyPolicy } from "../../Pages/PrivacyPolicy";
 import { ContactUs } from "../../Pages/ContactUs";
-// import { Updates } from "../../Pages/Updates/Updates";
-import {
-  LOCAL_STORAGE_THEME_KEY,
-  LOCAL_STORAGE_TOKEN_KEY,
-} from "../../Consts/consts";
-import { useMyNavigation } from "../../Hooks/useMyNavigation";
 import { AdminDashboard } from "../../Pages/AdminDashboard/AdminDashboard";
 import { RoleEnum } from "../../Enums/Enums";
 import { TRole } from "../../Types/Types";
-
-const apiClientInstance = ApiClient.getInstance();
+import { useEffectOnce } from "../../Hooks/useEffectOnce";
+import { useLoadConfig } from "../../Hooks/useLoadConfig";
 
 export const Main = () => {
-  const dispatch = useAppDispatch();
-  const hasMounted = useRef(false);
-  const nav = useMyNavigation();
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
+  const loadConfig = useLoadConfig();
 
-  const authAndLogin = async (token: string) => {
-    try {
-      // Try to login with the token from local storage
-      dispatch(setAuth({ newMode: true, token })); // Attach token to apiClient
-      const authUserRes = await apiClientInstance.userAuth();
-      dispatch(setLoggedUser({ newLoggeduser: authUserRes }));
-    } catch (err) {
-      dispatch(setAuth({ newMode: false, token: "" }));
-    }
-  };
-
-  useEffect(() => {
-    // Checks theme mode and if there is a token in local storage
-    if (hasMounted.current) return;
-    const localToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
-    const localTheme = localStorage.getItem(LOCAL_STORAGE_THEME_KEY);
-    if (localToken) {
-      authAndLogin(localToken);
-      nav.push("Home");
-    }
-    if (localTheme && localTheme === "dark") {
-      dispatch(ToggleColorMode("dark"));
-    }
-    hasMounted.current = true;
-  }, [dispatch, nav]);
+  // LOAD CONFIG
+  useEffectOnce(() => {
+    loadConfig();
+  }, []);
 
   return (
     <Paper
@@ -89,9 +57,6 @@ export const Main = () => {
           <Route path="/Terms of service" element={<TermsOfService />} />
           <Route path="/Privacy policy" element={<PrivacyPolicy />} />
           <Route path="/Contact us" element={<ContactUs />} />
-          {/* <Route path="/Updates" element={<Updates />} /> */}
-
-          {/* Private route using PrivateRoute component */}
           <Route element={<PrivateRoute roleRequired={"Any"} />}>
             <Route path="/Home" element={<Home />} />
           </Route>
@@ -115,6 +80,7 @@ export const Main = () => {
 interface PrivateRouteProps {
   roleRequired: TRole | "Any";
 }
+
 const PrivateRoute = ({ roleRequired }: PrivateRouteProps) => {
   const userState = useAppSelector((state) => state.user);
   const isAuthenticated = userState.auth;

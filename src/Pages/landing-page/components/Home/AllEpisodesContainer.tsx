@@ -10,8 +10,13 @@ import {
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
-import { useState } from "react";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../Hooks/useStoreHooks";
+import { setAllEpisodeOpenConfig } from "../../../../Features/Config";
+
 type AllEpisodesContainerProps = {
   allEpisodes: TEpisode[];
   currentlyPlaying?: TEpisode;
@@ -23,10 +28,14 @@ export const AllEpisodesContainer = ({
   currentlyPlaying,
   onClickEpisodeHandler,
 }: AllEpisodesContainerProps) => {
-  const [open, setOpen] = useState<boolean>(true);
-
-  const mobileHeight = open ? "400px" : "0px";
-
+  const allEpisodesOpen = useAppSelector(
+    (state) => state.config.allEpisodesOpen
+  );
+  const dispatch = useAppDispatch();
+  const mobileHeight = allEpisodesOpen ? "350px" : "0px";
+  const changeAllEpisodesOpen = () => {
+    dispatch(setAllEpisodeOpenConfig(!allEpisodesOpen));
+  };
   return (
     <>
       <Divider flexItem />
@@ -50,7 +59,7 @@ export const AllEpisodesContainer = ({
             alignItems={"center"}
             justifyContent={"center"}
             gap={1}
-            onClick={() => setOpen(!open)}
+            onClick={() => changeAllEpisodesOpen()}
           >
             <Typography variant="body2">All episodes</Typography>
             <IconButton>
@@ -59,7 +68,7 @@ export const AllEpisodesContainer = ({
                 color="primary"
                 sx={{
                   transition: "500ms ease-in-out",
-                  transform: `rotate(${open ? "deg" : "-180deg"})`,
+                  transform: `rotate(${allEpisodesOpen ? "deg" : "-180deg"})`,
                 }}
               />
             </IconButton>
