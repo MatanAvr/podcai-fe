@@ -3,13 +3,15 @@ import {
   Card,
   CardActions,
   Divider,
+  IconButton,
   Stack,
   Typography,
 } from "@mui/material";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
-
+import { useState } from "react";
+import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 type AllEpisodesContainerProps = {
   allEpisodes: TEpisode[];
   currentlyPlaying?: TEpisode;
@@ -21,6 +23,10 @@ export const AllEpisodesContainer = ({
   currentlyPlaying,
   onClickEpisodeHandler,
 }: AllEpisodesContainerProps) => {
+  const [open, setOpen] = useState<boolean>(true);
+
+  const mobileHeight = open ? "400px" : "0px";
+
   return (
     <>
       <Divider flexItem />
@@ -29,17 +35,45 @@ export const AllEpisodesContainer = ({
         display="flex"
         flexDirection="column"
         overflow={"auto"}
-        flex={1}
-        gap={1}
         alignItems="center"
         minWidth={200}
       >
+        {/* Collapse able in mobile */}
+        <Box
+          display={{ xs: "flex", md: "none" }}
+          alignItems={"center"}
+          justifyContent={"center"}
+          width={"100%"}
+        >
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            gap={1}
+            onClick={() => setOpen(!open)}
+          >
+            <Typography variant="body2">All episodes</Typography>
+            <IconButton>
+              <ExpandCircleDownIcon
+                fontSize="small"
+                color="primary"
+                sx={{
+                  transition: "500ms ease-in-out",
+                  transform: `rotate(${open ? "deg" : "-180deg"})`,
+                }}
+              />
+            </IconButton>
+          </Box>
+        </Box>
+        {/* All episodes container */}
         <Box
           id="all-episoeds-container"
+          overflow={"auto"}
+          width={"90%"}
+          px={1}
+          height={{ xs: mobileHeight, md: "auto" }}
           sx={{
-            overflow: "auto",
-            width: "90%",
-            px: 1,
+            transition: "500ms ease-in-out",
           }}
         >
           {allEpisodes ? (

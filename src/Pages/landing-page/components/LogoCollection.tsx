@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/system";
-import { LANDING_PAGE_PY } from "../../../Consts/consts";
+import { SECTION_PY } from "../../../Consts/consts";
 
 const whiteLogos = [
   "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/6560628e8573c43893fe0ace_Sydney-white.svg",
@@ -34,7 +34,7 @@ export default function LogoCollection() {
   const logos = theme.palette.mode === "light" ? darkLogos : whiteLogos;
 
   return (
-    <Box id="LogoCollection" sx={{ py: LANDING_PAGE_PY }}>
+    <Box id="LogoCollection" sx={{ py: SECTION_PY }}>
       <Typography
         component="p"
         variant="subtitle2"

@@ -27,7 +27,7 @@ export const SourcesContainer = ({
       justifyContent={"center"}
       flex={5}
       overflow={"auto"}
-      minHeight={"75%"}
+      minHeight={"50%"}
     >
       <Grid
         id="sources-grid"
