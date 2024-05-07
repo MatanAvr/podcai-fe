@@ -86,7 +86,7 @@ const formatDate = (date: string) => {
 
 export default function UsersTable({ users }: UserTableProps) {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(50);
   const rows: Data[] = [];
   users.forEach((user) => {
     const tempRow = createData(user);

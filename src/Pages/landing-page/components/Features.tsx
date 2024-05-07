@@ -72,7 +72,7 @@ export default function Features() {
           gap: SECTION_GAP,
         }}
       >
-        <Typography component="h2" variant="h4" color="text.primary">
+        <Typography component="h2" variant="h3" color="text.primary">
           Features
         </Typography>
 
@@ -136,7 +136,7 @@ export default function Features() {
                 }}
               />
               <Box sx={{ p: 2, pb: 1 }}>
-                <Typography fontWeight="bold">
+                <Typography fontWeight="bold" variant="h6" color="primary">
                   {selectedFeature.title}
                 </Typography>
                 <Typography sx={{ my: 0.5 }}>
@@ -206,7 +206,15 @@ export default function Features() {
                       {icon}
                     </Box>
                     <div>
-                      <Typography color="text.primary" fontWeight="bold">
+                      <Typography
+                        color={
+                          selectedFeatureIndex === index
+                            ? "primary"
+                            : "text.primary"
+                        }
+                        fontWeight="bold"
+                        variant="h6"
+                      >
                         {title}
                       </Typography>
                       <Typography color="text.secondary" sx={{ my: 0.5 }}>

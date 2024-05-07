@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import {
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
   EPISODE_EXAMPLE_QUERY_KEY,
-  SECTION_PY,
 } from "../../../Consts/consts";
 import { ApiClient } from "../../../Api/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -29,7 +28,7 @@ export default function BriefAndExample() {
   });
 
   return (
-    <Box id="bried-and-example" sx={{ py: SECTION_PY }}>
+    <Box id="bried-and-example" sx={{ py: { xs: 2, sm: 4 } }}>
       <Container
         sx={{
           display: "flex",
@@ -60,7 +59,7 @@ export default function BriefAndExample() {
                 gap: 1,
               }}
             >
-              <Typography variant="h6">
+              <Typography variant="h5">
                 Check out this sample episode
               </Typography>
               <OneLineAudioPlayer audioUrl={episodeExampleUrl} />

@@ -16,6 +16,7 @@ import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
 import { SourcesContainer } from "./SourcesContainer";
 import { AllEpisodesContainer } from "./AllEpisodesContainer";
 import BottomAudioPlayer from "../../../../Components/UI/BottomAudioPlayer/BottomAudioPlayer";
+// import BottomNav from "../../../../Components/UI/BottomNav";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -138,11 +139,11 @@ export const Home = () => {
                 onClickEpisodeHandler={onClickEpisodeHandler}
               />
             </Box>
-
             <BottomAudioPlayer episode={currentlyPlaying} />
           </Box>
         )}
       </Box>
+      {/* <BottomNav /> */}
     </>
   );
 };

@@ -21,10 +21,8 @@ export class LS {
         const data = JSON.parse(dataFromLocalStorage);
         return data;
       }
-      console.error("LS - !dataFromLocalStorage for key", key);
       return undefined;
     } catch (error) {
-      console.error("LS", error);
       return undefined;
     }
   }
