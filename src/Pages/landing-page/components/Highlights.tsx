@@ -52,7 +52,7 @@ export default function Highlights() {
             textAlign: { sm: "left", md: "center" },
           }}
         >
-          <Typography component="h2" variant="h4" color="text.primary">
+          <Typography component="h2" variant="h3" color="text.primary">
             Highlights
           </Typography>
         </Box>
@@ -68,22 +68,20 @@ export default function Highlights() {
                 sx={{
                   p: 3,
                   height: "80%",
-                  border: "1px solid",
-                  borderColor: "grey.800",
                   background: "transparent",
                   transition: "0.2s",
                   "&:hover ": {
-                    transform: "translateY(-5px)",
-                    borderColor: "white",
+                    transform: "scale(1.01)",
                   },
                 }}
               >
-                <Box sx={{ color: "primary.main" }}>{highlight.icon}</Box>
+                <Box>{highlight.icon}</Box>
                 <div>
                   <Typography
                     fontWeight="bold"
                     gutterBottom
-                    color="text.primary"
+                    color="primary"
+                    variant="h6"
                   >
                     {highlight.title}
                   </Typography>

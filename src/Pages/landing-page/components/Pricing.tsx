@@ -75,7 +75,7 @@ export default function Pricing() {
           textAlign: { sm: "left", md: "center" },
         }}
       >
-        <Typography component="h2" variant="h4" color="text.primary">
+        <Typography component="h2" variant="h3" color="text.primary">
           Pricing
         </Typography>
       </Box>

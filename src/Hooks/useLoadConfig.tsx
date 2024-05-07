@@ -35,8 +35,8 @@ export const useLoadConfig = () => {
   // CONFIG
   const loadConfig = async () => {
     const localTheme = LS.getInstance().load(LS_THEME_KEY);
-    if (localTheme && localTheme === "dark") {
-      dispatch(ToggleColorMode("dark"));
+    if (localTheme && (localTheme === "dark" || localTheme === "light")) {
+      dispatch(ToggleColorMode(localTheme));
     }
 
     const localPlaybackSpeed = LS.getInstance().load(LS_PLAYBACK_SPEED_KEY);

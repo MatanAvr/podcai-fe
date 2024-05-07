@@ -38,7 +38,7 @@ export default function Hero() {
         }}
       >
         <Stack flexWrap={"wrap"} gap={2}>
-          <Box sx={{ pb: 6 }}>
+          <Box sx={{ pb: 8 }}>
             <Typography variant="h2" fontWeight="bold">
               Daily personalized
             </Typography>
@@ -52,9 +52,6 @@ export default function Hero() {
               Wanna get caught up quickly on the topics that matter most to you?
               <br />
               We got you covered.
-            </Typography>
-            <Typography variant="h4" color="primary" fontWeight={"bold"}>
-              Stay curious.
             </Typography>
           </Box>
           <Button

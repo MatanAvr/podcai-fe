@@ -56,7 +56,7 @@ export default function Faq() {
         gap: SECTION_GAP,
       }}
     >
-      <Typography component="h2" variant="h4" color="text.primary">
+      <Typography component="h2" variant="h3" color="text.primary">
         Frequently asked questions
       </Typography>
       <Box sx={{ width: "100%" }}>
