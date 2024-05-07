@@ -1,4 +1,4 @@
-import { Fab, Toolbar } from "@mui/material";
+import { Fab, Skeleton, Toolbar } from "@mui/material";
 import { Box, IconButton, Typography } from "@mui/material";
 import {
   ALL_EPISODES_QUERY_KEY,
@@ -26,7 +26,10 @@ import { setPlaySpeedConfig } from "../../../Features/Config";
 
 const mobile = isMobile();
 
-type BottomAudioPlayerProps = { episode: TEpisode | undefined };
+type BottomAudioPlayerProps = {
+  episode: TEpisode | undefined;
+  isLoadingEpisodes: boolean;
+};
 type buttonsColorsOptions = "inherit" | "primary";
 
 const apiClientInstance = ApiClient.getInstance();
@@ -60,7 +63,10 @@ const dynamicVolumeIconButton = (
   );
 };
 
-const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
+const BottomAudioPlayer = ({
+  episode,
+  isLoadingEpisodes,
+}: BottomAudioPlayerProps) => {
   const playbackSpeed = useAppSelector((state) => state.config.playbackSpeed);
   const dispatch = useAppDispatch();
   const [duration, setDuration] = useState<number>(0);
@@ -119,11 +125,9 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
   useEnhancedEffect(() => {
     if (mobile) return;
     document.addEventListener("keydown", keyDownHandler);
-    console.log("Listener attached to keyboard");
 
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
-      console.log("Listener removed from keyboard");
     };
   }, [isPlaying, volume, volumeBeforeUnmute]);
 
@@ -238,6 +242,16 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
     audioRef.current.currentTime = newProgress;
     setCurrrentProgress(newProgress);
   };
+
+  if (isLoadingEpisodes) {
+    return (
+      <Skeleton
+        variant="rounded"
+        width={"100%"}
+        height={BOTTOM_PLAYER_HEIGHT}
+      />
+    );
+  }
 
   return (
     <Box

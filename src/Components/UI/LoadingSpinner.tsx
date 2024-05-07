@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 const LoadingSpinner = () => {
   return (
     <Box
+      id="loading-spinner-wrapper"
       sx={{
         display: "flex",
         alignContent: "center",

@@ -1,24 +1,16 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
-
-import { openInNewTab } from "../../../../Utils/Utils";
 import { useEffect } from "react";
+import ArticleCard from "./ArticleCard";
 
 type SourcesContainerProps = {
   currentlyPlaying: TEpisode | undefined;
+  isLoadingEpisodes: boolean;
 };
 
 export const SourcesContainer = ({
   currentlyPlaying,
+  isLoadingEpisodes,
 }: SourcesContainerProps) => {
   useEffect(() => {
     scrollToTop();
@@ -42,17 +34,34 @@ export const SourcesContainer = ({
     >
       <Grid
         id="sources-grid"
-        px={2}
+        px={1}
         pb={1}
         flexGrow={1}
         spacing={2}
         container
-        justifyContent="space- 
-       evenly"
+        justifyContent="space-evenly"
         overflow={"auto"}
         height={"100%"}
         maxHeight={"100%"}
       >
+        {isLoadingEpisodes &&
+          Array(3)
+            .fill(undefined)
+            .map((_, index) => {
+              return (
+                <Grid
+                  key={`article-skeleton-grid-${index}`}
+                  item
+                  xs={12}
+                  md={4}
+                  justifyContent={"center"}
+                  flexWrap={{ xs: "unset" }}
+                  width={{ xs: "min-content" }}
+                >
+                  <ArticleCard article={undefined} />
+                </Grid>
+              );
+            })}
         {currentlyPlaying &&
           currentlyPlaying.articles_data.map((article, index) => {
             return (
@@ -65,53 +74,7 @@ export const SourcesContainer = ({
                 flexWrap={{ xs: "unset" }}
                 width={{ xs: "min-content" }}
               >
-                <Card
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                    minWidth: 200,
-                    mx: { md: "auto" },
-                  }}
-                >
-                  <CardMedia
-                    sx={{
-                      minHeight: 150,
-                      height: 200,
-                      backgroundSize: "cover",
-                    }}
-                    image={article.image}
-                    title="article"
-                  />
-                  <CardContent>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      {article.source_name}
-                    </Typography>
-                    <Typography gutterBottom component="div">
-                      {article.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {article.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions
-                    disableSpacing
-                    sx={{
-                      marginTop: "auto",
-                    }}
-                  >
-                    <Button
-                      size="small"
-                      onClick={() => openInNewTab(article.url)}
-                    >
-                      Learn More
-                    </Button>
-                  </CardActions>
-                </Card>
+                <ArticleCard article={article} />
               </Grid>
             );
           })}

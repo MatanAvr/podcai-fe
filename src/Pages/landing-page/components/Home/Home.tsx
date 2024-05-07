@@ -8,7 +8,6 @@ import {
 } from "../../../../Consts/consts";
 import { minutesInMilliseconds } from "../../../../Utils/Utils";
 import { Box, Card, Typography } from "@mui/material";
-import LoadingSpinner from "../../../../Components/UI/LoadingSpinner";
 import { useQuery } from "@tanstack/react-query";
 import { useAppSelector } from "../../../../Hooks/useStoreHooks";
 import Counter from "../../../../Components/UI/Counter";
@@ -51,7 +50,7 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    if (allEpisodes && !currentlyPlaying) {
+    if (allEpisodes && allEpisodes.length > 0 && !currentlyPlaying) {
       setCurrentlyPlaying(() => allEpisodes[0]);
     }
   }, [allEpisodes, currentlyPlaying]);
@@ -69,18 +68,12 @@ export const Home = () => {
         maxHeight={calcMaxHeight}
         overflow={"hidden"}
       >
-        {/* // Loading */}
-        {isLoadingEpisodes && (
-          <Box display="flex" width={"100%"} p={2}>
-            <LoadingSpinner />
-          </Box>
-        )}
         {/* // New user */}
         {allEpisodes && allEpisodes.length === 0 && (
           <Box
             width={"100%"}
             display={"flex"}
-            alignItems={"center"}
+            alignItems={"flex-start"}
             justifyContent={"center"}
           >
             <Card
@@ -88,9 +81,10 @@ export const Home = () => {
                 display: "flex",
                 flexDirection: "column",
                 p: 2,
-                maxWidth: 400,
+                width: { xs: 300, md: 400 },
                 textAlign: "center",
                 gap: 1,
+                mt: 6,
               }}
             >
               <Typography variant="h4" component="div">
@@ -114,34 +108,40 @@ export const Home = () => {
           </Box>
         )}
         {/* //Main */}
-        {allEpisodes && allEpisodes.length > 0 && (
+
+        <Box
+          id="home-container"
+          display="flex"
+          flex={1}
+          flexDirection={"column"}
+          height={"100%"}
+          overflow={"hidden"}
+        >
           <Box
-            id="home-container"
             display="flex"
+            flexDirection={{ xs: "column", md: "row" }}
             flex={1}
-            flexDirection={"column"}
-            height={"100%"}
+            width={"100%"}
+            maxHeight={`calc(100% - ${BOTTOM_PLAYER_HEIGHT}px)`}
+            maxWidth={"100%"}
             overflow={"hidden"}
           >
-            <Box
-              display="flex"
-              flexDirection={{ xs: "column", md: "row" }}
-              flex={1}
-              width={"100%"}
-              maxHeight={`calc(100% - ${BOTTOM_PLAYER_HEIGHT}px)`}
-              maxWidth={"100%"}
-              overflow={"hidden"}
-            >
-              <SourcesContainer currentlyPlaying={currentlyPlaying} />
-              <AllEpisodesContainer
-                allEpisodes={allEpisodes}
-                currentlyPlaying={currentlyPlaying}
-                onClickEpisodeHandler={onClickEpisodeHandler}
-              />
-            </Box>
-            <BottomAudioPlayer episode={currentlyPlaying} />
+            <SourcesContainer
+              currentlyPlaying={currentlyPlaying}
+              isLoadingEpisodes={isLoadingEpisodes}
+            />
+            <AllEpisodesContainer
+              allEpisodes={allEpisodes}
+              currentlyPlaying={currentlyPlaying}
+              onClickEpisodeHandler={onClickEpisodeHandler}
+              isLoadingEpisodes={isLoadingEpisodes}
+            />
           </Box>
-        )}
+          <BottomAudioPlayer
+            episode={currentlyPlaying}
+            isLoadingEpisodes={isLoadingEpisodes}
+          />
+        </Box>
       </Box>
       {/* <BottomNav /> */}
     </>
