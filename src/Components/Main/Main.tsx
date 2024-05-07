@@ -8,7 +8,6 @@ import { Unsubscribe } from "../../Pages/Unsubscribe";
 import { Box, Paper } from "@mui/material";
 import LandingPage from "../../Pages/landing-page/LandingPage";
 import { useAppSelector } from "../../Hooks/useStoreHooks";
-
 import { ForgotPassword } from "../../Pages/ForgotPassword";
 import { TermsOfService } from "../../Pages/TermsOfService";
 import { PrivacyPolicy } from "../../Pages/PrivacyPolicy";
@@ -16,8 +15,8 @@ import { ContactUs } from "../../Pages/ContactUs";
 import { AdminDashboard } from "../../Pages/AdminDashboard/AdminDashboard";
 import { RoleEnum } from "../../Enums/Enums";
 import { TRole } from "../../Types/Types";
-import { useEffectOnce } from "../../Hooks/useEffectOnce";
 import { useLoadConfig } from "../../Hooks/useLoadConfig";
+import { useEffectOnce } from "../../Hooks/useEffectOnce";
 
 export const Main = () => {
   const currentPage = useAppSelector((state) => state.navigation.currentPage);

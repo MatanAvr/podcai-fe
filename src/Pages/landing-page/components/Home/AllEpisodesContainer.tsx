@@ -1,14 +1,4 @@
-import {
-  Box,
-  Card,
-  CardActions,
-  Divider,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
-import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import { Box, Divider, IconButton, Typography } from "@mui/material";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import {
@@ -16,17 +6,20 @@ import {
   useAppSelector,
 } from "../../../../Hooks/useStoreHooks";
 import { setAllEpisodeOpenConfig } from "../../../../Features/Config";
+import EpisodeCard from "./EpisodeCard";
 
 type AllEpisodesContainerProps = {
-  allEpisodes: TEpisode[];
+  allEpisodes: TEpisode[] | undefined;
   currentlyPlaying?: TEpisode;
   onClickEpisodeHandler: (newEpisode: TEpisode) => void;
+  isLoadingEpisodes: boolean;
 };
 
 export const AllEpisodesContainer = ({
   allEpisodes,
   currentlyPlaying,
   onClickEpisodeHandler,
+  isLoadingEpisodes,
 }: AllEpisodesContainerProps) => {
   const allEpisodesOpen = useAppSelector(
     (state) => state.config.allEpisodesOpen
@@ -89,69 +82,30 @@ export const AllEpisodesContainer = ({
             allEpisodes.length > 0 &&
             allEpisodes.map((episode, index) => {
               const active = currentlyPlaying?.name === episode.name;
-              const activeOutline = active
-                ? {
-                    outline: 1,
-                    outlineColor: "primary.main",
-                  }
-                : "";
               return (
-                <Card
-                  key={"EC-" + index}
-                  elevation={2}
-                  sx={{
-                    width: "95%",
-                    my: 1,
-                    mx: "auto",
-                    display: "flex",
-                    alignContent: "center",
-                    justifyContent: "space-between",
-                    ...activeOutline,
-                  }}
-                >
-                  <CardActions
-                    sx={{
-                      ":hover": {
-                        cursor: "pointer",
-                      },
-                      p: 0,
-                      flex: 1,
-                    }}
-                    onClick={() => onClickEpisodeHandler(episode)}
-                  >
-                    <Stack
-                      direction={"row"}
-                      alignItems={"center"}
-                      width={"95%"}
-                      sx={{ py: 0.2 }}
-                    >
-                      <PlayArrowRoundedIcon
-                        color={active ? "primary" : "disabled"}
-                        fontSize="small"
-                        sx={{ p: 0.5 }}
-                      />
-                      <Typography
-                        variant="body2"
-                        color={active ? "primary" : ""}
-                        sx={{
-                          display: "flex",
-                          flex: 1,
-                          textAlign: "center",
-                        }}
-                      >
-                        {episode.name}
-                      </Typography>
-                      {episode.is_completed && (
-                        <CheckCircleRoundedIcon
-                          color="primary"
-                          fontSize="small"
-                        />
-                      )}
-                    </Stack>
-                  </CardActions>
-                </Card>
+                <EpisodeCard
+                  key={"episode-card-" + index}
+                  active={active}
+                  episode={episode}
+                  onClickEpisodeHandler={onClickEpisodeHandler}
+                />
               );
             })
+          ) : isLoadingEpisodes ? (
+            <>
+              {Array(8)
+                .fill(undefined)
+                .map((_, index) => {
+                  return (
+                    <EpisodeCard
+                      key={"episode-skeleton-card-" + index}
+                      active={false}
+                      episode={undefined}
+                      onClickEpisodeHandler={onClickEpisodeHandler}
+                    />
+                  );
+                })}
+            </>
           ) : (
             <>No data</>
           )}
