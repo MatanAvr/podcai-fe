@@ -11,7 +11,7 @@ import Replay10RoundedIcon from "@mui/icons-material/Replay10Rounded";
 import VolumeOffRoundedIcon from "@mui/icons-material/VolumeOffRounded";
 import VolumeDownRoundedIcon from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUp";
-import { formatDurationDisplay } from "../../../Utils/Utils";
+import { formatDurationDisplay, isMobile } from "../../../Utils/Utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "../../../Api/axios";
 import { TEpisode } from "../../../Api/ApiTypesAndConsts";
@@ -23,6 +23,8 @@ import ChangePlaybackSpeed from "../ChangePlaybackSpeed";
 import { TPlaySpeedOptions } from "../../../Types/Types";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/useStoreHooks";
 import { setPlaySpeedConfig } from "../../../Features/Config";
+
+const mobile = isMobile();
 
 type BottomAudioPlayerProps = { episode: TEpisode | undefined };
 type buttonsColorsOptions = "inherit" | "primary";
@@ -73,6 +75,57 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
   const episodeDuration = formatDurationDisplay(duration);
   const elapsedTime = formatDurationDisplay(currrentProgress);
   const queryClient = useQueryClient();
+
+  const keyDownHandler = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case "ArrowDown":
+        if (!audioRef.current) return;
+        changeVolumeHandler(audioRef.current.volume - 0.05);
+        break;
+      case "ArrowUp":
+        if (!audioRef.current) return;
+        changeVolumeHandler(audioRef.current.volume + 0.05);
+        break;
+      case "ArrowLeft":
+        changeProgressHandler("back");
+        break;
+      case "ArrowRight":
+        changeProgressHandler("forward");
+        break;
+      case " ":
+        togglePlayPause();
+        break;
+      case "m":
+      case "M":
+        toggleMuteUnmute();
+        break;
+      case "0":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+        jumpToHandler(Number(e.key));
+        break;
+      default:
+        return;
+    }
+  };
+
+  useEnhancedEffect(() => {
+    if (mobile) return;
+    document.addEventListener("keydown", keyDownHandler);
+    console.log("Listener attached to keyboard");
+
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+      console.log("Listener removed from keyboard");
+    };
+  }, [isPlaying, volume, volumeBeforeUnmute]);
 
   useEnhancedEffect(() => {
     setIsReady(false);
@@ -165,8 +218,8 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
   };
 
   const changeProgressHandler = (progressChange: "back" | "forward") => {
-    const change = progressChange === "back" ? -10 : 10;
     if (!audioRef.current) return;
+    const change = progressChange === "back" ? -10 : 10;
     let newProgress = audioRef.current.currentTime + change;
     if (newProgress < 0) newProgress = 0;
     else if (newProgress > duration) newProgress = duration;
@@ -176,6 +229,14 @@ const BottomAudioPlayer = ({ episode }: BottomAudioPlayerProps) => {
 
   const playbackSpeedHandler = (speed: TPlaySpeedOptions) => {
     dispatch(setPlaySpeedConfig(speed));
+  };
+
+  const jumpToHandler = (jumpTo: number) => {
+    if (!audioRef.current) return;
+    if (jumpTo < 0 || jumpTo > 9) return;
+    const newProgress = duration * (jumpTo / 10);
+    audioRef.current.currentTime = newProgress;
+    setCurrrentProgress(newProgress);
   };
 
   return (
