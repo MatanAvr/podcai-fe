@@ -6,7 +6,11 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { ToggleColorModeSwitch } from "./ToggleColorModeSwitch";
-import { ALL_EPISODES_QUERY_KEY, HEADER_HEIGHT } from "../../../Consts/consts";
+import {
+  ALL_EPISODES_QUERY_KEY,
+  HEADER_HEIGHT,
+  PRIMARY_COLOR_RGBA_BORDER,
+} from "../../../Consts/consts";
 import { useAppDispatch, useAppSelector } from "../../../Hooks/useStoreHooks";
 import { useState } from "react";
 import { setAuth } from "../../../Features/User";
@@ -100,15 +104,12 @@ const CustomAppBar = () => {
     <AppBar
       id="app-bar"
       position="fixed"
-      sx={(theme) => ({
+      sx={{
         boxShadow: 0,
         bgcolor: "transparent",
         alignItems: "center",
-        outline:
-          theme.palette.mode === "light"
-            ? "1px solid rgba(0,119,237,0.25)"
-            : "1px solid rgba(255,255,255,0.5)",
-      })}
+        outline: `1px solid ${PRIMARY_COLOR_RGBA_BORDER}`,
+      }}
     >
       <Box
         id="toolbar"

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ApiClient } from "../../../../Api/axios";
 import {
   ALL_EPISODES_QUERY_KEY,
-  BOTTOM_PLAYER_HEIGHT,
+  BOTTOM_PLAYER_HEIGHT_DESKTOP,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
   HEADER_HEIGHT,
 } from "../../../../Consts/consts";
@@ -122,7 +122,7 @@ export const Home = () => {
             flexDirection={{ xs: "column", md: "row" }}
             flex={1}
             width={"100%"}
-            maxHeight={`calc(100% - ${BOTTOM_PLAYER_HEIGHT}px)`}
+            maxHeight={`calc(100% - ${BOTTOM_PLAYER_HEIGHT_DESKTOP}px)`}
             maxWidth={"100%"}
             overflow={"hidden"}
           >

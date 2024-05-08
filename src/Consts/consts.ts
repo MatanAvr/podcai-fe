@@ -42,7 +42,10 @@ export const SECTION_PY = { xs: 8, sm: 10 };
 export const SECTION_GAP = { xs: 3, sm: 6 };
 export const DEFAULT_AUTO_HIDE_DURATION = 6 * 1000;
 export const HEADER_HEIGHT = 64;
-export const BOTTOM_PLAYER_HEIGHT = 85;
+export const BOTTOM_PLAYER_HEIGHT_DESKTOP = 90;
+export const BOTTOM_PLAYER_HEIGHT_MOBILE = 120;
+export const PRIMARY_COLOR_RGBA = "rgba(0, 113, 227,1)";
+export const PRIMARY_COLOR_RGBA_BORDER = "rgba(0, 113, 227,0.5)";
 
 // React query consts
 export const EPISODE_EXAMPLE_QUERY_KEY = "episode-example-url";

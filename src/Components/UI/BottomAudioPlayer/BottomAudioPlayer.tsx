@@ -2,7 +2,9 @@ import { Fab, Skeleton, Toolbar } from "@mui/material";
 import { Box, IconButton, Typography } from "@mui/material";
 import {
   ALL_EPISODES_QUERY_KEY,
-  BOTTOM_PLAYER_HEIGHT,
+  BOTTOM_PLAYER_HEIGHT_DESKTOP,
+  BOTTOM_PLAYER_HEIGHT_MOBILE,
+  PRIMARY_COLOR_RGBA_BORDER,
 } from "../../../Consts/consts";
 import { useRef, useState } from "react";
 import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
@@ -248,22 +250,26 @@ const BottomAudioPlayer = ({
       <Skeleton
         variant="rounded"
         width={"100%"}
-        height={BOTTOM_PLAYER_HEIGHT}
+        height={BOTTOM_PLAYER_HEIGHT_DESKTOP}
       />
     );
   }
 
   return (
     <Box
-      height={BOTTOM_PLAYER_HEIGHT}
-      maxHeight={BOTTOM_PLAYER_HEIGHT}
-      sx={(theme) => ({
+      id="buttom-audio-player-wrapper"
+      height={{
+        xs: BOTTOM_PLAYER_HEIGHT_MOBILE,
+        md: BOTTOM_PLAYER_HEIGHT_DESKTOP,
+      }}
+      maxHeight={{
+        xs: BOTTOM_PLAYER_HEIGHT_MOBILE,
+        md: BOTTOM_PLAYER_HEIGHT_DESKTOP,
+      }}
+      sx={{
         width: "100%",
-        outline:
-          theme.palette.mode === "light"
-            ? "1px solid rgba(0,119,237,1)"
-            : "1px solid rgba(255,255,255,0.5)",
-      })}
+        outline: `1px solid ${PRIMARY_COLOR_RGBA_BORDER}`,
+      }}
       py={1}
     >
       <Toolbar>
@@ -296,6 +302,7 @@ const BottomAudioPlayer = ({
           flex={1}
           alignItems={"center"}
           justifyContent={"space-between"}
+          pb={{ xs: 2, md: 0 }}
         >
           <Box display={{ xs: "none", md: "flex" }}>
             <Typography color={"text.primary"}>
@@ -305,7 +312,7 @@ const BottomAudioPlayer = ({
 
           <Box
             display="flex"
-            flexDirection="column"
+            flexDirection={{ xs: "column-reverse", md: "column" }}
             alignItems="center"
             flex={1}
           >
