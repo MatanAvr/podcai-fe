@@ -11,19 +11,19 @@ import { SECTION_GAP, SECTION_PY } from "../../../Consts/consts";
 
 const highlights = [
   {
-    icon: <FeedRoundedIcon fontSize="large" />,
+    icon: <FeedRoundedIcon fontSize="large" color="primary" />,
     title: `Stay Ahead of the Curve`,
     description: `Keep informed about real-time news. Get concise updates on the day’s 
     headlines, narrated with the help of advanced AI.`,
   },
   {
-    icon: <RecordVoiceOverRoundedIcon fontSize="large" />,
+    icon: <RecordVoiceOverRoundedIcon fontSize="large" color="primary" />,
     title: `Realistic Voices, Real Impact`,
     description: `Dive into the news with lifelike narration. 
     Our AI ensures each story is delivered with human-like intonation, keeping you engaged and informed like never before.`,
   },
   {
-    icon: <ThumbUpAltRoundedIcon fontSize="large" />,
+    icon: <ThumbUpAltRoundedIcon fontSize="large" color="primary" />,
     title: `Great user experience`,
     description: `Integrate our product into your daily routine with an intuitive and easy-to-use interface.`,
   },

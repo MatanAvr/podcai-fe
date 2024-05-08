@@ -254,6 +254,7 @@ export const Settings = () => {
         flexDirection: "column",
         gap: 1,
         maxWidth: "95%",
+        pb: 4,
       }}
     >
       {settingsContainer}
