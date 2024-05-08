@@ -108,15 +108,14 @@ export const Settings = () => {
           display: "flex",
           p: 2,
           gap: 0.5,
+          justifyContent: "space-between",
         }}
       >
         <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            gap: 2,
-          }}
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"flex-start"}
+          gap={2}
         >
           <Box>
             <Typography
@@ -139,16 +138,7 @@ export const Settings = () => {
             <Typography component="div">{loggedUser.email}</Typography>
           </Box>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            flex: 1,
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
+        <Box display={"flex"} flexDirection={"column"}>
           <Avatar
             sx={{ width: 100, height: 100 }}
             src={loggedUser.profile_pic || ""}
@@ -252,8 +242,10 @@ export const Settings = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
+        width: "100%",
         gap: 1,
-        maxWidth: "95%",
+        maxWidth: { xs: "95%", md: "60%" },
+        pb: 4,
       }}
     >
       {settingsContainer}
