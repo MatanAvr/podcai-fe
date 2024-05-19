@@ -48,7 +48,7 @@ export const Main = () => {
           <Box sx={{ display: "flex", width: "100%", py: 1 }} />
         )}
         <Routes>
-          <Route path="/" element={<LandingPage />}></Route>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Sign up" element={<SignUp />} />
           <Route path="/Unsubscribe" element={<Unsubscribe />} />

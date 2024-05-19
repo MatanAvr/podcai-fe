@@ -11,25 +11,34 @@ import {
 } from "../Types/Types";
 
 // URLS
+// GENERAL
 export const BASE_URL: string = "https://www.podcai.co/api";
-export const USER_LOGIN_URL = "/user/login/";
-export const USER_AUTH_URL = "/user/auth/";
 export const SIGNUP_URL = "/sign_up/";
-export const USER_UPDATE_URL = "/user/update_user/";
 export const GET_VOICE_SAMPLES_URL = "/get_voice_samples/";
-export const GET_EPISODES_URL = "/user/get_episodes/";
 export const SEND_OTP_URL = "/send_otp/";
 export const VERIFY_OTP_URL = "/verify_otp/";
 export const UNSUBSCRIBE_URL = "/unsubscribe/";
-export const DELETE_USER_URL = "/user/delete_user/";
-export const UPDATE_PASSWORD_URL = "/update_password/";
-export const SEND_SUPPORT_MESSAGE_URL = "/send_support_message/";
 export const GET_EPISODE_EXAMPLE_URL = "/get_episode_example/";
+export const SEND_SUPPORT_MESSAGE_URL = "/send_support_message/";
+export const UPDATE_PASSWORD_URL = "/update_password/";
+// USER
+export const USER_LOGIN_URL = "/user/login/";
+export const USER_AUTH_URL = "/user/auth/";
+export const USER_UPDATE_URL = "/user/update_user/";
+export const GET_EPISODES_URL = "/user/get_episodes/";
+export const DELETE_USER_URL = "/user/delete_user/";
 export const EPISODE_COMPLETED_URL = "/user/episode_completed/";
+export const UPDATE_EPISODE_PROGRESS_URL = "/user/update_episode_progress/";
+// ADMIN
 export const GET_ALL_USERS_URL = "/admin/get_all_users/";
 export const GET_ALL_USER_EPISODES_URL = "/admin/get_all_user_episodes/";
+// OTHER
 export const GOOGLE_OAUTH_URL =
   "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
+
+// ---------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------
 
 export type loginRequest = { email: string; password: string };
 export interface loginResponse extends loggedInUser {
@@ -91,10 +100,6 @@ export type verifyOtpRequest = {
 export type verifyOtpResponse = {
   is_success: boolean;
 };
-
-export interface CustomAxiosError {
-  detail: string;
-}
 
 export type unsubscribeRequest = {
   email: string;
@@ -198,4 +203,12 @@ type TEpisodeDB = {
 };
 export type getAllUserEpisodesResponse = {
   episodes_data: TEpisodeDB[];
+};
+
+export type UpdateRpisodeProgressRequest = {
+  progress: number;
+  episode_name: string;
+};
+export type UpdateRpisodeProgressResponse = {
+  is_success: boolean;
 };

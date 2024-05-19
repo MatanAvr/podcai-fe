@@ -33,6 +33,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
           minHeight: 150,
           height: 200,
           backgroundSize: "cover",
+          backgroundPosition: "top",
         }}
         image={article.image}
         title="article"
