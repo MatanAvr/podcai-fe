@@ -44,6 +44,9 @@ import {
   GET_ALL_USERS_URL,
   GET_ALL_USER_EPISODES_URL,
   getAllUserEpisodesResponse,
+  UpdateRpisodeProgressRequest,
+  UpdateRpisodeProgressResponse,
+  UPDATE_EPISODE_PROGRESS_URL,
 } from "./ApiTypesAndConsts";
 
 export class ApiClient {
@@ -291,6 +294,22 @@ export class ApiClient {
     } catch (error) {
       console.error(`getAllUserEpisodes, error:${error}`);
       return { episodes_data: [] };
+    }
+  }
+
+  async updateEpisodeProgress(
+    updateEpisodeProgressReq: UpdateRpisodeProgressRequest
+  ): Promise<UpdateRpisodeProgressResponse> {
+    try {
+      const response: AxiosResponse<UpdateRpisodeProgressResponse> =
+        await this.axiosInstance.post(
+          UPDATE_EPISODE_PROGRESS_URL,
+          updateEpisodeProgressReq
+        );
+      return response.data;
+    } catch (error) {
+      console.error(`updateEpisodeProgress, error:${error}`);
+      return { is_success: false };
     }
   }
 }

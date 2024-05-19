@@ -72,6 +72,7 @@ const BottomAudioPlayer = ({
   const playbackSpeed = useAppSelector((state) => state.config.playbackSpeed);
   const dispatch = useAppDispatch();
   const [duration, setDuration] = useState<number>(0);
+  const [progress, setProgress] = useState<number>(0);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [sentIsCompleted, setSentIsCompleted] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -155,22 +156,39 @@ const BottomAudioPlayer = ({
 
   useEnhancedEffect(() => {
     if (!episode) return;
-    if (!episode.is_completed && !sentIsCompleted) {
+    const currentDurationInPercentage = Math.ceil(
+      (currrentProgress / duration) * 100
+    );
+    setProgress(currentDurationInPercentage);
+  }, [elapsedTime]);
+
+  useEnhancedEffect(() => {
+    if (!episode) return;
+    if (!episode.is_completed && !sentIsCompleted && progress === 100) {
       checkIfEpisodeCompleted();
     }
-  }, [elapsedTime]);
+    if (!episode.is_completed && progress > 0 && progress % 10 === 0) {
+      trackEpisodeProgress();
+    }
+  }, [progress]);
 
   const checkIfEpisodeCompleted = async () => {
     if (!episode) return;
-    if (Math.ceil((currrentProgress / duration) * 100) > 90) {
-      setSentIsCompleted(() => true);
-      const markEpisodeAsCompleted = await apiClientInstance.episodeCompleted({
-        episode_name: episode.name,
-      });
-      if (markEpisodeAsCompleted) {
-        queryClient.invalidateQueries({ queryKey: [ALL_EPISODES_QUERY_KEY] });
-      }
+    setSentIsCompleted(() => true);
+    const markEpisodeAsCompleted = await apiClientInstance.episodeCompleted({
+      episode_name: episode.name,
+    });
+    if (markEpisodeAsCompleted) {
+      queryClient.invalidateQueries({ queryKey: [ALL_EPISODES_QUERY_KEY] });
     }
+  };
+
+  const trackEpisodeProgress = () => {
+    if (!episode) return;
+    apiClientInstance.updateEpisodeProgress({
+      progress: progress,
+      episode_name: episode.name,
+    });
   };
 
   const bufferProgressHandler: React.ReactEventHandler<HTMLAudioElement> = (
