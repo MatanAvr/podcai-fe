@@ -1,4 +1,4 @@
-import * as React from "react";
+import { ChangeEvent, ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -22,15 +22,9 @@ import {
   MIN_PASS_LENGTH,
   OTP_LENGTH,
   DELETE_ERROR_TIMEOUT,
-  VOICES_SAMPLES_QUERY_KEY,
-  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
 } from "../Consts/consts";
 import { ApiClient } from "../Api/axios";
-import {
-  isOnlyPositiveNumbers,
-  isValidEmail,
-  minutesInMilliseconds,
-} from "../Utils/Utils";
+import { isOnlyPositiveNumbers, isValidEmail } from "../Utils/Utils";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../Hooks/useStoreHooks";
@@ -39,7 +33,6 @@ import { isAxiosError } from "axios";
 import MultiSelect from "../Components/UI/MultiSelect";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useMyNavigation } from "../Hooks/useMyNavigation";
-import { useQuery } from "@tanstack/react-query";
 import { useGoogleLogin, TokenResponse } from "@react-oauth/google";
 import googleIconSvg from "../Assets/Svg/google-icon.svg";
 import { cloneDeep } from "lodash";
@@ -49,6 +42,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { sendOtpRequest, verifyOtpRequest } from "../Api/ApiTypesAndConsts";
 import { INewUser, TVoices, TTopics } from "../Types/Types";
 import { SuscirptionEnum, RoleEnum } from "../Enums/Enums";
+import useGetVoiceSamples from "../Hooks/useGetVoiceSamples";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -91,19 +85,7 @@ export const SignUp = () => {
     useState<boolean>(false);
   const [userGoogleToken, setUserGoogleToken] = useState<TokenResponse>();
 
-  const getVoiceSamepls = async () => {
-    const res = await apiClientInstance.getVoiceSamples();
-    if (res) {
-      return res.voice_samples;
-    } else return [];
-  };
-
-  const { data: voiceSamples } = useQuery({
-    queryKey: [VOICES_SAMPLES_QUERY_KEY],
-    queryFn: getVoiceSamepls,
-    refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
-  });
+  const { data: voiceSamples } = useGetVoiceSamples();
 
   const validateEmail = () => {
     let error = "";
@@ -123,7 +105,7 @@ export const SignUp = () => {
     return true;
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id: key, value } = e.target;
     setNewUser({
       ...newUser,
@@ -293,7 +275,7 @@ export const SignUp = () => {
     setLoading(false);
   };
 
-  const changeVoiceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeVoiceHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
     setChosenVoice(newVoice as TVoices);
   };
@@ -389,7 +371,7 @@ export const SignUp = () => {
   };
 
   const changeOtpHandler = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const value = e.target.value;
     const valid =
@@ -489,7 +471,7 @@ export const SignUp = () => {
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
-            optional?: React.ReactNode;
+            optional?: ReactNode;
           } = {};
           if (isStepOptional(index)) {
             labelProps.optional = (

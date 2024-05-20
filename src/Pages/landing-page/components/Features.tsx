@@ -221,7 +221,6 @@ export default function Features() {
                         {description}
                       </Typography>
                       <Link
-                        color="primary"
                         fontWeight="bold"
                         sx={{
                           display: "inline-flex",

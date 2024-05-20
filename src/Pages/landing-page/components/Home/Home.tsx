@@ -1,23 +1,17 @@
 import { useEffect, useState } from "react";
-import { ApiClient } from "../../../../Api/axios";
 import {
-  ALL_EPISODES_QUERY_KEY,
   BOTTOM_PLAYER_HEIGHT_DESKTOP,
-  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
   HEADER_HEIGHT,
 } from "../../../../Consts/consts";
-import { minutesInMilliseconds } from "../../../../Utils/Utils";
 import { Box, Card, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import { useAppSelector } from "../../../../Hooks/useStoreHooks";
 import Counter from "../../../../Components/UI/Counter";
 import { TEpisode } from "../../../../Api/ApiTypesAndConsts";
 import { SourcesContainer } from "./SourcesContainer";
 import { AllEpisodesContainer } from "./AllEpisodesContainer";
 import BottomAudioPlayer from "../../../../Components/UI/BottomAudioPlayer/BottomAudioPlayer";
+import useGetEpisodes from "../../../../Hooks/useGetEpisodes";
 // import BottomNav from "../../../../Components/UI/BottomNav";
-
-const apiClientInstance = ApiClient.getInstance();
 
 export const Home = () => {
   const loggedUser = useAppSelector((state) => state.user.loggedUser);
@@ -25,21 +19,7 @@ export const Home = () => {
     TEpisode | undefined
   >(undefined);
 
-  const getEpisodes = async () => {
-    const res = await apiClientInstance.getEpisodes();
-    const sortedEpisodes = [...res.episodes];
-    if (currentlyPlaying === undefined && sortedEpisodes.length > 0) {
-      setCurrentlyPlaying(sortedEpisodes[0]);
-    }
-    return sortedEpisodes;
-  };
-
-  const { data: allEpisodes, isLoading: isLoadingEpisodes } = useQuery({
-    queryKey: [ALL_EPISODES_QUERY_KEY],
-    queryFn: getEpisodes,
-    refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
-  });
+  const { data: allEpisodes, isLoading: isLoadingEpisodes } = useGetEpisodes();
 
   const onClickEpisodeHandler = (newEpisode: TEpisode) => {
     if (newEpisode.name === currentlyPlaying?.name) {
@@ -107,8 +87,8 @@ export const Home = () => {
             </Card>
           </Box>
         )}
-        {/* //Main */}
 
+        {/* //Main */}
         <Box
           id="home-container"
           display="flex"

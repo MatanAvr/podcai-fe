@@ -22,7 +22,6 @@ export const ToggleColorModeSwitch = () => {
       />
       <Switch
         size="small"
-        color="primary"
         checked={themeColor === "light"}
         onClick={() => {
           dispatch(ToggleColorMode(themeColor === "dark" ? "light" : "dark"));

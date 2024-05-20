@@ -108,7 +108,6 @@ export default function UploadProfilePicModal() {
           <LoadingButton
             loading={isLoading}
             variant="contained"
-            color="primary"
             onClick={uploadProfilePicHandler}
             fullWidth
           >

@@ -1,7 +1,7 @@
 import { Fab, Skeleton, Toolbar } from "@mui/material";
 import { Box, IconButton, Typography } from "@mui/material";
 import {
-  ALL_EPISODES_QUERY_KEY,
+  EPISODES_QUERY_KEY,
   BOTTOM_PLAYER_HEIGHT_DESKTOP,
   BOTTOM_PLAYER_HEIGHT_MOBILE,
   PRIMARY_COLOR_RGBA_BORDER,
@@ -179,7 +179,7 @@ const BottomAudioPlayer = ({
       episode_name: episode.name,
     });
     if (markEpisodeAsCompleted) {
-      queryClient.invalidateQueries({ queryKey: [ALL_EPISODES_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [EPISODES_QUERY_KEY] });
     }
   };
 

@@ -1,31 +1,11 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import {
-  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-  EPISODE_EXAMPLE_QUERY_KEY,
-} from "../../../Consts/consts";
-import { ApiClient } from "../../../Api/axios";
-import { useQuery } from "@tanstack/react-query";
-import { minutesInMilliseconds } from "../../../Utils/Utils";
 import { OneLineAudioPlayer } from "../../../Components/UI/OneLineAudioPlayer/OneLineAudioPlayer";
-
-const apiClientInstance = ApiClient.getInstance();
+import useGetEpisodeExample from "../../../Hooks/useGetEpisodeExample";
 
 export default function BriefAndExample() {
-  const getEpisodeExample = async () => {
-    const res = await apiClientInstance.getEpisodeExample();
-    if (res) {
-      return res.url;
-    } else return "";
-  };
-
-  const { data: episodeExampleUrl } = useQuery({
-    queryKey: [EPISODE_EXAMPLE_QUERY_KEY],
-    queryFn: getEpisodeExample,
-    refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
-  });
+  const { data: episodeExampleUrl } = useGetEpisodeExample();
 
   return (
     <Box id="bried-and-example" sx={{ py: { xs: 2, sm: 4 } }}>

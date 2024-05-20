@@ -1,48 +1,18 @@
 import Typography from "@mui/material/Typography";
 import { Box, Card, Switch } from "@mui/material";
-import { ApiClient } from "../../Api/axios";
 import { useAppSelector } from "../../Hooks/useStoreHooks";
-import { useQuery } from "@tanstack/react-query";
-import {
-  ALL_USERS_QUERY_KEY,
-  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
-  SUPPORT_MESSAGES_QUERY_KEY,
-} from "../../Consts/consts";
-import { minutesInMilliseconds } from "../../Utils/Utils";
 import LoadingSpinner from "../../Components/UI/LoadingSpinner";
 import UsersTable from "./UsersTable";
 import SupportTable from "./SupportTable";
+import useGetSupportMessages from "../../Hooks/useGetSupportMessages";
+import useGetAllUsers from "../../Hooks/useGetAllUsers";
 
-const apiClientInstance = ApiClient.getInstance();
 const TITLE_SIZE = "h5";
 
 export const AdminDashboard = () => {
   const features = useAppSelector((state) => state.featuresToggle);
-
-  const getAllUsers = async () => {
-    const res = await apiClientInstance.getAllUsers();
-    return res.users;
-  };
-
-  const getSupportMessages = async () => {
-    const res = await apiClientInstance.getAllSupportMessages();
-    return res.support_messages;
-  };
-
-  const { data: users, isLoading: isLoadingUsers } = useQuery({
-    queryKey: [ALL_USERS_QUERY_KEY],
-    queryFn: getAllUsers,
-    refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
-  });
-
-  const { data: supportMessages, isLoading: isLoadingSupportMessages } =
-    useQuery({
-      queryKey: [SUPPORT_MESSAGES_QUERY_KEY],
-      queryFn: getSupportMessages,
-      refetchOnWindowFocus: false,
-      staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
-    });
+  const { data: users, isLoading: isLoadingUsers } = useGetAllUsers();
+  const { data: supportMessages } = useGetSupportMessages();
 
   const genericBox = (title: string, other: any) => {
     return (
