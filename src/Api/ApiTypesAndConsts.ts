@@ -195,7 +195,7 @@ export type getAllSupportMessagesResponse = {
   support_messages: SupportMessageType[];
 };
 
-type TEpisodeDB = {
+export type TEpisodeDB = {
   user_id: string;
   episode_name: string;
   link: string;

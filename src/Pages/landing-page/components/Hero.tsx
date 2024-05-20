@@ -45,9 +45,23 @@ export default function Hero() {
             <Typography variant="h2" fontWeight="bold">
               news podcasts
             </Typography>
-            <Typography variant="h2" color="primary" fontWeight="bold">
+            <Typography
+              variant="h2"
+              color="primary"
+              fontWeight="bold"
+              // sx={{
+              //   backgroundImage:
+              //     "linear-gradient(45deg,#a163f1,#6363f1 22%,#3498ea 40%,#40dfa3 67%, rgba(64, 223, 163, 0))",
+              //   backgroundSize: "100% 100%",
+              //   backgroundRepeat: "no-repeat",
+              //   backgroundClip: "text",
+              //   WebkitTextFillColor: "transparent",
+              //   lineHeight: "unset",
+              // }}
+            >
               Powered by AI
             </Typography>
+
             <Typography variant="h6">
               Wanna get caught up quickly on the topics that matter most to you?
               <br />
@@ -55,9 +69,12 @@ export default function Hero() {
             </Typography>
           </Box>
           <Button
-            sx={{ minWidth: 150, maxWidth: 250, alignSelf: "center" }}
+            sx={{
+              minWidth: 150,
+              maxWidth: 250,
+              alignSelf: "center",
+            }}
             variant="contained"
-            color="primary"
             size="large"
             onClick={() => {
               changePageHandler("Sign up");

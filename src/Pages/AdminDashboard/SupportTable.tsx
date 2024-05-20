@@ -10,7 +10,7 @@ import { SupportMessageType } from "../../Api/ApiTypesAndConsts";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { IconButton, Typography } from "@mui/material";
 import { ChangeEvent, ReactElement, useState } from "react";
-import { GenericModal } from "../../Components/UI/GenericModal";
+import { DeleteSupportMessageModal } from "../../Components/UI/DeleteSupportMessageModal";
 import useDeleteSupportMessage from "../../Hooks/useDeleteSupportMessage";
 
 type Column = {
@@ -166,7 +166,7 @@ export default function SupportTable({ supportMessages }: SupportTableProps) {
         />
       </Paper>
       {idToDelete && (
-        <GenericModal
+        <DeleteSupportMessageModal
           title="Confirm support message deletion"
           message={`Are you sure you want to delete support message with id ${idToDelete}?`}
           onConfirm={() => deleteMessageHandler(idToDelete)}

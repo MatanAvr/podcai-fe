@@ -10,6 +10,7 @@ import { TUserFromDB } from "../../Api/ApiTypesAndConsts";
 import { IconButton, Typography } from "@mui/material";
 import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
 import { ChangeEvent, ReactElement, useState } from "react";
+import UserEpisodeModal from "../../Components/UI/UserEpisodeModal";
 
 type Column = {
   id: "name" | "email" | "lastLogin" | "episodes";
@@ -62,19 +63,6 @@ type Data = {
   episodes: ReactElement;
 };
 
-function createData(user: TUserFromDB): Data {
-  return {
-    name: user.name,
-    email: user.email,
-    lastLogin: formatDate(user.last_login),
-    episodes: (
-      <IconButton>
-        <FormatListBulletedRoundedIcon />
-      </IconButton>
-    ),
-  };
-}
-
 const formatDate = (date: string) => {
   const dateString = new Date(date).toDateString();
   const timeString = new Date(date).toLocaleTimeString();
@@ -86,6 +74,12 @@ type UserTableProps = {
 };
 
 export default function UsersTable({ users }: UserTableProps) {
+  const [userIdToShow, setUserIdToShow] = useState<string | undefined>(
+    undefined
+  );
+  const [userNameToShow, setUserNameToShow] = useState<string | undefined>(
+    undefined
+  );
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(100);
   const rows: Data[] = [];
@@ -93,9 +87,27 @@ export default function UsersTable({ users }: UserTableProps) {
     const tempRow = createData(user);
     rows.push(tempRow);
   });
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
+
+  function createData(user: TUserFromDB): Data {
+    return {
+      name: user.name,
+      email: user.email,
+      lastLogin: formatDate(user.last_login),
+      episodes: (
+        <IconButton
+          onClick={() => {
+            setUserIdToShow(user.user_id);
+            setUserNameToShow(user.name);
+          }}
+        >
+          <FormatListBulletedRoundedIcon />
+        </IconButton>
+      ),
+    };
+  }
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
@@ -164,6 +176,16 @@ export default function UsersTable({ users }: UserTableProps) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      {userIdToShow && userNameToShow && (
+        <UserEpisodeModal
+          userId={userIdToShow}
+          username={userNameToShow}
+          onClose={() => {
+            setUserIdToShow(undefined);
+            setUserNameToShow(undefined);
+          }}
+        />
+      )}
     </>
   );
 }

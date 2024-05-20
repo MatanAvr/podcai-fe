@@ -1,6 +1,4 @@
-import { LoadingButton } from "@mui/lab";
 import { Button, Dialog, Stack, Typography } from "@mui/material";
-import { useState } from "react";
 
 type ConfirmDeleteModalProps = {
   title: string;
@@ -9,32 +7,26 @@ type ConfirmDeleteModalProps = {
   onConfirm: () => void;
 };
 
-export const GenericModal = ({
+export const DeleteSupportMessageModal = ({
   title,
   message,
   onConfirm,
   onClose,
 }: ConfirmDeleteModalProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const confirmHandler = async () => {
     onConfirm();
     onClose();
   };
+
   return (
     <Dialog id="confirm-delete-dialog" onClose={onClose} open={true}>
       <Stack p={2} gap={2} textAlign={"center"} maxWidth={350}>
         <Typography variant="h6">{title}</Typography>
         <Typography>{message}</Typography>
         <Stack gap={1}>
-          <LoadingButton
-            variant="contained"
-            color="warning"
-            onClick={confirmHandler}
-            loading={isLoading}
-          >
+          <Button variant="contained" color="error" onClick={confirmHandler}>
             Delete
-          </LoadingButton>
+          </Button>
           <Button variant="contained" onClick={onClose}>
             Cancel
           </Button>
