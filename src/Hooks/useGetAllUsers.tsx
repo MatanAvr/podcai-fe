@@ -11,7 +11,7 @@ const apiClientInstance = ApiClient.getInstance();
 const useGetAllUsers = () => {
   const getAllUsers = async () => {
     const res = await apiClientInstance.getAllUsers();
-    return res.users;
+    return res.users.reverse();
   };
 
   return useQuery({

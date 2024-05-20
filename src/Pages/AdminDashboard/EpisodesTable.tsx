@@ -31,35 +31,37 @@ import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutl
 // engine_model: string;
 
 type Column = {
-  id: "episodeName" | "isCompleted";
+  id: "episodeName" | "progress" | "isCompleted" | "voice";
   label: string;
   minWidth?: number;
-  align?: "right";
+  align?: "right" | "center";
   format?: (value: string) => string;
 };
 
 const columns: readonly Column[] = [
   { id: "episodeName", label: "Episode name" },
-  { id: "isCompleted", label: "Is completed" },
+  { id: "progress", label: "Progress", align: "center" },
+  { id: "isCompleted", label: "Completed", align: "center" },
+  { id: "voice", label: "Voice" },
 ];
 
 type Data = {
   episodeName: string;
+  progress: string;
   isCompleted: ReactElement;
+  voice: string;
 };
 
 function createData(episode: TEpisodeDB): Data {
   return {
     episodeName: episode.episode_name,
+    progress: "?" + "%",
     isCompleted: episode.is_completed ? (
-      <>
-        <CheckCircleRoundedIcon fontSize="small" color="success" />
-      </>
+      <CheckCircleRoundedIcon fontSize="small" color="success" />
     ) : (
-      <>
-        <RemoveCircleOutlineRoundedIcon fontSize="small" color="action" />
-      </>
+      <RemoveCircleOutlineRoundedIcon fontSize="small" color="action" />
     ),
+    voice: episode.voice,
   };
 }
 
@@ -81,7 +83,7 @@ export default function EpisodesTable({
     rows.push(tempRow);
   });
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 

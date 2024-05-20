@@ -208,7 +208,7 @@ export type TEpisodeDB = {
   lambda_run_time: number;
   num_of_articles: number;
   categories: TTopics[];
-  voice: TVoices[];
+  voice: TVoices;
   country: TCountries;
   language: TLanguages;
   is_completed: boolean;

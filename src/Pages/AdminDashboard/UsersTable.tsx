@@ -11,14 +11,10 @@ import { IconButton, Typography } from "@mui/material";
 import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
 import { ChangeEvent, ReactElement, useState } from "react";
 import UserEpisodeModal from "../../Components/UI/UserEpisodeModal";
-
-type Column = {
-  id: "name" | "email" | "lastLogin" | "episodes";
-  label: string;
-  minWidth?: number;
-  align?: "right";
-  format?: (value: string) => string;
-};
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
+import ArchiveRoundedIcon from "@mui/icons-material/ArchiveRounded";
+import { ArchiveUserModal } from "../../Components/UI/ArchiveUserModal";
 
 //   user_id: string;
 //   name: string;
@@ -39,9 +35,28 @@ type Column = {
 //   login_with: string;
 //   profile_pic: string;
 
+type Column = {
+  id:
+    | "name"
+    | "email"
+    | "stage"
+    | "lastLogin"
+    | "generate"
+    | "sendEmail"
+    | "episodes"
+    | "archive";
+  label: string;
+  minWidth?: number;
+  align?: "right" | "center";
+  format?: (value: string) => string;
+};
+
 const columns: readonly Column[] = [
   { id: "name", label: "Name" },
   { id: "email", label: "Email" },
+  { id: "stage", label: "Stage" },
+  { id: "generate", label: "Generate", align: "center" },
+  { id: "sendEmail", label: "Send email", align: "center" },
   {
     id: "lastLogin",
     label: "Last login",
@@ -54,19 +69,26 @@ const columns: readonly Column[] = [
     id: "episodes",
     label: "Episodes",
   },
+  {
+    id: "archive",
+    label: "Archive",
+  },
 ];
 
 type Data = {
   name: string;
   email: string;
+  stage: string;
+  generate: ReactElement;
+  sendEmail: ReactElement;
   lastLogin: string;
   episodes: ReactElement;
+  archive: ReactElement;
 };
 
 const formatDate = (date: string) => {
   const dateString = new Date(date).toDateString();
-  const timeString = new Date(date).toLocaleTimeString();
-  return `${dateString} ${timeString}`;
+  return dateString;
 };
 
 type UserTableProps = {
@@ -74,6 +96,13 @@ type UserTableProps = {
 };
 
 export default function UsersTable({ users }: UserTableProps) {
+  const [userIdToDelete, setUserIdToDelete] = useState<string | undefined>(
+    undefined
+  );
+  const [userNameToDelete, setUserNameToDelete] = useState<string | undefined>(
+    undefined
+  );
+
   const [userIdToShow, setUserIdToShow] = useState<string | undefined>(
     undefined
   );
@@ -95,6 +124,17 @@ export default function UsersTable({ users }: UserTableProps) {
     return {
       name: user.name,
       email: user.email,
+      stage: user.stage,
+      generate: user.should_create_episode ? (
+        <CheckCircleRoundedIcon fontSize="small" color="success" />
+      ) : (
+        <RemoveCircleOutlineRoundedIcon fontSize="small" color="action" />
+      ),
+      sendEmail: user.should_send_episode_email ? (
+        <CheckCircleRoundedIcon fontSize="small" color="success" />
+      ) : (
+        <RemoveCircleOutlineRoundedIcon fontSize="small" color="action" />
+      ),
       lastLogin: formatDate(user.last_login),
       episodes: (
         <IconButton
@@ -104,6 +144,16 @@ export default function UsersTable({ users }: UserTableProps) {
           }}
         >
           <FormatListBulletedRoundedIcon />
+        </IconButton>
+      ),
+      archive: (
+        <IconButton
+          onClick={() => {
+            setUserIdToDelete(user.user_id);
+            setUserNameToDelete(user.name);
+          }}
+        >
+          <ArchiveRoundedIcon />
         </IconButton>
       ),
     };
@@ -154,9 +204,7 @@ export default function UsersTable({ users }: UserTableProps) {
                         const value = row[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
+                            {value}
                           </TableCell>
                         );
                       })}
@@ -183,6 +231,21 @@ export default function UsersTable({ users }: UserTableProps) {
           onClose={() => {
             setUserIdToShow(undefined);
             setUserNameToShow(undefined);
+          }}
+        />
+      )}
+      {userIdToDelete && userNameToDelete && (
+        <ArchiveUserModal
+          title="Confirm user archive"
+          message={`Are you sure you want to archive ${userNameToDelete}?`}
+          onConfirm={() =>
+            console.log(
+              `Archived "${userNameToDelete}" with id: ${userIdToDelete}`
+            )
+          }
+          onClose={() => {
+            setUserIdToDelete(undefined);
+            setUserNameToDelete(undefined);
           }}
         />
       )}
