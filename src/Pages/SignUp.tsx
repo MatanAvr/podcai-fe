@@ -20,11 +20,10 @@ import {
   MIN_NAME_LENGTH,
   MIN_NUM_OF_TOPICS,
   MIN_PASS_LENGTH,
-  OTP_LENGTH,
   DELETE_ERROR_TIMEOUT,
 } from "../Consts/consts";
 import { ApiClient } from "../Api/axios";
-import { isOnlyPositiveNumbers, isValidEmail } from "../Utils/Utils";
+import { isValidEmail } from "../Utils/Utils";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../Hooks/useStoreHooks";
@@ -39,7 +38,6 @@ import { cloneDeep } from "lodash";
 import { PasswordTextField } from "../Components/UI/PasswordTextField";
 import { PodcastersVoices } from "../Components/UI/PodcastersVoices";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { sendOtpRequest, verifyOtpRequest } from "../Api/ApiTypesAndConsts";
 import { INewUser, TVoices, TTopics } from "../Types/Types";
 import { SuscirptionEnum, RoleEnum } from "../Enums/Enums";
 import useGetVoiceSamples from "../Hooks/useGetVoiceSamples";
@@ -61,7 +59,7 @@ const newUserDefault: INewUser = {
   role: RoleEnum.User,
 };
 
-const steps = ["Details", "Verify", "Settings"];
+const steps = ["Details", "Settings"];
 const lastStep = steps.length - 1;
 
 export const SignUp = () => {
@@ -71,9 +69,7 @@ export const SignUp = () => {
     (state) => state.featuresToggle.googleSignUpEnabled
   );
   const [newUser, setNewUser] = useState<INewUser>(newUserDefault);
-  const [otp, setOtp] = useState<string>("");
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [skipped, setSkipped] = useState(new Set<number>());
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [emailErr, setEmailErr] = useState<string>("");
   const [chosenVoice, setChosenVoice] = useState<TVoices>();
@@ -114,7 +110,6 @@ export const SignUp = () => {
   };
 
   const changeTopicsHandler = (newTopics: TTopics[]) => {
-    console.log(newTopics);
     setChosenTopics(() => newTopics);
   };
 
@@ -122,30 +117,14 @@ export const SignUp = () => {
     return false;
   };
 
-  const isStepSkipped = (step: number) => {
-    return skipped.has(step);
-  };
-
   const handleNext = () => {
     setErrorMsg("");
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-    if (activeStep === 0) {
-      sendOtp();
-      return;
-    } else if (activeStep === 1) {
-      verifyOtp();
-      return;
-    } else if (activeStep === lastStep) {
+    if (activeStep === lastStep) {
       signUpHandler();
       return;
     }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
   };
 
   const handleBack = () => {
@@ -197,83 +176,6 @@ export const SignUp = () => {
       />
     </Box>
   );
-
-  const verifyOtpWrapper = (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      sx={{ gap: 1 }}
-      alignItems={"center"}
-    >
-      <Typography textAlign={"center"}>
-        {`Verificaion code was send to:`}
-        <br />
-        {`${newUser.email}`}
-      </Typography>
-      <TextField
-        id="otp"
-        variant="outlined"
-        label={`Enter the ${OTP_LENGTH} digits code`}
-        size="small"
-        onChange={(e) => changeOtpHandler(e)}
-        value={otp}
-        placeholder={`Enter the ${OTP_LENGTH} digits code`}
-        required
-      />
-    </Box>
-  );
-
-  const sendOtp = async () => {
-    try {
-      setLoading(true);
-      const sendOtpReqObj: sendOtpRequest = {
-        name: newUser.name,
-        send_to: newUser.email,
-        method: "EMAIL",
-        otp_reason: "SIGN_UP",
-      };
-      const sendOtpRes = await apiClientInstance.sendOtp(sendOtpReqObj);
-      if (sendOtpRes.is_success) {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      }
-    } catch (error) {
-      if (isAxiosError(error)) {
-        if (typeof error.response?.data.detail === "string") {
-          setErrorMsg(error.response?.data.detail);
-        } else {
-          setErrorMsg("General error");
-        }
-      } else {
-        setErrorMsg("General error");
-      }
-    }
-    setLoading(false);
-  };
-
-  const verifyOtp = async () => {
-    try {
-      setLoading(true);
-      const verifyOtpReqObj: verifyOtpRequest = {
-        send_to: newUser.email,
-        otp: otp,
-      };
-      const verifyOtpRes = await apiClientInstance.verifyOtp(verifyOtpReqObj);
-      if (verifyOtpRes.is_success) {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      }
-    } catch (error) {
-      if (isAxiosError(error)) {
-        if (typeof error.response?.data.detail === "string") {
-          setErrorMsg(error.response?.data.detail);
-        } else {
-          setErrorMsg("General error");
-        }
-      } else {
-        setErrorMsg("General error");
-      }
-    }
-    setLoading(false);
-  };
 
   const changeVoiceHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const newVoice = event.target.value;
@@ -350,7 +252,7 @@ export const SignUp = () => {
     </Box>
   );
 
-  const contentArr = [userDataWrapper, verifyOtpWrapper, settingsWrapper];
+  const contentArr = [userDataWrapper, settingsWrapper];
 
   const checkIfNextDisabled = () => {
     if (activeStep === 0) {
@@ -359,8 +261,6 @@ export const SignUp = () => {
         isValidEmail(newUser.email) &&
         newUser.password.length >= MIN_PASS_LENGTH
       );
-    } else if (activeStep === 1) {
-      return !(otp?.length === OTP_LENGTH);
     } else if (activeStep === lastStep) {
       return !(
         chosenTopics.length >= MIN_NUM_OF_TOPICS &&
@@ -368,16 +268,6 @@ export const SignUp = () => {
         chosenVoice
       );
     }
-  };
-
-  const changeOtpHandler = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const value = e.target.value;
-    const valid =
-      value === "" ||
-      (isOnlyPositiveNumbers(value) && value.length <= OTP_LENGTH);
-    if (valid) setOtp(value);
   };
 
   const signUpHandler = async () => {
@@ -478,9 +368,6 @@ export const SignUp = () => {
               <Typography variant="caption">Optional</Typography>
             );
           }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -525,11 +412,7 @@ export const SignUp = () => {
               variant="contained"
               color={activeStep === lastStep ? "success" : "primary"}
             >
-              {activeStep === lastStep
-                ? "Activate my account"
-                : activeStep === 0
-                ? "Verify Email"
-                : "Next"}
+              {activeStep === lastStep ? "Activate my account" : "Next"}
             </LoadingButton>
           </Box>
           {activeStep === 0 && (
