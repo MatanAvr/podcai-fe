@@ -47,6 +47,11 @@ import {
   UpdateRpisodeProgressRequest,
   UpdateRpisodeProgressResponse,
   UPDATE_EPISODE_PROGRESS_URL,
+  GET_ALL_SUPPORT_MESSAGES_URL,
+  getAllSupportMessagesResponse,
+  DELETE_SUPPORT_MESSAGES_URL,
+  DeleteSupportMessageRequest,
+  DeleteSupportMessageRespsonse,
 } from "./ApiTypesAndConsts";
 
 export class ApiClient {
@@ -279,6 +284,33 @@ export class ApiClient {
     } catch (error) {
       console.error(`getAllUsers, error:${error}`);
       return { users: [] };
+    }
+  }
+
+  async getAllSupportMessages(): Promise<getAllSupportMessagesResponse> {
+    try {
+      const response: AxiosResponse<getAllSupportMessagesResponse> =
+        await this.axiosInstance.get(GET_ALL_SUPPORT_MESSAGES_URL);
+      return response.data;
+    } catch (error) {
+      console.error(`getAllSupportMessages, error:${error}`);
+      return { support_messages: [] };
+    }
+  }
+
+  async deleteSupportMessage(
+    deleteSupportMessageReq: DeleteSupportMessageRequest
+  ): Promise<DeleteSupportMessageRespsonse> {
+    try {
+      const response: AxiosResponse<DeleteSupportMessageRespsonse> =
+        await this.axiosInstance.post(
+          DELETE_SUPPORT_MESSAGES_URL,
+          deleteSupportMessageReq
+        );
+      return response.data;
+    } catch (error) {
+      console.error(`deleteSupportMessage, error:${error}`);
+      return { is_success: false };
     }
   }
 

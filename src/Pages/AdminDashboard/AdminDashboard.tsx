@@ -6,19 +6,27 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ALL_USERS_QUERY_KEY,
   DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
+  SUPPORT_MESSAGES_QUERY_KEY,
 } from "../../Consts/consts";
 import { minutesInMilliseconds } from "../../Utils/Utils";
 import LoadingSpinner from "../../Components/UI/LoadingSpinner";
 import UsersTable from "./UsersTable";
+import SupportTable from "./SupportTable";
 
 const apiClientInstance = ApiClient.getInstance();
-const TITLE_SIZE = "h6";
+const TITLE_SIZE = "h5";
+
 export const AdminDashboard = () => {
   const features = useAppSelector((state) => state.featuresToggle);
 
   const getAllUsers = async () => {
     const res = await apiClientInstance.getAllUsers();
     return res.users;
+  };
+
+  const getSupportMessages = async () => {
+    const res = await apiClientInstance.getAllSupportMessages();
+    return res.support_messages;
   };
 
   const { data: users, isLoading: isLoadingUsers } = useQuery({
@@ -28,16 +36,24 @@ export const AdminDashboard = () => {
     staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
   });
 
+  const { data: supportMessages, isLoading: isLoadingSupportMessages } =
+    useQuery({
+      queryKey: [SUPPORT_MESSAGES_QUERY_KEY],
+      queryFn: getSupportMessages,
+      refetchOnWindowFocus: false,
+      staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
+    });
+
   const genericBox = (title: string, other: any) => {
     return (
-      <>
+      <Box display="flex" flexDirection={"column"} gap={1}>
         <Typography variant={TITLE_SIZE} color={"primary"}>
           {title}
         </Typography>
-        <Card sx={{ display: "flex", flexDirection: "column", p: 1, gap: 0.5 }}>
+        <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 0.5 }}>
           {other}
         </Card>
-      </>
+      </Box>
     );
   };
 
@@ -68,7 +84,9 @@ export const AdminDashboard = () => {
       <Typography variant="caption" color="text.secondary" component="div">
         Support messages
       </Typography>
-      <Typography component="div">?</Typography>
+      <Typography component="div">
+        {supportMessages ? supportMessages.length : "?"}
+      </Typography>
       <Typography variant="caption" color="text.secondary" component="div">
         Price calculator (last-month)
       </Typography>
@@ -138,22 +156,29 @@ export const AdminDashboard = () => {
           <LoadingSpinner />
         </Box>
       ) : (
-        <>
+        <Box
+          display="flex"
+          flexDirection={"column"}
+          justifyContent="space-between"
+          width={"90%"}
+          maxWidth="90%"
+          gap={2}
+          pb={2}
+        >
           <Box
-            display="flex"
-            justifyContent="space-between"
-            width={"90%"}
-            maxWidth="90%"
+            display={"flex"}
             gap={2}
+            flexDirection={{ xs: "column", md: "row" }}
           >
-            <Box display={"flex"} flexDirection={"column"} gap={1}>
-              {generalContainer}
-              {systemContainer}
-              {featureToggleContainer}
-            </Box>
-            <UsersTable users={users!} />
+            {generalContainer}
+            {systemContainer}
+            {featureToggleContainer}
           </Box>
-        </>
+          {users && <UsersTable users={users} />}
+          {supportMessages && (
+            <SupportTable supportMessages={supportMessages} />
+          )}
+        </Box>
       )}
     </Box>
   );

@@ -32,6 +32,9 @@ export const UPDATE_EPISODE_PROGRESS_URL = "/user/update_episode_progress/";
 // ADMIN
 export const GET_ALL_USERS_URL = "/admin/get_all_users/";
 export const GET_ALL_USER_EPISODES_URL = "/admin/get_all_user_episodes/";
+export const GET_ALL_SUPPORT_MESSAGES_URL = "/admin/get_all_support_message/";
+export const DELETE_SUPPORT_MESSAGES_URL =
+  "/admin/delete_support_message_by_id/";
 // OTHER
 export const GOOGLE_OAUTH_URL =
   "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
@@ -181,6 +184,17 @@ export type getAllUsersResponse = {
   users: TUserFromDB[];
 };
 
+export type SupportMessageType = {
+  id: number;
+  email: string;
+  subject: string;
+  message: string;
+};
+
+export type getAllSupportMessagesResponse = {
+  support_messages: SupportMessageType[];
+};
+
 type TEpisodeDB = {
   user_id: string;
   episode_name: string;
@@ -210,5 +224,12 @@ export type UpdateRpisodeProgressRequest = {
   episode_name: string;
 };
 export type UpdateRpisodeProgressResponse = {
+  is_success: boolean;
+};
+
+export type DeleteSupportMessageRequest = {
+  support_message_id: number;
+};
+export type DeleteSupportMessageRespsonse = {
   is_success: boolean;
 };

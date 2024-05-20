@@ -7,40 +7,24 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { TUserFromDB } from "../../Api/ApiTypesAndConsts";
-import { IconButton, Typography } from "@mui/material";
-import FormatListBulletedRoundedIcon from "@mui/icons-material/FormatListBulletedRounded";
-import { ChangeEvent, ReactElement, useState } from "react";
+import { Typography } from "@mui/material";
+import { ChangeEvent, useState } from "react";
 
-type Column = {
-  id: "name" | "email" | "lastLogin" | "episodes";
+interface Column {
+  id: "name" | "email" | "voice" | "lastLogin" | "episodes";
   label: string;
   minWidth?: number;
   align?: "right";
   format?: (value: string) => string;
-};
-
-//   user_id: string;
-//   name: string;
-//   email: string;
-//   password: string;
-//   num_of_articles: number;
-//   categories: TTopics[];
-//   country: TCountries[];
-//   language: TLanguages;
-//   salt: string;
-//   voice: TVoices;
-//   should_create_episode: boolean;
-//   should_send_episode_email: boolean;
-//   last_login: string;
-//   subscription: TSubscription;
-//   role: TRole;
-//   stage: TStage;
-//   login_with: string;
-//   profile_pic: string;
+}
 
 const columns: readonly Column[] = [
   { id: "name", label: "Name" },
   { id: "email", label: "Email" },
+  {
+    id: "voice",
+    label: "Voice",
+  },
   {
     id: "lastLogin",
     label: "Last login",
@@ -52,26 +36,28 @@ const columns: readonly Column[] = [
   {
     id: "episodes",
     label: "Episodes",
+    format: (value: string) => {
+      const newVal = new Date(value).toString();
+      return newVal;
+    },
   },
 ];
 
-type Data = {
+interface Data {
   name: string;
   email: string;
+  voice: string;
   lastLogin: string;
-  episodes: ReactElement;
-};
+  episodes: string;
+}
 
 function createData(user: TUserFromDB): Data {
   return {
     name: user.name,
     email: user.email,
+    voice: user.voice,
     lastLogin: formatDate(user.last_login),
-    episodes: (
-      <IconButton>
-        <FormatListBulletedRoundedIcon />
-      </IconButton>
-    ),
+    episodes: "",
   };
 }
 
@@ -81,18 +67,24 @@ const formatDate = (date: string) => {
   return `${dateString} ${timeString}`;
 };
 
-type UserTableProps = {
-  users: TUserFromDB[];
+type EpisodesTableProps = {
+  username: string;
+  userId: string;
 };
 
-export default function UsersTable({ users }: UserTableProps) {
+export default function EpisodesTable({
+  username,
+  userId,
+}: EpisodesTableProps) {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(100);
   const rows: Data[] = [];
-  users.forEach((user) => {
-    const tempRow = createData(user);
-    rows.push(tempRow);
-  });
+
+  //   episodes.forEach((episode) => {
+  //     const tempRow = createData(episode);
+  //     rows.push(tempRow);
+  //   });
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -105,20 +97,21 @@ export default function UsersTable({ users }: UserTableProps) {
   return (
     <>
       <Typography variant="h5" color={"primary"}>
-        All users table
+        {username}'s episdoes
       </Typography>
 
       <Paper
-        id="users-table-wrapper"
+        id="episodes-table-wrapper"
         sx={{
           display: "flex",
           flexDirection: "column",
+          flex: 1,
           overflow: "hidden",
           height: "fit-content",
         }}
       >
-        <TableContainer sx={{ maxHeight: 400 }}>
-          <Table stickyHeader aria-label="all users table" size="small">
+        <TableContainer sx={{ maxHeight: 550 }}>
+          <Table stickyHeader aria-label="episodes table" size="small">
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
