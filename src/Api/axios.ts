@@ -52,6 +52,8 @@ import {
   DELETE_SUPPORT_MESSAGES_URL,
   DeleteSupportMessageRequest,
   DeleteSupportMessageRespsonse,
+  DeleteUserByIdRespsonse,
+  DELETE_USER_BY_ID_URL,
 } from "./ApiTypesAndConsts";
 
 export class ApiClient {
@@ -310,6 +312,19 @@ export class ApiClient {
       return response.data;
     } catch (error) {
       console.error(`deleteSupportMessage, error:${error}`);
+      return { is_success: false };
+    }
+  }
+
+  async deleteUserById(userId: string): Promise<DeleteUserByIdRespsonse> {
+    try {
+      const response: AxiosResponse<DeleteUserByIdRespsonse> =
+        await this.axiosInstance.delete(
+          `${DELETE_USER_BY_ID_URL}?user_id=${userId}`
+        );
+      return response.data;
+    } catch (error) {
+      console.error(`deleteUserById, error:${error}`);
       return { is_success: false };
     }
   }

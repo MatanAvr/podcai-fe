@@ -15,6 +15,7 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
 import ArchiveRoundedIcon from "@mui/icons-material/ArchiveRounded";
 import { ArchiveUserModal } from "../../Components/UI/ArchiveUserModal";
+import useDeleteUserById from "../../Hooks/useDeleteUserById";
 
 //   user_id: string;
 //   name: string;
@@ -96,6 +97,8 @@ type UserTableProps = {
 };
 
 export default function UsersTable({ users }: UserTableProps) {
+  const { mutate: deleteUserById } = useDeleteUserById();
+
   const [userIdToDelete, setUserIdToDelete] = useState<string | undefined>(
     undefined
   );
@@ -118,6 +121,12 @@ export default function UsersTable({ users }: UserTableProps) {
   });
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
+  };
+
+  const deleteUserByIdHandler = (userId: string) => {
+    deleteUserById(userId);
+    setUserIdToDelete(undefined);
+    setUserNameToDelete(undefined);
   };
 
   function createData(user: TUserFromDB): Data {
@@ -238,11 +247,9 @@ export default function UsersTable({ users }: UserTableProps) {
         <ArchiveUserModal
           title="Confirm user archive"
           message={`Are you sure you want to archive ${userNameToDelete}?`}
-          onConfirm={() =>
-            console.log(
-              `Archived "${userNameToDelete}" with id: ${userIdToDelete}`
-            )
-          }
+          onConfirm={() => {
+            deleteUserByIdHandler(userIdToDelete);
+          }}
           onClose={() => {
             setUserIdToDelete(undefined);
             setUserNameToDelete(undefined);

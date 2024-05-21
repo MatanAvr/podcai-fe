@@ -4,21 +4,17 @@ import { ALL_USERS_QUERY_KEY } from "../Consts/consts";
 
 const apiClientInstance = ApiClient.getInstance();
 
-const useArchiveUser = () => {
+const useDeleteUserById = () => {
   const queryClient = useQueryClient();
 
-  const archiveUser = async (userId: number) => {
-    console.log("archived user", userId);
-    return;
-    const res = await apiClientInstance.deleteSupportMessage({
-      support_message_id: userId,
-    });
+  const deleteUserById = async (userId: string) => {
+    const res = await apiClientInstance.deleteUserById(userId);
     queryClient.invalidateQueries({ queryKey: [ALL_USERS_QUERY_KEY] });
     return res.is_success;
   };
   return useMutation({
-    mutationFn: archiveUser,
+    mutationFn: deleteUserById,
   });
 };
 
-export default useArchiveUser;
+export default useDeleteUserById;

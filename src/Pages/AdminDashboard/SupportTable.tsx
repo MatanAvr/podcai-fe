@@ -104,6 +104,7 @@ export default function SupportTable({ supportMessages }: SupportTableProps) {
 
   const deleteMessageHandler = (idToDelete: number) => {
     deleteSupportMessageById(idToDelete);
+    setIdToDelete(undefined);
   };
 
   return (

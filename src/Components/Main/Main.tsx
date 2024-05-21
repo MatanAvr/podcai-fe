@@ -44,7 +44,7 @@ export const Main = () => {
       })}
     >
       <Box className="main-wrapper">
-        {currentPage !== "Home" && (
+        {currentPage !== "Home" && currentPage !== "LandingPage" && (
           <Box sx={{ display: "flex", width: "100%", py: 1 }} />
         )}
         <Routes>

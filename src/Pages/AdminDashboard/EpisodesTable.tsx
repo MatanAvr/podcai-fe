@@ -55,7 +55,7 @@ type Data = {
 function createData(episode: TEpisodeDB): Data {
   return {
     episodeName: episode.episode_name,
-    progress: "?" + "%",
+    progress: episode.progress + "%",
     isCompleted: episode.is_completed ? (
       <CheckCircleRoundedIcon fontSize="small" color="success" />
     ) : (
