@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
 import { ApiClient } from "../../Api/axios";
@@ -8,10 +7,11 @@ import { setAuth } from "../../Features/User";
 import { useMyNavigation } from "../../Hooks/useMyNavigation";
 import BasicModal from "./BasicModal";
 import { PasswordTextField } from "./PasswordTextField";
+import { useState } from "react";
 
 export default function DeleteUserModal() {
-  const [password, setPassword] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const apiClientInstance = ApiClient.getInstance();
   const dispatch = useAppDispatch();
   const nav = useMyNavigation();

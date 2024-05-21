@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import { ToggleColorModeSwitch } from "./ToggleColorModeSwitch";
 import {
-  ALL_EPISODES_QUERY_KEY,
+  EPISODES_QUERY_KEY,
   HEADER_HEIGHT,
   PRIMARY_COLOR_RGBA_BORDER,
 } from "../../../Consts/consts";
@@ -76,7 +76,7 @@ const CustomAppBar = () => {
   };
 
   const logoutHandler = () => {
-    queryClient.removeQueries({ queryKey: [ALL_EPISODES_QUERY_KEY] });
+    queryClient.removeQueries({ queryKey: [EPISODES_QUERY_KEY] });
     dispatch(setAuth({ newMode: false, token: "" }));
     changePageHandler("LandingPage");
     setOpen(false);
@@ -258,7 +258,6 @@ const CustomAppBar = () => {
               <>
                 <ToggleColorModeSwitch />
                 <Button
-                  color="primary"
                   variant="outlined"
                   size="small"
                   onClick={() => changePageHandler("Login")}
@@ -266,7 +265,6 @@ const CustomAppBar = () => {
                   Log in
                 </Button>
                 <Button
-                  color="primary"
                   variant="contained"
                   size="small"
                   onClick={() => changePageHandler("Sign up")}
@@ -295,7 +293,6 @@ const CustomAppBar = () => {
           ) : (
             <Button
               variant="text"
-              color="primary"
               aria-label="menu"
               onClick={toggleDrawer(true)}
               sx={{ p: 0, px: 0.5 }}
@@ -413,7 +410,6 @@ const CustomAppBar = () => {
                 <>
                   <MenuItem>
                     <Button
-                      color="primary"
                       variant="contained"
                       onClick={logoutHandler}
                       sx={{ width: "100%" }}
@@ -426,7 +422,6 @@ const CustomAppBar = () => {
                 <>
                   <MenuItem>
                     <Button
-                      color="primary"
                       variant="outlined"
                       onClick={() => changePageHandler("Login")}
                       sx={{ width: "100%" }}
@@ -436,7 +431,6 @@ const CustomAppBar = () => {
                   </MenuItem>
                   <MenuItem>
                     <Button
-                      color="primary"
                       variant="contained"
                       onClick={() => changePageHandler("Sign up")}
                       sx={{ width: "100%" }}

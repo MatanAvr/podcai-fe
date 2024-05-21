@@ -49,7 +49,8 @@ export const PRIMARY_COLOR_RGBA_BORDER = "rgba(0, 113, 227,0.5)";
 
 // React query consts
 export const EPISODE_EXAMPLE_QUERY_KEY = "episode-example-url";
-export const ALL_EPISODES_QUERY_KEY = "all-episodes";
+export const EPISODES_QUERY_KEY = "all-episodes";
 export const ALL_USERS_QUERY_KEY = "all-users";
+export const SUPPORT_MESSAGES_QUERY_KEY = "support-messages";
 export const VOICES_SAMPLES_QUERY_KEY = "voices-samples";
 export const DEFAULT_QUERY_DATA_STALE_TIME_MINUTES = 10;

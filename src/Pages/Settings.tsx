@@ -3,8 +3,6 @@ import {
   topicsArray,
   MAX_NUM_OF_TOPICS,
   DEFAULT_AUTO_HIDE_DURATION,
-  VOICES_SAMPLES_QUERY_KEY,
-  DEFAULT_QUERY_DATA_STALE_TIME_MINUTES,
 } from "../Consts/consts";
 import { useAppSelector, useAppDispatch } from "../Hooks/useStoreHooks";
 import { cloneDeep } from "lodash";
@@ -16,11 +14,10 @@ import MultiSelect from "../Components/UI/MultiSelect";
 import { useMyNavigation } from "../Hooks/useMyNavigation";
 import { updateLoggedUser } from "../Features/User";
 import CustomizedSnackbars from "../Components/UI/CustomizedSnackbars";
-import { useQuery } from "@tanstack/react-query";
-import { minutesInMilliseconds } from "../Utils/Utils";
 import { PodcastersVoices } from "../Components/UI/PodcastersVoices";
 import UploadProfilePicModal from "../Components/UI/UploadProfilePicModal";
 import { TVoices, TTopics } from "../Types/Types";
+import useGetVoiceSamples from "../Hooks/useGetVoiceSamples";
 
 const apiClientInstance = ApiClient.getInstance();
 
@@ -41,19 +38,7 @@ export const Settings = () => {
     loggedUser.categories
   );
 
-  const getVoiceSamepls = async () => {
-    const res = await apiClientInstance.getVoiceSamples();
-    if (res) {
-      return res.voice_samples;
-    } else return [];
-  };
-
-  const { data: voiceSamples } = useQuery({
-    queryKey: [VOICES_SAMPLES_QUERY_KEY],
-    queryFn: getVoiceSamepls,
-    refetchOnWindowFocus: false,
-    staleTime: minutesInMilliseconds(DEFAULT_QUERY_DATA_STALE_TIME_MINUTES),
-  });
+  const { data: voiceSamples } = useGetVoiceSamples();
 
   useEffect(() => {
     setChosenTopics(loggedUser.categories);
